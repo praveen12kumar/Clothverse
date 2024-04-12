@@ -1,0 +1,13 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "Ecommercer website",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon backend/server.js",
+    "start":"node backend/server.js"
+
+  },
+  "author": "Praveen kumar",
+  "license": "ISC"
+}
