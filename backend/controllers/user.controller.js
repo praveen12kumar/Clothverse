@@ -44,8 +44,6 @@ const registerUser = asyncHandler(async(req, res)=>{
         throw new ApiError(400, "Avatar file not uploaded")
     }
 
-    
-
     const user = await User.create({
         name, 
         email,
@@ -79,18 +77,19 @@ const loginUser = asyncHandler(async(req, res)=>{
 
     // check user 
     const user = await User.findOne({email}).select("+password");
-    
+
     if(!user){
         throw new ApiError(404, "user not found");
     }
 
-    const isPasswordMatched = user.isPasswordCorrect(password);
+    const isPasswordMatched = await user.isPasswordCorrect(password);
     
-    if(!isPasswordMatched){
+    if(isPasswordMatched === false){
         throw new ApiError(401, "Invalid email or password")
     }
 
     const token = user.generateAccessToken();
+
     const options = {
         httpOnly : true, // cookies can only be modified by  server
         secure:true 
@@ -100,8 +99,46 @@ const loginUser = asyncHandler(async(req, res)=>{
     )
 })
 
+
+const logout = asyncHandler(async(req, res, next) => {
+        // Clear the "token" cookie
+        res.clearCookie("token", {
+            expires: new Date(Date.now()),
+            httpOnly: true
+        });
+    
+        res.status(200).json(
+            new ApiResponse(200, "Logged Out")
+    );
+});
+    
+
+
+const changeUserPassword = asyncHandler(async(req, res)=>{
+    const {oldPassword, newPassword} = req.body;
+    
+
+    const user = await User.findById(req.user._id).select("+password");
+
+    const isMatch = await user.isPasswordCorrect(oldPassword);
+
+    if(!isMatch){
+        throw new ApiError(400, "Invalid Password");
+    }
+   
+    user.password = newPassword;
+    await user.save();
+
+    return res.status(200).json(
+        new ApiResponse(200, {}, "Password updated successfully")
+    )
+})
+
+
 export {
     registerUser,
     loginUser,
+    logout,
+    changeUserPassword,
 
 };
