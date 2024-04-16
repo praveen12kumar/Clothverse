@@ -18,6 +18,7 @@ const productSchema = new Schema({
         type:Number,
         default:0,
     },
+
     images:[
         {
             public_id:{
@@ -37,6 +38,7 @@ const productSchema = new Schema({
 
     stock:{
         type:Number,
+        default:1,
         required:[true, "Please Enter product Stock"],
         maxLength:[4, "Stock cannot exceed 4 digits "]
     },
