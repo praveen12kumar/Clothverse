@@ -2,9 +2,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
-import { sendEmail } from "../utils/mailer.js";
-import {sendForgotEmail} from "../utils/sendEmail.js";
-
+import {sendEmail} from "../utils/sendEmail.js";
+import crypto from "crypto";
 import User from "../models/user.models.js";
 
 const registerUser = asyncHandler(async(req, res)=>{
@@ -62,8 +61,31 @@ const registerUser = asyncHandler(async(req, res)=>{
     }
 
     // send verification email
-    await sendEmail({email, emailType:"VERIFY", userId:createdUser._id});
-   
+    //await sendEmail({email, emailType:"VERIFY", userId:createdUser._id});
+    
+    const verifyToken = user.generateVerifyToken();
+        await user.save({validateBeforeSave:false});
+
+        const verifyTokenUrl= `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${verifyToken}`;
+
+        const vMessage = `Your email verification token is:- \n\n${verifyTokenUrl} \n\n If you have not requested this email then, please ingore it.`;
+
+        try {
+            await sendEmail({
+                email,
+                vSubject: `Email Verification`,
+                emailType: "VERIFY",
+                vMessage
+            })
+            // res.status(200).json(
+            //     new ApiResponse(200,user, `Email sent to ${user.email} successfully`)
+            // )
+        } catch (error) {
+            user.verifyToken = undefined;
+            user.verifyTokenExpiry = undefined;
+            await user.save({validateBeforeSave:false});
+        }
+    
     return res.status(201).json(
         new ApiResponse(200, createdUser, "User registered Successfully")
     )
@@ -148,18 +170,17 @@ const getCurrentUser = asyncHandler(async(req, res)=>{
 
 
 const verifyEmail = asyncHandler(async(req, res)=>{
-    const {token} = req.body;
-    console.log(token);
+    const verifyToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
 
-    const user =  await User.findOne({verifyToken:token, verifyTokemExpiry:{$gt: Date.now()}});
+    const user =  await User.findOne({verifyToken, verifyTokenExpiry:{$gt: Date.now()}});
 
     if(!user){
-        throw new ApiError(400, "Invalid token")
+        throw new ApiError(400, "verify email token invalid or expired");
     }
 
     user.isverified = true;
     user.verifyToken = undefined;
-    user.verifyTokemExpiry = undefined;
+    user.verifyTokenExpiry = undefined;
 
     await user.save();
 
@@ -167,30 +188,6 @@ const verifyEmail = asyncHandler(async(req, res)=>{
         new ApiResponse(200,{}, "Email verified successfully")
     )
 })
-
-// const forgotPassword = asyncHandler(async(req, res)=>{
-//     const {email} = req.body;
-//     const user = await User.findOne({email});
-
-//     if(!user){
-//         throw new ApiError(404, "User not found");
-//     }
-
-//     try {
-//         await sendEmail({email, emailType:"RESET", userId:user._id});
-
-//         return res.status(200).json(
-//             new ApiResponse(200, {}, "Check your gmail to reset the password")
-//         );
-
-//     } catch (error) {
-//         user.forgotPasswordToken = undefined;
-//         user.forgotPasswordTokenExpiry = undefined;
-//         await user.save({validateBeforeSave:false});
-        
-//         throw new ApiError(500, error.message);
-//     }
-// })
 
 
 const forgotPassword = asyncHandler(async(req, res)=>{
@@ -208,16 +205,17 @@ const forgotPassword = asyncHandler(async(req, res)=>{
 
     const forgotPasswordUrl = `${req.protocol}://${req.get("host")}/api/v1/users/reset-password/${forgotToken}`;
 
-    const message = `Your password for forgot token is:- \n\n ${forgotPasswordUrl} \n\n If you have not requested this email then, Please ignore it.`;
+    const fMessage = `Your password for forgot token is:- \n\n ${forgotPasswordUrl} \n\n If you have not requested this email then, Please ignore it.`;
 
     try {
-        await sendForgotEmail({
+        await sendEmail({
             email:user.email,
-            subject: `Ecommerce Password Recovery`,
-            message
+            fSubject: `Ecommerce Password Recovery`,
+            emailType:"RESET",
+            fMessage
         });
         res.status(200).json(
-            new ApiResponse(200, `Email sent to ${user.email} successfully`)
+            new ApiResponse(200,user, `Email sent to ${user.email} successfully`)
         )
     } catch (error) {
         user.forgotPasswordToken = undefined;
@@ -230,6 +228,39 @@ const forgotPassword = asyncHandler(async(req, res)=>{
 })
 
 
+const resetPassword = asyncHandler(async(req, res)=>{
+    const{password, confirmPassword} = req.body;
+
+    if(password !== confirmPassword){
+        throw new ApiError(400,"Password does not match");
+    }
+
+    const forgotPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+
+    const user = await User.findOne({forgotPasswordToken, forgotPasswordTokenExpiry:{$gt:Date.now()}});
+
+    if(!user){
+        throw new ApiError(404,"Reset Password token invalid or expired")
+    }
+
+    user.password = password;
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordTokenExpiry = undefined;
+
+    await user.save();
+
+    const token = user.generateAccessToken();
+
+    const options = {
+        httpOnly : true, // cookies can only be modified by  server
+        secure:true 
+     }
+    return res.status(200).cookie("token", token, options).json(
+        new ApiResponse(200, {token, user}, "Password changed successfully")
+    );
+})
+
+
 
 
 export {
@@ -239,6 +270,7 @@ export {
     changeUserPassword,
     getCurrentUser,
     verifyEmail,
-    forgotPassword
+    forgotPassword,
+    resetPassword,
 
 };

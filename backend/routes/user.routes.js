@@ -7,6 +7,7 @@ import {
     getCurrentUser,
     verifyEmail,
     forgotPassword,
+    resetPassword,
 
 
 
@@ -22,8 +23,8 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(isAuthenticatedUser, logout);
 router.route("/change-password").post(isAuthenticatedUser, changeUserPassword);
 router.route('/user').get(isAuthenticatedUser, getCurrentUser);
-router.route('/verify-email').post(verifyEmail);
 router.route("/forgot-password").post(forgotPassword);
-
+router.route('/verify-email/:token').put(verifyEmail);
+router.route("/reset-password/:token").put(resetPassword);
 
 export default router;

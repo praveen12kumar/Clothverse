@@ -44,7 +44,7 @@ const userSchema =  new Schema({
         default:false,
     },
     verifyToken:String,
-    verifyTokemExpiry:Date,
+    verifyTokenExpiry:Date,
     forgotPasswordToken:String,
     forgotPasswordTokenExpiry:Date
 
@@ -85,6 +85,16 @@ userSchema.methods.generateForgotPasswordToken = function(){
 
     return forgotToken;
    
+}
+
+userSchema.methods.generateVerifyToken = function(){
+    const verifyEmailToken = crypto.randomBytes(20).toString("hex");
+
+    this.verifyToken = crypto.createHash("sha256").update(verifyEmailToken).digest("hex");
+
+    this.verifyTokenExpiry = Date.now() + 60 * 60 * 1000;
+
+    return verifyEmailToken;
 }
 
 const User = mongoose.model("User", userSchema);

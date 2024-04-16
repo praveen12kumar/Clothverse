@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 //import { Resend } from "resend";
 
-const sendForgotEmail = async(options)=>{
+const sendEmail = async(options)=>{
     const transporter = nodemailer.createTransport({
         host:process.env.SMPT_HOST,
         port:process.env.SMPT_PORT,
@@ -15,8 +15,8 @@ const sendForgotEmail = async(options)=>{
     const mailOptions = {
         from: process.env.SMPT_MAIL_SEND_FROM,
         to:options.email,
-        subject:options.subject,
-        text:options.message,
+        subject:options.emailType === "VERIFY" ? options.vSubject : options.fSubject,
+        text:options.emailType === "VERIFY" ? options.vMessage : options.fMessage
     };
 
     await transporter.sendMail(mailOptions);
@@ -45,4 +45,4 @@ const sendForgotEmail = async(options)=>{
 
 
 
-export {sendForgotEmail};
+export {sendEmail};
