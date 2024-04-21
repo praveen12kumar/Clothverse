@@ -10,15 +10,25 @@ import {
 
 
 } from "../controllers/product.controller.js";
-import { isAuthenticatedUser } from "../middlewares/auth.js";
+import { isAuthenticatedUser, authorizeRoles } from "../middlewares/auth.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
 const router = express.Router();
-router.route("").get(getAllProducts);
-router.route("/create").post(createProduct);
-router.route("/categories").get(getAllCategories);
-router.route("/latest").get(getLatestProducts);
-router.route("/:id").put(updateProduct).delete(deleteProduct).get(getProductDetails);
+router.route("/products").get(getAllProducts);
+
+router
+  .route("/admin/product/new")
+  .post(isAuthenticatedUser, authorizeRoles("admin"), createProduct);
+
+router.route("/products/categories").get(getAllCategories);
+
+router.route("/products/latest").get(getLatestProducts);
+
+router.route("/admin/product/:id")
+.put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct)
+.delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct)
+
+router.route("/products/:id").get(getProductDetails);
 
 
 export default router;
