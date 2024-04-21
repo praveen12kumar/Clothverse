@@ -1,5 +1,6 @@
 import mongoose,{Schema} from "mongoose";
 
+
 const productSchema = new Schema({
     name:{
         type:String,
@@ -34,6 +35,7 @@ const productSchema = new Schema({
     category:{
         type:String,
         required:[true, "Please Enter product Category"],
+        trim:true
     },
 
     stock:{
