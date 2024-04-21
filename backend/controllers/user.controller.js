@@ -142,28 +142,36 @@ const logout = asyncHandler(async(req, res, next) => {
 
 
 const changeUserPassword = asyncHandler(async(req, res)=>{
-    const {oldPassword, newPassword} = req.body;
+    const {oldPassword, newPassword, confirmPassword} = req.body;
     
     const user = await User.findById(req.user._id).select("+password");
 
     const isMatch = await user.isPasswordCorrect(oldPassword);
 
     if(!isMatch){
-        throw new ApiError(400, "Invalid Password");
+        throw new ApiError(400, "Invalid Old Password");
     }
+
+    if(oldPassword !== confirmPassword){
+        throw new ApiError(400, "password does not match")
+    };
+
    
     user.password = newPassword;
     await user.save();
 
     return res.status(200).json(
-        new ApiResponse(200, {}, "Password updated successfully")
+        new ApiResponse(200, user, "Password updated successfully")
     )
 })
 
 
 const getCurrentUser = asyncHandler(async(req, res)=>{
+
+    const user = await User.findById(req.user.id);
+
     return res.status(200).json(
-        new ApiResponse(200, req.user, "current user fetched successfully")
+        new ApiResponse(200, user, "current user fetched successfully")
     )
 });
 
@@ -258,7 +266,21 @@ const resetPassword = asyncHandler(async(req, res)=>{
     return res.status(200).cookie("token", token, options).json(
         new ApiResponse(200, {token, user}, "Password changed successfully")
     );
-})
+});
+
+
+const updateProfile = asyncHandler(async(req, res)=>{
+    const newUserData  = {
+        name:req.body.name,
+        email:req.body.email,
+    }
+
+    const user = User.findByIdAndUpdate(req.user.id, newUserData, {new:true});
+
+    res.status(200).json(
+        new ApiResponse(200, "profile updated successfully")
+    )
+});
 
 
 
@@ -272,5 +294,6 @@ export {
     verifyEmail,
     forgotPassword,
     resetPassword,
-
+    updateProfile,
+    
 };
