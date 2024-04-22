@@ -21,7 +21,7 @@ router.route("/products").get(getAllProducts);
 
 router
   .route("/admin/product/new")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), createProduct);
+  .post(isAuthenticatedUser, authorizeRoles("admin"), upload.array('images', 6), createProduct);
 
 router.route("/products/categories").get(getAllCategories);
 
