@@ -17,6 +17,7 @@ const createProduct = asyncHandler(async(req, res)=>{
         price,
         category:category.toLowerCase(),
         images,
+        user:req.user._id
     })
    
     res.status(200).json(
@@ -134,6 +135,87 @@ const getAllCategories = asyncHandler(async(req, res)=>{
     res.status(200).json(
         new ApiResponse(200, categories, "fetched all categories")
     )
+});
+
+// create new review or update the review
+const createProductReview = asyncHandler(async(req, res)=>{
+    const {rating, comment, productId} = req.body;
+    
+    const review = {
+        user:req.user._id,
+        name:req.user.name,
+        rating:Number(rating),
+        comment,
+    }
+    const product = await Product.findById(productId);
+
+    const isReviewed = product.reviews.find(rev => rev.user.toString() === req.user._id.toString());
+
+    if(isReviewed){
+        product.reviews.forEach(rev=>{
+            if(rev.user.toString() === req.user._id.toString())
+            rev.rating = rating,
+            rev.comment = comment
+        })
+    }
+    else{
+        product.reviews.push(review);
+        product.numberOfReviews = product.reviews.length;
+    }
+
+    let avg = 0;
+    product.reviews.forEach(rev=>{
+        avg+=rev.rating;
+    })
+
+    product.ratings = avg/product.reviews.length;
+
+    await product.save({validateBeforeSave:false});
+    res.status(200).json(
+        new ApiResponse(200, {}, "user reviews successfully")
+    );
+});
+
+// Get all reviews of a product
+const getProductReviews = asyncHandler(async(req, res)=>{
+    const product = await Product.findById(req.query.id);
+
+    if(!product){
+        throw new ApiError(404, "Product not found");
+    }
+
+    res.status(200).json(
+        new ApiResponse(200, product.reviews, "All Reviews of a product")
+    )
+});
+
+const deleteReview = asyncHandler(async(req, res)=>{
+    const product = await Product.findById(req.query.productId);
+
+    if(!product){
+        throw new ApiError(404, "Product not found");
+    }
+
+    const reviews = product.reviews.filter(rev=>
+        rev._id.toString() !== req.query.id.toString()
+    )
+
+    let avg = 0;
+    reviews.forEach(rev=>{
+        avg+=rev.rating;
+    })
+
+    const ratings = reviews.length === 0 ? 0 : avg / product.reviews.length
+
+    const numberOfReviews = product.reviews.length;
+
+    await Product.findByIdAndUpdate(req.query.productId, 
+        {reviews, ratings, numberOfReviews}, 
+        {new:true})
+
+    res.status(200).json(
+        new ApiResponse(200, {}, "Review deleted successfully")
+    )
 })
 
 
@@ -145,6 +227,9 @@ export {
     getProductDetails,
     getLatestProducts,
     getAllCategories,
+    createProductReview,
+    getProductReviews,
+    deleteReview,
 
 
 };

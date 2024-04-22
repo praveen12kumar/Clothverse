@@ -4,7 +4,8 @@ import mongoose,{Schema} from "mongoose";
 const productSchema = new Schema({
     name:{
         type:String,
-        required:[true, "Please Enter product Name"]
+        required:[true, "Please Enter product Name"],
+        trim:true,
     },
     description:{
         type:String,
@@ -15,7 +16,7 @@ const productSchema = new Schema({
         required:[true, "Please Enter product Price"],
         maxLength:[8, "Price can not exceed 8 characters"]
     },
-    rating:{
+    ratings:{
         type:Number,
         default:0,
     },
@@ -49,7 +50,12 @@ const productSchema = new Schema({
         default:0
     },
     reviews:[
-        {
+        {   
+            user:{
+                type:mongoose.Schema.ObjectId,
+                ref:"User",
+                required:true,
+            },
             name:{
                 type:String,
                 required:true,
@@ -64,12 +70,15 @@ const productSchema = new Schema({
             }
         }
     ],
+    user:{
+        type:mongoose.Schema.ObjectId,
+        ref:"User",
+        required:true,
+    },
     createdAt:{
         type:Date,
         default:Date.now
     }
-
-    
 })
 
 const Product = mongoose.model("Product", productSchema);
