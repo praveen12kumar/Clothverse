@@ -11,10 +11,20 @@ const productSchema = new Schema({
         type:String,
         required:[true, "Please Enter product Description"]
     },
+    originalPrice:{
+        type:Number,
+        required:[true, "Please Enter product Price"],
+        maxLength:[8, "Price can not exceed 8 characters"]
+    },
     price:{
         type:Number,
         required:[true, "Please Enter product Price"],
         maxLength:[8, "Price can not exceed 8 characters"]
+    },
+    discount:{
+        type:Number,
+        default:0,
+        required:true,
     },
     ratings:{
         type:Number,
@@ -37,6 +47,10 @@ const productSchema = new Schema({
         type:String,
         required:[true, "Please Enter product Category"],
         trim:true
+    },
+    color:{
+        type:String,
+        default:"white"
     },
 
     stock:{

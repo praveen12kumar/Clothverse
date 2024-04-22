@@ -4,11 +4,12 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const createProduct = asyncHandler(async(req, res)=>{
-    const {name, description, price, category} = req.body;
-
-    if(!name || !description || !price || !category){
+    const {name, description,originalPrice,price, discount, category, color, stock} = req.body;
+   
+    if(!name || !description || !price || !category || !originalPrice || !discount){
         throw new ApiError(400, "All fields are required");
     }
+    //Images uploaded to cloudinary
 
     let uploadImageUrls = [];
     for(let i = 0; i < req.files.length; i++){
@@ -21,13 +22,19 @@ const createProduct = asyncHandler(async(req, res)=>{
     };
 
 
+
     const product = await Product.create({
         name, 
         description,
+        originalPrice,
         price,
+        discount,
+        stock,
         category:category.toLowerCase(),
         images:uploadImageUrls,
-        user:req.user._id
+        user:req.user._id,
+        color
+
     })
 
     res.status(200).json(
@@ -120,7 +127,7 @@ const getProductDetails = asyncHandler(async(req, res)=>{
 
 
 const getLatestProducts = asyncHandler(async(req, res)=>{
-    const products = await Product.find({}).sort({createdAt:-1}).limit(8);
+    const products = await Product.find().sort({createdAt:-1}).limit(8);
 
     res.status(200).json(
         new ApiResponse(200, products, "Latest Products" )
@@ -130,7 +137,7 @@ const getLatestProducts = asyncHandler(async(req, res)=>{
 const getAllCategories = asyncHandler(async(req, res)=>{
 
     const categories = await Product.distinct("category");
-    console.log("category",categories);
+    
     res.status(200).json(
         new ApiResponse(200, categories, "fetched all categories")
     )
@@ -229,6 +236,4 @@ export {
     createProductReview,
     getProductReviews,
     deleteReview,
-
-
 };
