@@ -15,9 +15,29 @@ const cartSchema = new Schema({
         required:true,
         default:1,
     },
+    itemColor:{
+        type:String,
+        required:true,
+    },
     image:{
         type:String,
         required:true,
+    },
+    originalPrice:{
+        type:Number,
+        required:true,
+    },
+    price:{
+        type:Number,
+        required:true,
+    },
+    discount:{
+        type:Number,
+        required:true,
+        default:0,
+    },
+    inCart:{
+        type:Boolean,
     },
     product:{
         type:mongoose.Schema.ObjectId,
