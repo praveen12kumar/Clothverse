@@ -1,6 +1,5 @@
 import mongoose,{Schema} from "mongoose";
 
-
 const orderSchema = new Schema({
     shippingInfo:{
         address:{
@@ -36,7 +35,7 @@ const orderSchema = new Schema({
                 type:String,
                 required:true,
             },
-            quatity:{
+            quantity:{
                 type:Number,
                 required:true,
             },
@@ -57,7 +56,7 @@ const orderSchema = new Schema({
     ],
     user:{
         type:mongoose.Schema.ObjectId,
-        ref:'Product',
+        ref:'User',
         required:true,
     },
     paymentInfo:{
