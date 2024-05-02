@@ -1,4 +1,5 @@
 import React,{useEffect, useState, useRef} from 'react'
+import { useNavigate } from 'react-router-dom';
 import { MdFace6 } from "react-icons/md";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -6,7 +7,10 @@ import { FaImage } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 
+
 const Register = () => {
+    const navigate = useNavigate();
+
     const fileRef = useRef(null);
 
     const [user, setUser] = useState({
@@ -63,9 +67,12 @@ const Register = () => {
 
         </form>
         <div className="flex items-center justify-center">
-        <button onClick={handleSubmit} className='bg-slate-400 px-8 py-1 mt-10 text-white rounded-2xl p-medium-18 font-poppins tracking-wider uppercase hover:bg-inherit hover:text-slate-700 hover:border border-slate-700 transition-all ease-in duration-300 hover:scale-105'>
+        <button onClick={handleSubmit} className='bg-slate-500 px-8 py-1 mt-6 text-white rounded-2xl p-medium-18 font-poppins tracking-wider uppercase hover:bg-inherit hover:text-slate-700 hover:border border-slate-700 transition-all ease-in duration-300 hover:scale-105'>
             {buttonDisabled ? "Fill Details": "Create Account"}
         </button>
+        </div>
+        <div className="flex justify-center mt-4">
+          <p>Already have Account <span onClick={()=>navigate("/login")} className='text-cyan-600'>Login</span></p>
         </div>
     </div>
   )
