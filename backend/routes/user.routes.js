@@ -22,6 +22,10 @@ const router = Router();
 
 router.route("/register").post(upload.single("avatar"),registerUser);
 
+// router.route("/register").post(upload.single("avatar"), (req, res)=>{
+//     console.log("Path", req.file);
+// })
+
 router.route("/login").post(loginUser);
 
 router.route("/logout").post(isAuthenticatedUser, logout);

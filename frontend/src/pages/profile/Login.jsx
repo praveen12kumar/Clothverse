@@ -4,10 +4,16 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../features/user/userSlice';
+import toast from 'react-hot-toast';
+import { clearUserError, clearUserSuccess } from '../../features/user/userSlice';
+
 
 const Login = () => {
-  const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {isAuthenticated, userError, userSuccess} = useSelector(state=> state.user);
     const [user, setUser] = useState({
         email:"",
         password:"",
@@ -16,8 +22,19 @@ const Login = () => {
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const [pass, setPass] = useState(false)
     
-    const handleSubmit = ()=>{
-        console.log(user);
+    const handleSubmit = (e)=>{
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append(user.email);
+        formData.append(user.password);
+        dispatch(loginUser(formData))
+
+        setUser(
+            {
+                email:"",
+                password:"",
+            }
+        );
     }
 
     const showPassword = ()=>{
@@ -25,13 +42,29 @@ const Login = () => {
     }
 
     useEffect(()=>{
-        if(user.email.length > 0 && user.password.length > 0){
+        if(user.email.length > 0 && user.password.length > 0 ){
             setButtonDisabled(false)
         }
         else{
             setButtonDisabled(true)
         }
     },[user])
+
+    useEffect(()=>{
+        if(userError){
+            toast.error(userError);
+            dispatch(clearUserError());
+        }
+        if(isAuthenticated){
+            navigate("/login");
+            return;
+        }
+        if(userSuccess && !isAuthenticated){
+            toast.success(userSuccess)
+            dispatch(clearUserSuccess())
+        }
+    },[userError, userSuccess, isAuthenticated, navigate, dispatch])
+
 
   return (
     <div className='max-w-xs md:max-w-sm  mx-auto mt-24 h-auto shadow-lg bg-slate-100 border border-slate-500 p-10 rounded-lg'>

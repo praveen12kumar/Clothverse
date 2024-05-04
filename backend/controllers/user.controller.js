@@ -27,13 +27,16 @@ const registerUser = asyncHandler(async(req, res)=>{
         throw new ApiError(400, 'Password must be at least 6 characters long' );
     }
 
-    const existeduser = await User.findOne({email});
+    const existedUser = await User.findOne({email});
 
-    if(existeduser){
+    if(existedUser){
         throw new ApiError(409, "Email alreay exists")
     }
 
+    console.log("path",req.file);
+
     const avatarLocalPath = req.file?.path;
+   
 
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar file is required")
