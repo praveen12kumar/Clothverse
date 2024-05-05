@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
     isLoadingUser:true,
-    user:null,
+    user:{},
     userError:null,
     userSuccess:null,
     isAuthenticated:false,
@@ -20,7 +20,6 @@ export const registerUser = createAsyncThunk("user/registerUser", async (user, T
         // Directly pass the FormData object to axios.post.
         // No need to spread the user object into a new object.
         const { data } = await axios.post("/api/v1/users/register", user, config);
-        console.log("user", data);
         return data;
 
     } catch (error) {
@@ -38,10 +37,18 @@ export const loginUser = createAsyncThunk("user/loginUser", async(user, ThunkAPI
             }
         }
 
-        const {data} = await axios.post("/api/v1/user/login", user, config);
-        console.log("user", data);  
-        return data;
+        const {data} = await axios.post("/api/v1/users/login", user, config);
+        return data.user;
 
+    } catch (error) {
+        return ThunkAPI.rejectWithValue(error.response.data);
+    }
+});
+
+// Logout user
+export const logoutUser = createAsyncThunk("user/logoutUser", async(data, ThunkAPI)=>{
+    try {
+        await axios.post("/api/v1/users/logout");
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response.data);
     }
@@ -82,6 +89,7 @@ const userSlice = createSlice({
             state.isLoadingUser = true;
         })
         .addCase(loginUser.fulfilled, (state, action)=>{
+            console.log("action",action.payload);
             state.isAuthenticated = true;
             state.isLoadingUser = false;
             state.user = action.payload;
@@ -90,6 +98,21 @@ const userSlice = createSlice({
         .addCase(loginUser.rejected, (state, action)=>{
             state.isAuthenticated = false;
             state.isLoadingUser = false;
+            state.userError = action.payload;
+        })
+        // Logout user
+        .addCase(logoutUser.pending,(state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(logoutUser.fulfilled, (state, action)=>{
+            state.isAuthenticated = false;
+            state.isLoadingUser = false;
+            state.user = null;
+            state.userSuccess = "Logged out successfully";
+        })
+        .addCase(logoutUser.rejected,(state, action)=>{
+            state.isLoadingUser = false;
+            state.isAuthenticated = false;
             state.userError = action.payload;
         })
     }

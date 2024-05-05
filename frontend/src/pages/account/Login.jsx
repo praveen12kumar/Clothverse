@@ -25,8 +25,13 @@ const Login = () => {
     const handleSubmit = (e)=>{
         e.preventDefault();
         const formData = new FormData();
-        formData.append(user.email);
-        formData.append(user.password);
+        formData.append("email",user.email);
+        formData.append("password",user.password);
+
+        for (let [key, value] of formData.entries()) {
+            console.log(`key: ${key}: value: ${value}`);
+        }
+
         dispatch(loginUser(formData))
 
         setUser(
@@ -56,7 +61,7 @@ const Login = () => {
             dispatch(clearUserError());
         }
         if(isAuthenticated){
-            navigate("/login");
+            navigate("/account");
             return;
         }
         if(userSuccess && !isAuthenticated){

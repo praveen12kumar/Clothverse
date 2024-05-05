@@ -124,9 +124,13 @@ const loginUser = asyncHandler(async(req, res)=>{
         httpOnly : true, // cookies can only be modified by  server
         secure:true 
      }
-    return res.status(200).cookie("token", token, options).json(
-        new ApiResponse(200, {token, user}, "user logged in successfully")
-    )
+    return res.status(200).cookie("token", token, options).json({
+        user,
+        token,
+        message:"User Logged in",
+        success:true,
+    })
+        
 })
 
 

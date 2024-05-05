@@ -5,7 +5,7 @@ import { FaInstagramSquare } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 const Footer = () => {
  return (
-    <footer className="w-full px-auto bg-gray-800 text-white p-6 md:p-14 lg:px-24 ">
+    <footer className="w-full px-10 bg-gray-800 text-white p-6 md:p-14 lg:px-24 ">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8">
         {/* Row 1 */}
         <div className="mb-4 md:mb-0">
