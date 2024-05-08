@@ -109,7 +109,7 @@ const loginUser = asyncHandler(async(req, res)=>{
     const user = await User.findOne({email}).select("+password");
 
     if(!user){
-        throw new ApiError(404, "user not found");
+        throw new ApiError(404, "Invalid email or password");
     }
 
     const isPasswordMatched = await user.isPasswordCorrect(password);
@@ -150,7 +150,11 @@ const logout = asyncHandler(async(req, res, next) => {
 
 const changeUserPassword = asyncHandler(async(req, res)=>{
     const {oldPassword, newPassword, confirmPassword} = req.body;
-    
+
+    if(newPassword !== confirmPassword){
+        throw new ApiError(400, "password does not match")
+    };
+
     const user = await User.findById(req.user._id).select("+password");
 
     const isMatch = await user.isPasswordCorrect(oldPassword);
@@ -159,11 +163,6 @@ const changeUserPassword = asyncHandler(async(req, res)=>{
         throw new ApiError(400, "Invalid Old Password");
     }
 
-    if(oldPassword !== confirmPassword){
-        throw new ApiError(400, "password does not match")
-    };
-
-   
     user.password = newPassword;
     await user.save();
 

@@ -17,7 +17,7 @@ const Account = () => {
             navigate("/login")
         })
         
-    }
+    };
 
     useEffect(()=>{
         if(userError){
@@ -45,7 +45,7 @@ const Account = () => {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-7xl mx-auto my-8  md:my-16 md:p-12 ">
             <div className="flex flex-col gap-10 items-center ">
                 <div className="py-8 px-5 lg:py-2 ">
-                    <img className='w-40 h-40 lg:w-52 lg:h-52 rounded-full shadow-lg border border-slate-300 object-cover' src={user?.avatar.url} alt="profile" />
+                    <img className='w-40 h-40 lg:w-52 lg:h-52 rounded-full shadow-lg border border-slate-300 object-cover' src={user?.avatar?.url} alt="profile" />
                 </div>
                 <div className="w-full md:w-80 px-10 md:px-4 mx-auto">
                     <Link to="/edit-profile">
@@ -75,7 +75,8 @@ const Account = () => {
                     <button className='w-full text-md bg-slate-500 p-2 px-4 font-poppins text-white  tracking-wider rounded-xl hover:border hover:border-slate-600 hover:text-slate-700 transition-all ease-in duration-300 '>My Order</button>
                     </Link>
                     <Link to="/password/update">
-                        <button className='w-full text-md bg-slate-700 p-2 px-4 font-poppins text-white  uppercase tracking-wider rounded-xl hover:border hover:border-slate-600 hover:text-slate-700 transition-all ease-in duration-300'>Change Password</button>
+                        <button className='w-full text-md bg-slate-700 p-2 px-4 font-poppins text-white  uppercase tracking-wider rounded-xl hover:border hover:border-slate-600 hover:text-slate-700 transition-all ease-in duration-300'
+                        >Change Password</button>
                     </Link>
                 </div>
             </div>

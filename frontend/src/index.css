@@ -88,7 +88,7 @@
   /* ========================================== TAILWIND STYLES */
   @layer utilities {
     .wrapper {
-      @apply max-w-full lg:mx-auto p-5 md:px-10 xl:px-14 w-full;
+      @apply max-w-full lg:mx-auto p-5 md:px-10 xl:px-20 w-full;
     }
   
     .flex-center {

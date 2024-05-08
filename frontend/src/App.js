@@ -5,6 +5,11 @@ import Footer from "./components/Footer";
 import Login from "./pages/account/Login";
 import Register from "./pages/account/Register";
 import Account from "./pages/account/Account";
+import UpdatePassword from "./pages/account/UpdatePassword";
+import About from "./pages/about/About";
+
+
+
 
 function App() {
   const location = useLocation();
@@ -18,7 +23,9 @@ function App() {
         <Route path="/register" element={<Register/>}/>
         <Route path="/" element={<Home/>}/>
         <Route path="/account" element={<Account/>}/>
-        
+        <Route path="/password/update" element={<UpdatePassword/>}/>
+        <Route path="/about" element={<About/>}/>
+
     </Routes>
     {!hideHeaderFooter && <Footer/>}
     </>

@@ -87,6 +87,7 @@ userSchema.methods.generateForgotPasswordToken = function(){
    
 }
 
+
 userSchema.methods.generateVerifyToken = function(){
     const verifyEmailToken = crypto.randomBytes(20).toString("hex");
 

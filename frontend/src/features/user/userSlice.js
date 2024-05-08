@@ -41,7 +41,8 @@ export const loginUser = createAsyncThunk("user/loginUser", async(user, ThunkAPI
         return data.user;
 
     } catch (error) {
-        return ThunkAPI.rejectWithValue(error.response.data);
+        console.log(error);
+        return ThunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 
@@ -49,6 +50,26 @@ export const loginUser = createAsyncThunk("user/loginUser", async(user, ThunkAPI
 export const logoutUser = createAsyncThunk("user/logoutUser", async(data, ThunkAPI)=>{
     try {
         await axios.post("/api/v1/users/logout");
+    } catch (error) {
+        return ThunkAPI.rejectWithValue(error.response.data);
+    }
+});
+
+
+export const updateUserPassword = createAsyncThunk("user/updateUserPassword", async(formData, ThunkAPI)=>{
+    try {
+        
+        const config = {
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }
+
+        const {data} = await axios.post("/api/v1/users/change-password", formData, config);
+        
+        return data.data;
+        
+
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response.data);
     }
@@ -115,6 +136,22 @@ const userSlice = createSlice({
             state.isAuthenticated = false;
             state.userError = action.payload;
         })
+
+        // change-password
+        .addCase(updateUserPassword.pending, (state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(updateUserPassword.fulfilled, (state, action)=>{
+            state.isLoadingUser = false;
+            state.isAuthenticated = true;
+            state.userSuccess = "Password Updated Successfully";
+            state.user = action.payload;
+        })
+        .addCase(updateUserPassword.rejected, (state, action)=>{
+            state.isLoadingUser = false;
+            state.userError = action.payload; 
+        })
+
     }
 })
 

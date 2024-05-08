@@ -27,11 +27,6 @@ const Login = () => {
         const formData = new FormData();
         formData.append("email",user.email);
         formData.append("password",user.password);
-
-        for (let [key, value] of formData.entries()) {
-            console.log(`key: ${key}: value: ${value}`);
-        }
-
         dispatch(loginUser(formData))
 
         setUser(

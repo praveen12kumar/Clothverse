@@ -22,7 +22,7 @@ const Header = () => {
     <div className="">
       <UpperNavBar/>
     </div>
-    <header className='h-16 wrapper flex flex-between bg-slate-400 shadow sticky top-0'>
+    <header className='h-16 wrapper flex flex-between bg-slate-400 shadow sticky top-0 z-50'>
       {/* logo */}
       <div className="w-28 md:w-36 lg:w-40">
          <Link to="/">
