@@ -7,9 +7,9 @@ import Register from "./pages/account/Register";
 import Account from "./pages/account/Account";
 import UpdatePassword from "./pages/account/UpdatePassword";
 import About from "./pages/about/About";
-
-
-
+import ContactUs from "./pages/contact/ContactUs";
+import HelpFAQ from "./pages/FAQ";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const location = useLocation();
@@ -25,7 +25,9 @@ function App() {
         <Route path="/account" element={<Account/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/about" element={<About/>}/>
-
+        <Route path="/contact" element={<ContactUs/>}/>
+        <Route path="/help" element={<HelpFAQ/>}/>
+        <Route path="*" element={<NotFound/>}/>
     </Routes>
     {!hideHeaderFooter && <Footer/>}
     </>
