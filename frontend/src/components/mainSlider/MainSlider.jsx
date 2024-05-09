@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 const MainSlider = () => {
   return (
-    <>
+    <div className="z-10">
       <Swiper
         lazy={true}
         slidesPerView={1}
@@ -134,7 +134,7 @@ const MainSlider = () => {
 
         
       </Swiper>
-    </>
+    </div>
   );
 };
 
