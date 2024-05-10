@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 
 const CategoryCard = ({title, subTitle, Image}) => {
     const navigate = useNavigate();
-    console.log(subTitle)
+   
     return (
-        <div className={`relative border-solid border-grey3 border font-[Poppins] after:transition-all after:duration-500 group hover:after:absolute hover:after:content-[""] hover:after:top-0 hover:after:left-0 hover:after:w-full hover:after:h-full hover:after:bg-CategoryCard-Blue z-10 cursor-pointer`} onClick={()=>navigate(`/products?price=[0]&color=&category=${title.toLowerCase()}&page=1&sortBy=null`)}>
-        <div className='absolute top-0 left-0  p-3 tablet:p-8 w-full h-full flex flex-col justify-between'>
+        <div className={`relative border-solid border-grey3 border font-[Poppins] after:transition-all after:duration-500 group hover:after:absolute hover:after:content-[""] hover:after:top-0 hover:after:left-0 hover:after:w-full hover:after:h-full hover:after:bg-cyan-600 hover:after:bg-opacity-60 z-10 cursor-pointer`} onClick={()=>navigate(`/products?price=[0]&color=&category=${title.toLowerCase()}&page=1&sortBy=null`)}>
+        <div className='absolute top-0 left-0 z-20 p-3 tablet:p-8 w-full h-full flex flex-col justify-between'>
          <div className=""> 
            <h1 className="capitalize font-extrabold text-xl sm:text-3xl text-text-black transition-colors duration-500 group-hover:text-white">{title}</h1>
            <h2 className="capitalize text-xs sm:text-sm mt-1 text-text-Grey transition-colors duration-500 group-hover:text-white">{subTitle}</h2>
@@ -16,7 +16,7 @@ const CategoryCard = ({title, subTitle, Image}) => {
              <div className=" group-hover:scale-100 scale-0 w-full h-[2px] transition-transform duration-500 origin-center bg-white"></div>
          </div>
         </div>
-        <img src={Image} alt="" className='w-full h-full object-cover object-center'/>
+        <img src={Image} alt="" className='w-full h-full object-cover object-center hover:z-10'/>
      </div>
   )
 }

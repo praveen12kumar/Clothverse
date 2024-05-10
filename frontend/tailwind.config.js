@@ -30,9 +30,9 @@ module.exports = {
       },
       animation: {
         zoomIn: 'zoomIn 2000ms ease-in-out',
-        fadeIn: 'fadeIn 3000ms ease-in-out',
+        fadeIn: 'fadeIn 2000ms ease-in-out',
         slideInFromLeft: 'slideInFromLeft 2000ms ease-in-out',
-        slideUp: 'slideUp 1000ms ease-in-out',
+        slideUp: 'slideUp 2000ms ease-in-out',
       },
     },
   },

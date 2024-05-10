@@ -33,7 +33,7 @@ const registerUser = asyncHandler(async(req, res)=>{
         throw new ApiError(409, "Email alreay exists")
     }
 
-    console.log("path",req.file);
+    // console.log("path",req.file);
 
     const avatarLocalPath = req.file?.path;
    
