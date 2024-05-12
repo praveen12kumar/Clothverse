@@ -1,8 +1,10 @@
 import React from 'react'
-import {Helmet, HelmetProvider} from "react-helmet"
-const MetaData = () => {
+import {Helmet} from "react-helmet"
+const MetaData = ({title}) => {
   return (
-    <div>MetaData</div>
+    <Helmet>
+      <title>{title}</title>
+    </Helmet>
   )
 }
 

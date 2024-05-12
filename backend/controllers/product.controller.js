@@ -3,9 +3,13 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+
+
 const createProduct = asyncHandler(async(req, res)=>{
     const {name, description,originalPrice,price, discount, category, color, stock} = req.body;
-   
+   //console.log(name, description, originalPrice, price, discount, category, color, stock);
+
+
     if(!name || !description || !price || !category || !originalPrice || !discount){
         throw new ApiError(400, "All fields are required");
     }
@@ -20,6 +24,7 @@ const createProduct = asyncHandler(async(req, res)=>{
             url:imageUrl.secure_url,
         })
     };
+
 
 
 
@@ -78,11 +83,13 @@ const getAllProducts = asyncHandler(async(req, res)=>{
    ])
 
     const totalPage = Math.ceil(filterOnlyProducts.length / limit);
+    const productCount = await Product.countDocuments();
 
     res.status(200).json({
        success:true,
        products,
        totalPage,
+       productCount,
        message:"All Products"
     })
 })

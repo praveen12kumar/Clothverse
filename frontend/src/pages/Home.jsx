@@ -1,7 +1,11 @@
-import React,{useState} from 'react'
-import MainSlider from '../components/mainSlider/MainSlider'
+import React,{useState, useEffect} from 'react'
+import MainSlider from '../components/slider/MainSlider'
 import CategoryMenu from '../components/categoryMenu/CategoryMenu'
-
+import MetaData from '../utils/MetaData'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAllProducts } from '../features/product/productSlice'
+import Loader from '../components/Loader/Loader'
+import ProductSlider from '../components/slider/ProductSlider'
 
 
 const storeOverview = [
@@ -13,8 +17,24 @@ const storeOverview = [
 
 const Home = () => {
   const [isActive, setIsActive] = useState(0);
+  const dispatch = useDispatch();
+  const {isLoadingProduct, products} = useSelector(state => state.products);
+
+  console.log("Products", products);
+
+
+  // useEffect(()=>{
+  //   window.scrollTo({top:0, behavior:"smooth"})
+  // },[]);
+
+
+  useEffect(()=>{
+    dispatch(getAllProducts({page:1}))
+  },[dispatch])
 
   return (
+    <>
+    <MetaData title={"Clothverse"}/>
     <div className='z-10'>
       <MainSlider/>
       <CategoryMenu/>
@@ -31,12 +51,17 @@ const Home = () => {
             ))
           }
           </div>
+          {
+            isLoadingProduct ? <div className="w-full h-[40vh] flex"><Loader/></div>:
+            <ProductSlider data = {products}/>
+          }
         </div>
 
 
       </div>
 
     </div>
+    </>
   )
 }
 

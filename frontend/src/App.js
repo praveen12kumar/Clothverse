@@ -11,6 +11,7 @@ import ContactUs from "./pages/contact/ContactUs";
 import HelpFAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 
+
 function App() {
   const location = useLocation();
   const hideHeaderAndFooterPaths = ['/login', '/register'];
