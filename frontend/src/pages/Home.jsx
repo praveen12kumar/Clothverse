@@ -5,7 +5,7 @@ import MetaData from '../utils/MetaData'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAllProducts } from '../features/product/productSlice'
 import Loader from '../components/Loader/Loader'
-import ProductSlider from '../components/slider/ProductSlider'
+import OverviewProducts from '../components/product/OverviewProducts'
 
 
 const storeOverview = [
@@ -20,12 +20,10 @@ const Home = () => {
   const dispatch = useDispatch();
   const {isLoadingProduct, products} = useSelector(state => state.products);
 
-  console.log("Products", products);
 
-
-  // useEffect(()=>{
-  //   window.scrollTo({top:0, behavior:"smooth"})
-  // },[]);
+  useEffect(()=>{
+    window.scrollTo({top:0, behavior:"smooth"})
+  },[]);
 
 
   useEffect(()=>{
@@ -40,7 +38,7 @@ const Home = () => {
       <CategoryMenu/>
 
       <div className="wrapper flex flex-col items-center font-poppins my-4 lg:my-8">
-        <div className="">
+        <div className="w-full">
           <h1 className='text-4xl my-8 font-roboto font-extrabold leading-tight text-center'>Store Overview</h1>
           <div className="flex flex-wrap justify-center gap-4 md:gap-8  my-2 ">
           {
@@ -53,7 +51,7 @@ const Home = () => {
           </div>
           {
             isLoadingProduct ? <div className="w-full h-[40vh] flex"><Loader/></div>:
-            <ProductSlider data = {products}/>
+            <OverviewProducts data = {products}/>
           }
         </div>
 

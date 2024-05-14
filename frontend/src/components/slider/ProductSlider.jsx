@@ -1,6 +1,8 @@
 import React from 'react'
+import { Swiper, SwiperSlide } from "swiper/react";
 
-const ProductSlider = () => {
+
+const ProductSlider = ({data}) => {
   return (
     <div>ProductSlider</div>
   )
