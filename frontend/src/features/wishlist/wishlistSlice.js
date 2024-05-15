@@ -23,7 +23,7 @@ const wishlistSlice = createSlice({
             state.isLoadingWishlist = false;
             state.wishlistMessage = "Item added successfully"
         },
-        getWishlistItem:(state, action)=>{
+        getWishlistItem:(state)=>{
             const items = JSON.parse(localStorage.getItem("wishlistItems"));
             state.wishlistItems = items?items:[];
             state.totalWishlistItem = state.wishlistItems.length;
@@ -31,7 +31,7 @@ const wishlistSlice = createSlice({
         },
         deleteWishlistItem:(state, action)=>{
             const items = JSON.parse(localStorage.getItem("wishlistItems"));
-            localStorage.setItem("wishlistItems", JSON.stringify(items.filter((item)=>item !== action.payload )));
+            localStorage.setItem("wishlistItems", JSON.stringify(items.filter((item)=>item._id !== action.payload )));
             state.wishlistMessage = "Item removed successfully";
             state.isLoadingWishlist = false;
         },

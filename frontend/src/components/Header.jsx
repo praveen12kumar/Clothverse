@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React,{ useState} from 'react'
 import { Link } from 'react-router-dom'
 import NavItems from './shared/NavItems';
 import { IoMdSearch } from "react-icons/io";

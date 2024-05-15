@@ -13,7 +13,7 @@ const ProductCard = ({ data }) => {
   const dispatch = useDispatch();
 
   const {wishlistItems, isLoadingWishlist, wishlistMessage} = useSelector(state=> state.wishlist);
-  console.log("wishlistItems", wishlistItems);
+
   const [liked, setLiked] = useState(false);
   const [quickShow, setQuickShow] = useState(false);
   const [modalData, setModalData] = useState(data);
@@ -31,7 +31,7 @@ const ProductCard = ({ data }) => {
       dispatch(deleteWishlistItem(data._id));
     }
     else{
-      dispatch(setWishlistItem(data._id));
+      dispatch(setWishlistItem(data));
     }
     dispatch(getWishlistItem());
     setLiked(!liked);
@@ -47,14 +47,14 @@ const ProductCard = ({ data }) => {
   useEffect(()=>{
     let isLiked = false;
     wishlistItems.forEach((item)=>{
-      if(item === data._id){
+      if(item._id === data?._id){
         setLiked(true);
         isLiked = true;
       }
     })
 
     if(!isLiked) setLiked(false);
-  },[wishlistItems, data._id])
+  },[wishlistItems, data?._id])
 
 
   return (
