@@ -3,16 +3,24 @@ import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
+import ProductModal from '../modals/ProductModal';
 
 const ProductCard = ({ data }) => {
   const [liked, setLiked] = useState(false);
   const [quickShow, setQuickShow] = useState(false);
+  const [modalData, setModalData] = useState(data);
+
+  const [showProductModal, setShowProductModal] = useState(false);
+  console.log("show Product Modal", showProductModal)
+  
 
   const handleLiked = () => {
     setLiked(!liked);
   };
 
+
   return (
+    <>
     <div 
       className="w-40 h-[300px] md:w-48 md:h-[350px] lg:w-56 bg-white shadow-xl flex flex-col gap-2 rounded-md hover:-translate-y-3 transition-all duration-300 ease-in"
       onMouseEnter={() => setQuickShow(true)} // Show Quick View on hover
@@ -57,14 +65,20 @@ const ProductCard = ({ data }) => {
         {/* Conditionally render the Quick View div based on quickShow state */}
         {quickShow && (
         <div 
-          className="w-24 text-xs md:text-sm text-white font-roboto font-medium text-center mx-auto p-2  rounded-2xl shadow-lg bg-purple-700 cursor-pointer absolute bottom-5 left-[50%] transform -translate-x-1/2 transition-all duration-200 animate-fadeIn ease-in-out"
+          className="w-24 text-xs md:text-sm text-white font-roboto font-medium text-center mx-auto p-2  rounded-2xl shadow-lg bg-purple-700 cursor-pointer absolute bottom-5 left-[50%] 
+          transform -translate-x-1/2 transition-all duration-100 animate-fadeIn ease-in-out"
           style={{ opacity: quickShow? 1: 0,   }}
+          onClick={()=>setShowProductModal(!showProductModal)}
         >
           Quick View
         </div>
       )}
       </div>
     </div>
+    {
+        showProductModal && <ProductModal modalData={modalData} setModalData={setModalData} setShowProductModal={setShowProductModal} showProductModal={showProductModal}/>
+    }
+    </>
   );
 };
 
