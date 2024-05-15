@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import NavItems from './shared/NavItems';
 import { IoMdSearch } from "react-icons/io";
@@ -7,15 +7,19 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaHeart } from "react-icons/fa";
 import SideBar from './SideBar';
 import UpperNavBar from './UpperNavBar';
+import { useSelector} from 'react-redux';
+
+
 
 const Header = () => {
+  
 
+  const {totalWishlistItem} = useSelector(state => state.wishlist)
   const [openSideBar, setOpenSideBar] = useState(false);
 
   const toggleSideBar = ()=>{
     setOpenSideBar(!openSideBar)
   }
-
 
   return (
     <>
@@ -48,7 +52,7 @@ const Header = () => {
         <div className="relative hidden md:block cursor-pointer">
             <FaHeart className='text-2xl  hover:text-purple-600 transition-all ease-in duration-300'/> 
             <div className="absolute -top-[7px] -right-[8px] bg-purple-700 text-white text-xs rounded-sm min-w-[15px] height-[15px] flex items-center justify-center">
-              <span>0</span>
+              <span>{totalWishlistItem}</span>
             </div>
         </div>
 

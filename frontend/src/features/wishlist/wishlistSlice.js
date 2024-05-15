@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     wishlistItems:[],
-    isLoadingWishList:false,
-    totalWishListItem:0,
+    isLoadingWishlist:false,
+    totalWishlistItem:0,
     wishlistMessage:null
 }
 
@@ -12,28 +12,28 @@ const wishlistSlice = createSlice({
     initialState,
     reducers:{
         setLoadingWishlist:(state)=>{
-            state.isLoadingWishList= true;
+            state.isLoadingWishlist= true;
         },
         clearLoadingWishlist:(state)=>{
-            state.isLoadingWishList = false;
+            state.isLoadingWishlist = false;
         },
-        setWishListItem:(state, action)=>{
+        setWishlistItem:(state, action)=>{
             const prevList = JSON.parse(localStorage.getItem("wishlistItems"));
             localStorage.setItem("wishlistItems", JSON.stringify(prevList?[...prevList,action.payload]:[action.payload]));
-            state.isLoadingWishList = false;
+            state.isLoadingWishlist = false;
             state.wishlistMessage = "Item added successfully"
         },
-        getWishListItem:(state, action)=>{
+        getWishlistItem:(state, action)=>{
             const items = JSON.parse(localStorage.getItem("wishlistItems"));
             state.wishlistItems = items?items:[];
-            state.totalWishListItem = state.wishlistItems.length;
-            state.isLoadingWishList = false;
+            state.totalWishlistItem = state.wishlistItems.length;
+            state.isLoadingWishlist = false;
         },
-        deleteWishListItem:(state, action)=>{
+        deleteWishlistItem:(state, action)=>{
             const items = JSON.parse(localStorage.getItem("wishlistItems"));
             localStorage.setItem("wishlistItems", JSON.stringify(items.filter((item)=>item !== action.payload )));
             state.wishlistMessage = "Item removed successfully";
-            state.isLoadingWishList = false;
+            state.isLoadingWishlist = false;
         },
         clearWishlistSuccess:(state)=>{
             state.wishlistMessage = null;
@@ -42,6 +42,6 @@ const wishlistSlice = createSlice({
 });
 
 
-export const {setLoadingWishlist, clearLoadingWishlist, setWishListItem, getWishListItem, deleteWishListItem, clearWishlistSuccess} = wishlistSlice.reducer;
+export const {setLoadingWishlist, clearLoadingWishlist, setWishlistItem, getWishlistItem, deleteWishlistItem, clearWishlistSuccess} = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;

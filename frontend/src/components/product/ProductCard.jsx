@@ -1,22 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import ProductModal from '../modals/ProductModal';
+import { useDispatch, useSelector } from "react-redux";
+import {setLoadingWishlist, deleteWishlistItem, getWishlistItem, setWishlistItem, clearWishlistSuccess } from "../../features/wishlist/wishlistSlice";
+import toast from "react-hot-toast";
+
 
 const ProductCard = ({ data }) => {
+  const dispatch = useDispatch();
+
+  const {wishlistItems, isLoadingWishlist, wishlistMessage} = useSelector(state=> state.wishlist);
+  console.log("wishlistItems", wishlistItems);
   const [liked, setLiked] = useState(false);
   const [quickShow, setQuickShow] = useState(false);
   const [modalData, setModalData] = useState(data);
 
   const [showProductModal, setShowProductModal] = useState(false);
-  console.log("show Product Modal", showProductModal)
+  
+  useEffect(()=>{
+    dispatch(setLoadingWishlist());
+    dispatch(getWishlistItem());
+  },[dispatch])
   
 
   const handleLiked = () => {
+    if(liked){
+      dispatch(deleteWishlistItem(data._id));
+    }
+    else{
+      dispatch(setWishlistItem(data._id));
+    }
+    dispatch(getWishlistItem());
     setLiked(!liked);
   };
+
+  useEffect(()=>{
+    if(!isLoadingWishlist && wishlistMessage){
+      toast.success(wishlistMessage);
+    }
+    dispatch(clearWishlistSuccess());
+  },[liked]);
+
+  useEffect(()=>{
+    let isLiked = false;
+    wishlistItems.forEach((item)=>{
+      if(item === data._id){
+        setLiked(true);
+        isLiked = true;
+      }
+    })
+
+    if(!isLiked) setLiked(false);
+  },[wishlistItems, data._id])
 
 
   return (
