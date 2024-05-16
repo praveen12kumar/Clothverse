@@ -8,7 +8,6 @@ import { FaMinus } from "react-icons/fa";
 
 
 const ProductDetail = ({data}) => {
-  console.log("data", data);
 
   const dispatch = useDispatch();
   const {isLoadingWishlist, wishlistItems} = useSelector(state => state.wishlist);
@@ -42,7 +41,7 @@ const ProductDetail = ({data}) => {
     if(!isLiked){
       setLiked(false);
     }
-  },[wishlistItems, data._id])
+  },[wishlistItems, data?._id])
 
 
 
@@ -59,7 +58,7 @@ const ProductDetail = ({data}) => {
           <ImageSlider productImages={data?.images} key={data?._id} className="w-full h-full"/>
           </div>
           <div className="flex flex-col items-start">
-            <h1 className='text-xl font-poppins font-medium break-all capitalize'>{data?.name}</h1>
+            <h1 className='text-xl font-poppins font-medium break-keep capitalize'>{data?.name}</h1>
             <div className="font-roboto text-base md:text-lg my-1 md:my-3 text-text-black flex gap-2 items-center">
             <span className='font-semibold'>₹{data?.price}</span>
             <span className='line-through text-slate-500'>₹{data?.originalPrice}</span>
@@ -75,11 +74,11 @@ const ProductDetail = ({data}) => {
               <div className="p-1 md:p-3 flex-1 flex justify-center items-center bg-slate-200">{quantity}</div>
               <button className="p-1 md:p-3 flex-1 flex justify-center items-center hover:bg-cyan-700 hover:text-white transition-colors duration-500" type='button' onClick ={(e)=>handleQuantity(1)} aria-label="incQuantity"><FaPlus/></button>
           </div>
-            <div className="w-full flex flex-col lg:flex-row gap-4 md:gap-6 mt-5 lg:mt-9">
+            <div className="w-full flex flex-col font-poppins lg:flex-row gap-4 md:gap-6 mt-5 lg:mt-9">
             {
               data?.stock > 0 ? 
               <div className="w-full flex justify-center mx-auto ">
-                <button type='button' className='w-full md:w-[70%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-black text-white bg-cyan-600'onClick={handleAddToCart} >Add to Cart</button>
+                <button type='button' className='w-full md:w-[70%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-600'onClick={handleAddToCart} >Add to Cart</button>
               </div> 
               :<div className='text-lg mt-5'>
               <p className="w-full text-center text-red-600 font-medium">Out of Stock</p>

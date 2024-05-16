@@ -74,7 +74,7 @@ const ProductCard = ({ data }) => {
       </div>
       <hr />
       <div className="mt-4 flex flex-col gap-1 px-3 lg:px-5 ">
-        <div className="flex justify-between text-sm md:text-base capitalize text-text-black">
+        <div className="flex justify-between text-sm md:text-base capitalize text-slate-800" >
           <Link
             to={`/product/${data?._id}`}
             className="cursor-pointer line-clamp-1 font-medium font-poppins "
