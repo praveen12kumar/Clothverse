@@ -27,7 +27,6 @@ export const getAllProducts = createAsyncThunk("products/getAllProducts", async(
         }
 
         const {data} = await axios.get(`/api/v1/products?${query}`, config)
-        console.log("all products",data);
         return data;
 
     } catch (error) {
@@ -50,7 +49,6 @@ const productSlice = createSlice({
             state.isLoadingProduct = true;
         })
         .addCase(getAllProducts.fulfilled, (state, action)=>{
-            console.log('action',action);
             state.isLoadingProduct = false;
             state.products = action.payload.products;
             state.productsCount = action.payload.productCount;
