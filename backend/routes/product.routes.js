@@ -7,9 +7,7 @@ import {
     getProductDetails,
     getAllCategories,
     getLatestProducts,
-    createProductReview,
-    getProductReviews,
-    deleteReview,
+   
 
 
 } from "../controllers/product.controller.js";
@@ -33,8 +31,5 @@ router.route("/admin/product/:id")
 
 router.route("/products/:id").get(getProductDetails);
 
-router.route("/product/review").put(isAuthenticatedUser, createProductReview);
-
-router.route("/product/reviews").get(getProductReviews).delete(isAuthenticatedUser, deleteReview);
 
 export default router;

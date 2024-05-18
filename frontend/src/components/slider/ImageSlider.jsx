@@ -5,11 +5,11 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import 'swiper/css/autoplay';
-import {  EffectFade, Navigation } from "swiper/modules";
+import {Autoplay,  EffectFade, Navigation } from "swiper/modules";
 import "./imageslider.css";
 
 const ImageSlider = ({productImages}) => {
-    console.log("Product Image", productImages);
+    
 
   return (
    <>
@@ -18,8 +18,12 @@ const ImageSlider = ({productImages}) => {
         spaceBetween={30}
         effect={"fade"}
         loop={true}
+        autoplay={{
+            delay:10000,
+            disableOnInteraction:false,
+        }}
         navigation={true}
-        modules={[EffectFade, Navigation]}
+        modules={[Autoplay, EffectFade, Navigation]}
         className='mySwiper ProductImageSlider h-full w-full'
     >
 
@@ -27,7 +31,7 @@ const ImageSlider = ({productImages}) => {
         productImages?.map((image)=>(
             <SwiperSlide key={image?.url}>
                 {({isActive})=>(
-                    <div className="relative w-full h-full">
+                    <div className="relative w-full h-full shadow-lg">
                         <img  src={image?.url} alt="product slides" 
                         className='object-contain object-center  w-full h-full'
                         />

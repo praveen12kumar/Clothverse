@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
     isLoadingProduct: false,
     products:[],
+    product:null,
     error:null,
     productsCount:0
 }
@@ -35,6 +36,24 @@ export const getAllProducts = createAsyncThunk("products/getAllProducts", async(
 })
 
 
+export const getProductDetails = createAsyncThunk("products/getProductDetails", async(id, ThunkApi)=>{
+    try {
+        const config = {
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }
+
+        const {data} = await axios.get("/api/v1/products/"+id, config);
+        console.log(data);
+        return data.data;
+
+    } catch (error) {
+        return ThunkApi.rejectWithValue(error.response.data)
+    }
+})
+
+
 const productSlice = createSlice({
     name:"products",
     initialState,
@@ -56,6 +75,20 @@ const productSlice = createSlice({
         .addCase(getAllProducts.rejected, (state, action)=>{
             state.isLoadingProduct = false;
             state.error = action.payload;
+        })
+
+        // get product details
+        .addCase(getProductDetails.pending, (state)=>{
+            state.isLoadingProduct = true;
+        })
+        .addCase(getProductDetails.fulfilled, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.product = action.payload;
+        })
+
+        .addCase(getProductDetails.rejected,(state, action)=>{
+            state.isLoadingProduct = false;
+            state.error = action.payload
         })
     }
 });

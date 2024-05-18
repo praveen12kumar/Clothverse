@@ -5,10 +5,12 @@ import Loader from '../Loader/Loader';
 import { FaStar } from 'react-icons/fa';
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
+import { setLoadingWishlist, setWishlistItem, getWishlistItem, deleteWishlistItem } from '../../features/wishlist/wishlistSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 const ProductDetail = ({data}) => {
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {isLoadingWishlist, wishlistItems} = useSelector(state => state.wishlist);
   const [ quantity,setQuantity ] = useState(0);
@@ -25,9 +27,21 @@ const ProductDetail = ({data}) => {
 
   }
 
-  const handleLiked = ()=>{
+  const handleLiked = () => {
+    if(liked){
+      dispatch(deleteWishlistItem(data._id));
+    }
+    else{
+      dispatch(setWishlistItem(data));
+    }
+    dispatch(getWishlistItem());
     setLiked(!liked);
-  }
+  };
+
+  useEffect(()=>{
+    dispatch(setLoadingWishlist());
+    dispatch(getWishlistItem())
+  },[dispatch])
 
   useEffect(()=>{
     let isLiked = false;
@@ -43,6 +57,9 @@ const ProductDetail = ({data}) => {
     }
   },[wishlistItems, data?._id])
 
+  useEffect(()=>{
+    
+  },[])
 
 
 
@@ -58,13 +75,13 @@ const ProductDetail = ({data}) => {
           <ImageSlider productImages={data?.images} key={data?._id} className="w-full h-full"/>
           </div>
           <div className="flex flex-col items-start">
-            <h1 className='text-xl font-poppins font-medium break-keep capitalize'>{data?.name}</h1>
+            <h1 className='text-xl font-poppins font-medium break-keep capitalize' onClick={()=>navigate(`/product/${data?._id}`)}>{data?.name}</h1>
             <div className="font-roboto text-base md:text-lg my-1 md:my-3 text-text-black flex gap-2 items-center">
             <span className='font-semibold'>₹{data?.price}</span>
             <span className='line-through text-slate-500'>₹{data?.originalPrice}</span>
             <span className='text-green-600 text-sm'>{data?.discount}% off</span>
           </div>
-          <p className="text-xs md:text-sm text-gray-500 mb-5 md:mb-10 line-clamp-3">{data?.description}</p>
+          <p className="text-xs md:text-sm text-gray-500 mb-5 md:mb-10 line-clamp-2">{data?.description}</p>
           <div className="bg-green-600 text-xs md:text-sm rounded-sm p-1 text-white font-semibold flex items-center gap-1">
             <span>{data?.ratings?.toFixed(1)}</span>
             <FaStar className="text-xs md:text-sm" />
@@ -87,9 +104,9 @@ const ProductDetail = ({data}) => {
             <div onClick={handleLiked} className={`w-full flex justify-center mx-auto `}>
               {
                 liked ? 
-                <button className='w-full md:w-[70%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700'>Go to Wishlist</button>
+                <button className='w-full md:w-[100%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700'>Remove from Wishlist</button>
                 :
-                <button className='w-full md:w-[70%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-cyan-700 text-white bg-slate-700'>Add to Wishlist</button>
+                <button className='w-full md:w-[100%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-cyan-700 text-white bg-slate-700'>Add to Wishlist</button>
               }
               </div>
 
