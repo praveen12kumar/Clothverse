@@ -64,7 +64,7 @@ const MainSlider = () => {
         </SwiperSlide>
         <SwiperSlide>
           {({ isActive }) => (
-            <div className="min-h-[500px] h-[calc(100vh-100px)] w-full relative bg-red-500">
+            <div className="min-h-[500px] h-[calc(100vh-100px)] w-full relative">
               <img
                 src={"/Images/slide-02.jpg"}
                 alt="banner-1"

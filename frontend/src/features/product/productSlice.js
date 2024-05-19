@@ -45,7 +45,7 @@ export const getProductDetails = createAsyncThunk("products/getProductDetails", 
         }
 
         const {data} = await axios.get("/api/v1/products/"+id, config);
-        console.log(data);
+        // console.log(data); 
         return data.data;
 
     } catch (error) {

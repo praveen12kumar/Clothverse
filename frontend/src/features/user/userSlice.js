@@ -110,7 +110,6 @@ const userSlice = createSlice({
             state.isLoadingUser = true;
         })
         .addCase(loginUser.fulfilled, (state, action)=>{
-            console.log("action",action.payload);
             state.isAuthenticated = true;
             state.isLoadingUser = false;
             state.user = action.payload;

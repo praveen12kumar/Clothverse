@@ -21,9 +21,9 @@ const OverviewProducts = ({data}) => {
       </div>
       :
     
-    <div className='w-full mt-10 md:mt-15 lg:mt-20 flex flex-row flex-wrap justify-center items-center gap-2 md:gap-6 lg:gap-10'>
+    <div className='w-full mt-10 md:mt-15 lg:mt-20 flex flex-row flex-wrap justify-center items-center gap-4 md:gap-6 lg:gap-10'>
         {
-            overArray?.map((item)=> <ProductCard data={item} />)
+            overArray?.map((item, index)=> <ProductCard data={item} key={index} />)
         }
     </div>
   }

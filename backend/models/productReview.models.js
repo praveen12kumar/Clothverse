@@ -18,6 +18,9 @@ const reviewSchema = new Schema({
     name:{
         type:String,
     },
+    image:{
+        type:String,
+    },
     comment:{
         type:String,
     },

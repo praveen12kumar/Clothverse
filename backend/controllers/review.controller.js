@@ -8,7 +8,12 @@ import User from "../models/user.models.js";
 
 const createProductReview = asyncHandler(async(req, res)=>{
     const {productId, rating, comment} = req.body;
+    // console.log(productId, rating, comment);
+    if(!productId || !rating){
+        throw new ApiError(400, "Please provide rating")
+    }
     const product = await Product.findById(productId);
+
 
     if(!product){
         throw new ApiError(404, "Product not found")
@@ -21,6 +26,7 @@ const createProductReview = asyncHandler(async(req, res)=>{
         product:productId,
         user:req.user._id,
         name:req.user.name,
+        image:req.user.avatar.url,
         rating:Number(rating),
         comment
     });
@@ -42,9 +48,11 @@ const createProductReview = asyncHandler(async(req, res)=>{
 
     await product.save({validateBeforeSave:false});
 
-    res.status(200).json(
-        new ApiResponse(200, productReview, "Review created successfully")
-    )
+   res.status(200).json({
+       success:true,
+       productReview,
+       message:"Review created successfully"
+   })
 })
 
 
