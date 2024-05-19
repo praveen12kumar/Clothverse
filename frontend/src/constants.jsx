@@ -5,7 +5,7 @@ export const headerLinks = [
     },
     {
       label: 'Shop',
-      route: '/shop',
+      route: '/products',
     },
     {
       label: 'Blog',

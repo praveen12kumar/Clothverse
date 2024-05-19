@@ -65,7 +65,7 @@ const ProductCard = ({ data }) => {
       onMouseLeave={() => setQuickShow(false)} // Hide Quick View on hover out
     >
       <div className="flex flex-row items-start object-cover p-2 hover:scale-110 transition-all duration-300 ease-in relative">
-        <img src={data?.images[0]?.url} alt="product" />
+        <img className="w-[200px] h-[200px] object-contain" src={data?.images[0]?.url} alt="product" />
         <div className="absolute top-3 right-3 cursor-pointer text-xl md:text-2xl flex items-center"
             onClick={handleLiked}
           >
@@ -87,7 +87,7 @@ const ProductCard = ({ data }) => {
             <span>{data?.ratings?.toFixed(1)}</span>
             <FaStar className="text-xs md:text-sm" />
           </div>
-          <p className="text-xs md:text-sm">({data?.numofReviews})</p>
+          <p className="text-xs md:text-sm">({data?.numberOfReviews})</p>
         </div>
         <div className="flex justify-between items-center text-sm font-roboto text-text-black gap-2">
           <span className="font-semibold whitespace-nowrap">

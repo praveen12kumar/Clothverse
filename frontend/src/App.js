@@ -11,6 +11,8 @@ import ContactUs from "./pages/contact/ContactUs";
 import HelpFAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 import ProductDetails from "./pages/product/ProductDetails";
+import Product from "./pages/product/Product";
+
 
 function App() {
   const location = useLocation();
@@ -20,10 +22,12 @@ function App() {
     <>
     {!hideHeaderFooter && <Header/>}
     <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/product" element={<Product/>}/>   
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
-        <Route path="/" element={<Home/>}/>
         <Route path="/account" element={<Account/>}/>
+        <Route path="/products" element={<Product/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/about" element={<About/>}/>
         <Route path="/contact" element={<ContactUs/>}/>

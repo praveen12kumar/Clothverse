@@ -12,7 +12,7 @@ import {Autoplay } from "swiper/modules";
 import ReviewCard from '../../components/product/ReviewCard';
 import { getProductReviews, addProductReview, getMyProductReview } from '../../features/product/productReviewSlice';
 import OverviewProducts from '../../components/product/OverviewProducts';
-import { getAllProducts } from '../../features/product/productSlice';
+
 
 
 const ProductDetails = () => {

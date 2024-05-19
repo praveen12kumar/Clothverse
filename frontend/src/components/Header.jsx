@@ -8,13 +8,15 @@ import { FaHeart } from "react-icons/fa";
 import SideBar from './SideBar';
 import UpperNavBar from './UpperNavBar';
 import { useSelector} from 'react-redux';
-
+import Loader from './Loader/Loader';
 
 
 const Header = () => {
   
 
-  const {totalWishlistItem} = useSelector(state => state.wishlist)
+  const {isLoadingWishlist, totalWishlistItem} = useSelector(state => state.wishlist)
+  const {isLoadingCart, cartCount} = useSelector(state => state.cart);
+
   const [openSideBar, setOpenSideBar] = useState(false);
 
   const toggleSideBar = ()=>{
@@ -23,7 +25,10 @@ const Header = () => {
 
   return (
     <>
-    <div className="">
+    {
+      isLoadingCart || isLoadingWishlist ? <div className="w-screen h-screen flex"><Loader/></div> :
+      <>
+        <div className="">
       <UpperNavBar/>
     </div>
     <header className='h-16 wrapper flex flex-between bg-slate-400 shadow sticky top-0 z-50'>
@@ -45,7 +50,7 @@ const Header = () => {
         <div className="flex items-center relative cursor-pointer">
             <FaCartShopping className='text-2xl hover:text-purple-600 transition-all ease-in duration-300'/> 
             <div className="absolute -top-[7px] -right-[8px] bg-purple-700 text-white text-xs rounded-sm min-w-[15px] height-[15px] flex items-center justify-center">
-              <span>0</span>
+              <span>{cartCount}</span>
             </div>
         </div>
 
@@ -63,7 +68,9 @@ const Header = () => {
       {
             openSideBar && <SideBar openSideBar={openSideBar} toggleSideBar={toggleSideBar} />
       }
-    </header>
+      </header>
+      </>
+    }
     </>
   )
 }

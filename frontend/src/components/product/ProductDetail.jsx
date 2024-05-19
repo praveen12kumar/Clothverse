@@ -84,7 +84,7 @@ const ProductDetail = ({ data }) => {
               {data?.name}
             </h1>
             <div className="font-roboto text-base md:text-lg text-text-black flex gap-2 items-center">
-              <span className="font-semibold">₹{data?.price}</span>
+              <span className="font-semibold lg:text-2xl tracking-wider">₹{data?.price}</span>
               <span className="line-through text-slate-500">
                 ₹{data?.originalPrice}
               </span>
@@ -96,8 +96,11 @@ const ProductDetail = ({ data }) => {
               {data?.description}
             </p>
             <div className="text-sm md:text-base mb-1 flex flex-col font-roboto gap-1">
-            <p className="font-medium">Category: <span className="font-normal font-poppins"> {data?.category}</span> </p>
-            <p className="font-medium">Color: <span className="font-normal font-poppins">{data?.color}</span></p>
+            <p className="font-normal">Category: <span className="font-medium font-poppins"> {data?.category}</span> </p>
+            <p className="font-normal">Color: <span className="font-medium font-poppins">{data?.color}</span></p>
+            <p>Status: {" "}
+              <b className={`font-poppins text-base ${data?.stock > 0 ? "text-green-600" : "text-red-600"}`}>{data?.stock > 0 ? "In Stock" : "Out of Stock"}</b>
+              </p>
             </div>
             <div className="bg-green-600 text-xs md:text-sm rounded-sm p-1 text-white font-semibold flex items-center gap-1">
               <span>{data?.ratings?.toFixed(1)}</span>
