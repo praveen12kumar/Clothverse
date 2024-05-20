@@ -1,3 +1,4 @@
+/* Pagination Styles */
 .pagination {
     display: flex;
     justify-content: center;
@@ -13,7 +14,7 @@
 
 .pagination a {
     text-decoration: none;
-    color: #007bff;
+    color: #008b8b; /* Dark cyan */
     cursor: pointer;
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -27,13 +28,13 @@
 .pagination .active a {
     font-weight: bold;
     color: white;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #008b8b; /* Dark cyan */
+    border-color: #008b8b; /* Dark cyan */
 }
 
 .pagination a:hover {
-    background-color: #f0f0f0;
-    color: #007bff;
+    background-color: #66cdaa; /* Medium aquamarine */
+    color: #008b8b; /* Dark cyan */
 }
 
 .pagination .disabled a {
@@ -42,5 +43,36 @@
 }
 
 .pagination .active a:hover {
-    background-color: #0056b3;
+    background-color: #007373; /* Slightly darker shade of dark cyan */
+}
+
+/* Media Queries for Text Size */
+@media (max-width: 640px) {
+    /* Mobile view */
+    .pagination a {
+        font-size: 0.75rem; /* Extra small text */
+    }
+    .pagination li {
+        margin: 0 2px;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+    /* Medium screen */
+    .pagination a {
+        font-size: 0.875rem; /* Small text */
+    }
+    .pagination li {
+        margin: 0 3px;
+    }
+}
+
+@media (min-width: 769px) {
+    /* Large screen */
+    .pagination a {
+        font-size: 1rem; /* Base text size */
+    }
+    .pagination li {
+        margin: 0 5px;
+    }
 }

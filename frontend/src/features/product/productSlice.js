@@ -6,7 +6,8 @@ const initialState = {
     products:[],
     product:null,
     error:null,
-    productsCount:0
+    productsCount:0,
+    categories:[]
 }
 
 
@@ -55,6 +56,16 @@ export const getProductDetails = createAsyncThunk("products/getProductDetails", 
 })
 
 
+export const getAllCategories = createAsyncThunk("products/getAllCategories", async()=>{
+    try {
+        const {data} = await axios.get("/api/v1/products/categories");
+        return data.data;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+
 const productSlice = createSlice({
     name:"products",
     initialState,
@@ -91,6 +102,19 @@ const productSlice = createSlice({
             state.isLoadingProduct = false;
             state.error = action.payload
         })
+
+        .addCase(getAllCategories.pending, (state)=>{
+            state.isLoadingProduct = true;
+        })
+        .addCase(getAllCategories.fulfilled, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.categories = action.payload;
+        })
+        .addCase(getAllCategories.rejected, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.error = action.payload
+        })
+
     }
 });
 

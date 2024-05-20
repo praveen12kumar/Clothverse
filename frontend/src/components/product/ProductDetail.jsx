@@ -57,7 +57,7 @@ const ProductDetail = ({ data }) => {
     }
   }, [wishlistItems, data?._id]);
 
-  useEffect(() => {}, []);
+
 
   return (
     <>

@@ -60,12 +60,12 @@ const ProductCard = ({ data }) => {
   return (
     <>
     <div 
-      className="w-40 h-[300px] md:w-48 md:h-[350px] lg:w-56 bg-white shadow-xl flex flex-col gap-2 rounded-md hover:-translate-y-3 transition-all duration-300 ease-in"
+      className="w-44 h-[300px] md:w-48 md:h-[350px] lg:w-56 bg-white shadow-xl flex flex-col gap-2 rounded-md hover:-translate-y-3 transition-all duration-300 ease-in"
       onMouseEnter={() => setQuickShow(true)} // Show Quick View on hover
       onMouseLeave={() => setQuickShow(false)} // Hide Quick View on hover out
     >
       <div className="flex flex-row items-start object-cover p-2 hover:scale-110 transition-all duration-300 ease-in relative">
-        <img className="w-[200px] h-[200px] object-contain" src={data?.images[0]?.url} alt="product" />
+        <img className="w-[200px] h-[150px] md:h-[170px] lg:h-[200px] object-contain" src={data?.images[0]?.url} alt="product" />
         <div className="absolute top-3 right-3 cursor-pointer text-xl md:text-2xl flex items-center"
             onClick={handleLiked}
           >

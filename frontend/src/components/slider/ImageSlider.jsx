@@ -10,7 +10,6 @@ import "./imageslider.css";
 
 const ImageSlider = ({productImages}) => {
     
-
   return (
    <>
     <Swiper
@@ -33,7 +32,7 @@ const ImageSlider = ({productImages}) => {
                 {({isActive})=>(
                     <div className="relative w-full h-full shadow-lg">
                         <img  src={image?.url} alt="product slides" 
-                        className='object-contain object-center  w-full h-full'
+                        className='object-contain object-center  min-w-[400px] max-h-[500px]'
                         />
                     </div>
                 )}
