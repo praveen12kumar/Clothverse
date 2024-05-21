@@ -9,10 +9,10 @@ import SideBar from './SideBar';
 import UpperNavBar from './UpperNavBar';
 import { useSelector} from 'react-redux';
 import Loader from './Loader/Loader';
-
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
-  
+  const navigate = useNavigate();
 
   const {isLoadingWishlist, totalWishlistItem} = useSelector(state => state.wishlist)
   const {isLoadingCart, cartCount} = useSelector(state => state.cart);
@@ -54,7 +54,7 @@ const Header = () => {
             </div>
         </div>
 
-        <div className="relative hidden md:block cursor-pointer">
+        <div className="relative hidden md:block cursor-pointer" onClick={()=>navigate("/wishlist")}>
             <FaHeart className='text-2xl  hover:text-purple-600 transition-all ease-in duration-300'/> 
             <div className="absolute -top-[7px] -right-[8px] bg-purple-700 text-white text-xs rounded-sm min-w-[15px] height-[15px] flex items-center justify-center">
               <span>{totalWishlistItem}</span>

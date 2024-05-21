@@ -12,7 +12,7 @@ import HelpFAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 import ProductDetails from "./pages/product/ProductDetails";
 import Product from "./pages/product/Product";
-
+import Wishlist from "./pages/product/Wishlist";
 
 function App() {
   const location = useLocation();
@@ -32,6 +32,7 @@ function App() {
         <Route path="/about" element={<About/>}/>
         <Route path="/contact" element={<ContactUs/>}/>
         <Route path="/help" element={<HelpFAQ/>}/>
+        <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="*" element={<NotFound/>}/>
     </Routes>
