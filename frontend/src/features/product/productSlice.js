@@ -7,13 +7,14 @@ const initialState = {
     product:null,
     error:null,
     productsCount:0,
-    categories:[]
+    categories:[],
+    totalPages:0
 }
 
 
 export const getAllProducts = createAsyncThunk("products/getAllProducts", async(params, ThunkApi)=>{
-    const {search, price, category, sort, page} = params;
-    console.log("PAGE", page);
+    const {search, price, category, sort, page, rating} = params;
+    console.log("PAGE",search, price,category, sort, page, rating);
     const query = new URLSearchParams();
 
     if (search) query.append('search', search);
@@ -21,6 +22,7 @@ export const getAllProducts = createAsyncThunk("products/getAllProducts", async(
       if (category) query.append('category', category);
       if (price) query.append('price', price);
       if (page) query.append('page', page);
+      if(rating) query.append('rating', rating);
 
     try {
         const config = {
@@ -83,6 +85,7 @@ const productSlice = createSlice({
             state.isLoadingProduct = false;
             state.products = action.payload.products;
             state.productsCount = action.payload.productCount;
+            state.totalPages = action.payload.totalPages
         })
         .addCase(getAllProducts.rejected, (state, action)=>{
             state.isLoadingProduct = false;

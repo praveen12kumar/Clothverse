@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MetaData from "../../utils/MetaData";
 import { useSelector, useDispatch } from "react-redux";
-import {getAllProducts,clearErrors,} from "../../features/product/productSlice";
+import { getAllProducts, clearErrors } from "../../features/product/productSlice";
 import { getAllCategories } from "../../features/product/productSlice";
 import Loader from "../../components/Loader/Loader";
 import ProductCard from "../../components/product/ProductCard";
@@ -36,19 +36,24 @@ const Product = () => {
   const dispatch = useDispatch();
   
   const [active, setActive] = useState(null);
-  const [price, setPrice] = useState(50);
-  const [allCategories, setAllCategories] = useState(null);
-  const [rating, setRating] = useState(1);
+  const [price, setPrice] = useState(5000);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [rating, setRating] = useState(null);
   const [priceOrder, setPriceOrder] = useState('');
+  const [keyword, setKeyword] = useState("")
 
-  const { isLoadingProduct, products, error, productsCount, categories } = useSelector(
-    (state) => state.products
-  );
 
+  const { isLoadingProduct, products, error, productsCount, categories, totalPages } = useSelector((state) => state.products);
+  console.log("products", products);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // Define how many items you want per page
 
   const handleCategoryChange = (category) => {
+    setSelectedCategories(prevCategories =>
+      prevCategories.includes(category)
+        ? prevCategories.filter(cat => cat !== category)
+        : [...prevCategories, category]
+    );
   };
 
   const handleRatingChange = (event) => {
@@ -59,25 +64,39 @@ const Product = () => {
     setPriceOrder(event.target.value);
   };
 
-  const clearFilters = () => {
-    setPrice(50);
-    setRating(1);
-    setPriceOrder('');
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Add your submit logic here if needed
+    dispatch(getAllProducts({
+        page: currentPage,
+        search: keyword,
+        category: selectedCategories.join(','),
+        price: price,
+        rating: rating,
+        sort: priceOrder
+    })).then(()=>{
+      setKeyword("");
+    })
   };
 
-  const handleSubmit = () => {
-    // Add your submit logic here
-  };
+  const handleClickFilter = ()=>{
+     setPrice(5000);
+     setCurrentPage(1)
+     setKeyword("")
+     setSelectedCategories([])
+     setPriceOrder("")
+     setRating("")
+  }
 
   useEffect(() => {
-    dispatch(getAllProducts({ page: currentPage }));
-  }, [dispatch, currentPage]);
+    dispatch(getAllProducts({ page: currentPage,category:selectedCategories  }));
+  }, [dispatch, currentPage, selectedCategories]);
 
-  useEffect(()=>{
-    dispatch(getAllCategories()).then(()=>{
-        setAllCategories(categories)
-    })
-  },[dispatch])
+  
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, [dispatch]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1); // `react-paginate` uses zero-based indexing
@@ -100,19 +119,19 @@ const Product = () => {
           <div className="w-full bg-slate-700 flex gap-3 p-10 border rounded mb-10">
             <form onSubmit={handleSubmit} className="w-full flex flex-row items-center justify-center flex-wrap gap-5">
               <div className="w-56 md:w-40 h-10 font-poppins border border-gray-300 rounded shadow-lg">
-                <input type="text" placeholder="Search..." className="w-full px-4 py-2 outline-none bg-inherit " />
+                <input type="text" placeholder="Search..." className="w-full px-4 py-2 outline-none bg-inherit " onChange={(e)=> setKeyword(e.target.value)} />
               </div>
-              <div className="w-56 md:w-40  h-10 flex items-center border border-gray-300 rounded shadow-lg px-3">
-                <input type="range" min={100} max={400000} className="w-full h-[1px] px-4 py-2 " />
+              <div className="w-56 md:w-40 h-10 flex items-center border border-gray-300 rounded shadow-lg px-3">
+                <input type="range" min={100} defaultValue={2000} max={400000} value={price} className="w-full h-[1px] px-4 py-2 cursor-pointer" onChange={(e) => setPrice(e.target.value)} />
               </div>
               
               <Dropdown label="Category" active={active} index={1} setActive={setActive}>
                 <div className="w-56  p-4 font-roboto text-sm flex flex-col items-start justify-center gap-2 text-white">
-                  {allCategories?.map((category) => (
-                    <label key={category} className=" text-slate-200 capitalize flex gap-1 items-center">
+                  {categories?.map((category) => (
+                    <label key={category} className="text-slate-200 capitalize flex gap-1 items-center">
                       <input
                         type="checkbox"
-                        checked={allCategories[category]}
+                        checked={selectedCategories.includes(category)}
                         onChange={() => handleCategoryChange(category)}
                       /> {category}
                     </label>
@@ -142,8 +161,8 @@ const Product = () => {
                     <input
                       type="radio"
                       name="sort"
-                      value="low-to-high"
-                      checked={priceOrder === "low-to-high"}
+                      value="asc"
+                      checked={priceOrder === "asc"}
                       onChange={handlePriceOrderChange}
                     /> Price - Low to High
                   </label>
@@ -151,8 +170,8 @@ const Product = () => {
                     <input
                       type="radio"
                       name="sort"
-                      value="high-to-low"
-                      checked={priceOrder === "high-to-low"}
+                      value="des"
+                      checked={priceOrder === "des"}
                       onChange={handlePriceOrderChange}
                     /> Price - High to Low
                   </label>
@@ -171,6 +190,9 @@ const Product = () => {
               <div className="">
                 <button className="w-56 md:w-40 h-10 font-poppins font-medium tracking-wider bg-white rounded-md text-slate-700 transition-all ease-in duration-300 hover:bg-cyan-700 hover:text-white">Filter</button>
               </div>
+              <div className="">
+                <button className="w-56 md:w-40 h-10 font-poppins font-medium tracking-wider bg-white rounded-md text-slate-700 transition-all ease-in duration-300 hover:bg-cyan-700 hover:text-white" onClick={handleClickFilter}>Clear Filter</button>
+              </div>
             </form>
           </div>
 
@@ -178,7 +200,7 @@ const Product = () => {
             {productsCount === 0 ? (
               <NoProduct />
             ) : (
-              <div className="w-full flex flex-wrap justify-center items-center gap-3 md:gap-6 lg:gap-10">
+              <div className="lg:wrapper w-full flex flex-wrap justify-center items-center gap-3 md:gap-6 lg:gap-10">
                 {products.map((item) => (
                   <ProductCard data={item} key={item._id} />
                 ))}
@@ -192,7 +214,7 @@ const Product = () => {
                 previousLabel={"Previous"}
                 nextLabel={"Next"}
                 breakLabel={"..."}
-                pageCount={Math.ceil(productsCount / itemsPerPage)}
+                pageCount={totalPages}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={3}
                 onPageChange={handlePageChange}
@@ -229,96 +251,4 @@ export default Product;
 
 
 
-
-
-
-
-// {/* filter section */}
-// <div className="wrapper w-full flex flex-col gap-3 p-10 border rounded shadow">
-// <h2 className="text-lg font-semibold mb-4">Filter</h2>
-// <div className="w-full flex items-center justify-between">
-// <div className="mb-4">
-//   {/* range */}
-//   <label className="block text-gray-700">Price</label>
-//   <input
-//     type="range"
-//     min="0"
-//     max="100"
-//     value={price}
-//     onChange={(e) => setPrice(e.target.value)}
-//     className="w-full"
-//   />
-// </div>
-// {/* category */}
-// <div className="mb-4">
-//   <label className="block text-gray-700 mb-2">Category</label>
-//   {Object.keys(categories).map((category) => (
-//     <div key={category} className="mb-2">
-//       <label className="inline-flex items-center">
-//         <input
-//           type="checkbox"
-//           checked={categories[category]}
-//           onChange={() => handleCategoryChange(category)}
-//           className="form-checkbox"
-//         />
-//         <span className="ml-2">{category}</span>
-//       </label>
-//     </div>
-//   ))}
-// </div>
-// {/* rating */}
-// <div className="mb-4">
-//   <label className="block text-gray-700 mb-2">Rating</label>
-//   {[1, 2, 3, 4].map((star) => (
-//     <div key={star} className="mb-2">
-//       <label className="inline-flex items-center">
-//         <input
-//           type="radio"
-//           value={star}
-//           checked={rating === star}
-//           onChange={handleRatingChange}
-//           className="form-radio"
-//         />
-//         <span className="ml-2">{star} Stars and Above</span>
-//       </label>
-//     </div>
-//   ))}
-// </div>
-// {/* price order */}
-// <div className="mb-4">
-//   <label className="block text-gray-700 mb-2">Price Order</label>
-//   <div className="mb-2">
-//     <label className="inline-flex items-center">
-//       <input
-//         type="radio"
-//         value="low-to-high"
-//         checked={priceOrder === "low-to-high"}
-//         onChange={handlePriceOrderChange}
-//         className="form-radio"
-//       />
-//       <span className="ml-2">Price - Low to High</span>
-//     </label>
-//   </div>
-//   <div className="mb-2">
-//     <label className="inline-flex items-center">
-//       <input
-//         type="radio"
-//         value="high-to-low"
-//         checked={priceOrder === "high-to-low"}
-//         onChange={handlePriceOrderChange}
-//         className="form-radio"
-//       />
-//       <span className="ml-2">Price - High to Low</span>
-//     </label>
-//   </div>
-// </div>
-// <div className="">
-// <button
-//   onClick={clearFilters}
-//   className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-// >
-//   Clear
-// </button>
-// </div>
-// </div>
-// </div>
+//price, category: selectedCategories, sort:priceOrder, rating: rating, search: keyword
