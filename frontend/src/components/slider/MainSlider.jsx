@@ -15,7 +15,6 @@ const MainSlider = () => {
   return (
     <div className="z-10">
       <Swiper
-        lazy={true}
         slidesPerView={1}
         spaceBetween={30}
         effect={"fade"}

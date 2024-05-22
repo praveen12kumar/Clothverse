@@ -3,8 +3,6 @@ import ImageSlider from "../slider/ImageSlider";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
 import { FaStar } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
-import { FaMinus } from "react-icons/fa";
 import {
   setLoadingWishlist,
   setWishlistItem,
@@ -13,20 +11,45 @@ import {
 } from "../../features/wishlist/wishlistSlice";
 import { useNavigate } from "react-router-dom";
 import MetaData from "../../utils/MetaData";
+import toast from "react-hot-toast";
+import { addCartItem, clearMessage } from "../../features/cart/cartSlice";
+
+
 
 const ProductDetail = ({ data }) => {
+ 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoadingWishlist, wishlistItems } = useSelector(
     (state) => state.wishlist
   );
+
+  const {isLoadingCart, cartItems, cartMessage, cartError} = useSelector(state => state.cart)
   
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [liked, setLiked] = useState(false);
+  
+  const inCart = cartItems?.some((item)=> item?.product.toString() === data?._id.toString());
 
-  const handleQuantity = () => {};
+  const handleAddToCart = () => {
+    if(quantity < 1){
+      toast.error("Quantity cannot be less than 1");
+        return;
+    }
 
-  const handleAddToCart = () => {};
+    dispatch(addCartItem({
+      name: data?.name,
+      quantity,
+      image: data?.images[0]?.url,
+      price: data?.price,
+      originalPrice:data?.originalPrice,
+      discount:data?.discount,
+      productId:data?._id
+    })).then(()=>{
+    toast.success(cartMessage)
+    dispatch(clearMessage())
+    }) 
+  };
 
   const handleLiked = () => {
     if (liked) {
@@ -38,6 +61,20 @@ const ProductDetail = ({ data }) => {
     setLiked(!liked);
   };
 
+
+  // useEffect(()=>{
+  //   if(cartError){
+  //     toast.error(cartError);
+  //     dispatch(clearErrors());
+  //   }
+  //   if(cartMessage){
+  //     toast.success(cartMessage);
+  //     dispatch(clearMessage());
+  //   }
+  // },[dispatch, cartError, cartMessage])
+
+
+
   useEffect(() => {
     dispatch(setLoadingWishlist());
     dispatch(getWishlistItem());
@@ -45,7 +82,7 @@ const ProductDetail = ({ data }) => {
 
   useEffect(() => {
     let isLiked = false;
-    wishlistItems.some((item) => {
+    wishlistItems.some((item) =>{
       if (item?._id === data?._id) {
         setLiked(true);
         isLiked = true;
@@ -62,7 +99,7 @@ const ProductDetail = ({ data }) => {
   return (
     <>
       <MetaData title={`${data?.name}`}/>
-      {isLoadingWishlist ? (
+      {isLoadingWishlist || isLoadingCart ? (
         <div className="w-screen h-screen flex">
           <Loader />
         </div>
@@ -106,37 +143,26 @@ const ProductDetail = ({ data }) => {
               <span>{data?.ratings?.toFixed(1)}</span>
               <FaStar className="text-xs md:text-sm" />
             </div>
-            <div className="flex text-sm md:text-lg border-solid border border-slate-500 w-28 h-10 sm:w-36 sm:h-12 mx-auto mt-5">
-              <button
-                className="p-1 md:p-3 flex-1 flex justify-center items-center hover:bg-cyan-700 hover:text-white transition-colors duration-500"
-                type="button"
-                onClick={(e) => handleQuantity(-1)}
-                aria-label="decrQuantity"
-              >
-                <FaMinus />
-              </button>
-              <div className="p-1 md:p-3 flex-1 flex justify-center items-center bg-slate-200">
-                {quantity}
-              </div>
-              <button
-                className="p-1 md:p-3 flex-1 flex justify-center items-center hover:bg-cyan-700 hover:text-white transition-colors duration-500"
-                type="button"
-                onClick={(e) => handleQuantity(1)}
-                aria-label="incQuantity"
-              >
-                <FaPlus />
-              </button>
-            </div>
+
             <div className="w-full flex flex-col font-poppins lg:flex-row gap-4 md:gap-6 mt-5 lg:mt-10">
               {data?.stock > 0 ? (
                 <div className="w-full flex justify-center mx-auto ">
-                  <button
-                    type="button"
-                    className="w-full md:w-[70%]  mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700"
-                    onClick={handleAddToCart}
-                  >
-                    Add to Cart
-                  </button>
+                 {
+                  inCart ?  <button
+                  type="button"
+                  className="w-full md:w-[70%]  mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700"
+                  onClick={()=>navigate("/cart")}
+                >
+                  Go to Cart
+                </button>:
+                 <button
+                 type="button"
+                 className="w-full md:w-[70%]  mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700"
+                 onClick={handleAddToCart}
+               >
+                 Add to Cart
+               </button>
+                 }
                 </div>
               ) : (
                 <div className="text-lg mt-5">

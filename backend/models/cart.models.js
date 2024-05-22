@@ -15,10 +15,7 @@ const cartSchema = new Schema({
         required:true,
         default:1,
     },
-    itemColor:{
-        type:String,
-        required:true,
-    },
+   
     image:{
         type:String,
         required:true,

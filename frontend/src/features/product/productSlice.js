@@ -14,7 +14,7 @@ const initialState = {
 
 export const getAllProducts = createAsyncThunk("products/getAllProducts", async(params, ThunkApi)=>{
     const {search, price, category, sort, page, rating} = params;
-    console.log("PAGE",search, price,category, sort, page, rating);
+    //console.log("PAGE",search, price,category, sort, page, rating);
     const query = new URLSearchParams();
 
     if (search) query.append('search', search);

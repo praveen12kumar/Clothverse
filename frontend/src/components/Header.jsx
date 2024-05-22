@@ -47,17 +47,17 @@ const Header = () => {
           <IoMdSearch className='text-2xl hover:scale-105  hover:text-purple-600 transition-all ease-in duration-300'/>
         </div>
 
-        <div className="flex items-center relative cursor-pointer">
+        <div className="flex items-center relative cursor-pointer"onClick={()=>navigate("/cart")}>
             <FaCartShopping className='text-2xl hover:text-purple-600 transition-all ease-in duration-300'/> 
             <div className="absolute -top-[7px] -right-[8px] bg-purple-700 text-white text-xs rounded-sm min-w-[15px] height-[15px] flex items-center justify-center">
-              <span>{cartCount}</span>
+              <span>{cartCount ? cartCount : 0}</span>
             </div>
         </div>
 
         <div className="relative hidden md:block cursor-pointer" onClick={()=>navigate("/wishlist")}>
             <FaHeart className='text-2xl  hover:text-purple-600 transition-all ease-in duration-300'/> 
             <div className="absolute -top-[7px] -right-[8px] bg-purple-700 text-white text-xs rounded-sm min-w-[15px] height-[15px] flex items-center justify-center">
-              <span>{totalWishlistItem}</span>
+              <span>{totalWishlistItem ? totalWishlistItem : 0}</span>
             </div>
         </div>
 

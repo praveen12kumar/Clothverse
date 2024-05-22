@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getAllProducts } from '../features/product/productSlice'
 import Loader from '../components/Loader/Loader'
 import OverviewProducts from '../components/product/OverviewProducts'
-
+import { getCartItems } from '../features/cart/cartSlice'
 
 const storeOverview = [
   {name:"Best Seller",sortBy: '{"sold":-1,"_id":-1}' },
@@ -28,6 +28,7 @@ const Home = () => {
 
   useEffect(()=>{
     dispatch(getAllProducts({page:1}))
+    dispatch(getCartItems())
   },[dispatch])
 
   return (

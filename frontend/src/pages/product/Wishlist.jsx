@@ -12,7 +12,7 @@ const Wishlist = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { wishlistItems, isLoadingWishlist, wishlistMessage } = useSelector((state) => state.wishlist);
-    console.log("wishlistItems", wishlistItems);
+    
     useEffect(()=>{
         if(!isLoadingWishlist && wishlistMessage){
             toast.success(wishlistMessage)
@@ -26,7 +26,7 @@ const Wishlist = () => {
     <>
     <MetaData title={"Wishlist"}/>
     <div className="flex justify-center items-center">
-            <div className="font-[Poppins] my-20 md:my-28 text-[13px] min-h-[80vh] md:min-h-screen max-w-6xl p-2 md:p-5 flex flex-col justify-start grow">
+            <div className="font-[Poppins] my-10 text-[13px] min-h-[80vh] md:min-h-screen max-w-6xl p-2 md:p-5 flex flex-col justify-start grow">
                 <h1 className="text-text-black font-bold text-xl sm:text-3xl mb-5 md:mb-10 w-full">Your WishList</h1>
                 {wishlistItems.length>0?<div className="lg:wrapper w-full flex flex-wrap justify-center items-center gap-3 md:gap-6 lg:gap-10">
                 {

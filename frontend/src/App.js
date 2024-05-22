@@ -13,6 +13,8 @@ import NotFound from "./pages/NotFound";
 import ProductDetails from "./pages/product/ProductDetails";
 import Product from "./pages/product/Product";
 import Wishlist from "./pages/product/Wishlist";
+import Cart from "./pages/product/Cart";
+
 
 function App() {
   const location = useLocation();
@@ -33,6 +35,7 @@ function App() {
         <Route path="/contact" element={<ContactUs/>}/>
         <Route path="/help" element={<HelpFAQ/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
+        <Route path="/cart" element={<Cart/>}/>
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="*" element={<NotFound/>}/>
     </Routes>

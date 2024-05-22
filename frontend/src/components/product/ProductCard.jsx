@@ -64,8 +64,8 @@ const ProductCard = ({ data }) => {
       onMouseEnter={() => setQuickShow(true)} // Show Quick View on hover
       onMouseLeave={() => setQuickShow(false)} // Hide Quick View on hover out
     >
-      <div className="flex flex-row items-start object-cover p-2 hover:scale-110 transition-all duration-300 ease-in relative">
-        <img className="w-[200px] h-[150px] md:h-[170px] lg:h-[200px] object-contain" src={data?.images[0]?.url} alt="product" />
+      <div className="flex flex-row items-start object-cover p-2 relative">
+        <img className="w-[150px] h-[150px] md:h-[170px] lg:h-[200px] object-contain hover:scale-105 transition-all duration-300 ease-in" src={data?.images[0]?.url} alt="product" />
         <div className="absolute top-3 right-3 cursor-pointer text-xl md:text-2xl flex items-center"
             onClick={handleLiked}
           >
