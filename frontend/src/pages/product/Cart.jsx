@@ -74,9 +74,12 @@ const Cart = () => {
                     <div className="w-full flex justify-center items-center ">
                         <p className='text-sm md:text-base text-center text-green-600'>You will save <span className='font-medium'>{totalDiscount - 100}</span> on this order</p>
                     </div>
-                    
+                    </div>
+                    <div className="w-full mt-10">
+                    <button className='w-full text-xs sm:text-sm tablet:text-base p-3 md:py-3 md:px-9 transition-all duration-300  rounded-full bg-black text-white hover:bg-cyan-700'>Place Order</button>
                     </div>
                 </div>
+                
                 </>
                 </div>:<div className='flex justify-center items-start'>
                     <div className="w-full border-solid border-grey3 border-[1px] flex flex-col items-center h-max p-2 md:p-5">

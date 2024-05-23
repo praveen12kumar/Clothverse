@@ -16,10 +16,26 @@ import Wishlist from "./pages/product/Wishlist";
 import Cart from "./pages/product/Cart";
 
 
+
+import { getUserDetails } from "./features/user/userSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 function App() {
+  const dispatch = useDispatch();
   const location = useLocation();
   const hideHeaderAndFooterPaths = ['/login', '/register'];
   const hideHeaderFooter = hideHeaderAndFooterPaths.includes(location.pathname);
+
+
+
+
+  useEffect(()=>{
+    dispatch(getUserDetails())
+  },[dispatch]);
+
+
+
   return (
     <>
     {!hideHeaderFooter && <Header/>}

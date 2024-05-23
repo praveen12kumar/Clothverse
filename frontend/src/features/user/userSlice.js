@@ -73,7 +73,17 @@ export const updateUserPassword = createAsyncThunk("user/updateUserPassword", as
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response.data);
     }
-})
+});
+
+
+export const getUserDetails = createAsyncThunk("user/getUserDetails", async(data, ThunkAPI)=>{
+    try {
+        const {data} = await axios.get("/api/v1/users/me");
+        return data.data;
+    } catch (error) {
+        return ThunkAPI.rejectWithValue(error.response.data);
+    }
+});
 
 
 
@@ -149,6 +159,20 @@ const userSlice = createSlice({
         .addCase(updateUserPassword.rejected, (state, action)=>{
             state.isLoadingUser = false;
             state.userError = action.payload; 
+        })
+
+        // user user details
+        .addCase(getUserDetails.pending, (state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(getUserDetails.fulfilled, (state, action)=>{
+            state.isLoadingUser = false;
+            state.user = action.payload;
+            state.isAuthenticated = true;
+        })
+        .addCase(getUserDetails.rejected, (state, action)=>{
+            state.isLoadingUser = false;
+            state.userError = action.payload;
         })
 
     }
