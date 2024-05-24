@@ -8,7 +8,7 @@ const isAuthenticatedUser = asyncHandler(async(req, res, next)=>{
     const {token} = req.cookies;
 
     if(!token){
-        return next(new ApiError(401, "Please login to access this resource"));
+        return next(res.status(404).json({success:false, message:"Please login to access this resource"}));
     }
 
     const decodedData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);

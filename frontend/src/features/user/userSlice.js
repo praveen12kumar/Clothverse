@@ -71,7 +71,7 @@ export const updateUserPassword = createAsyncThunk("user/updateUserPassword", as
         
 
     } catch (error) {
-        return ThunkAPI.rejectWithValue(error.response.data);
+        return ThunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 
@@ -81,7 +81,7 @@ export const getUserDetails = createAsyncThunk("user/getUserDetails", async(data
         const {data} = await axios.get("/api/v1/users/me");
         return data.data;
     } catch (error) {
-        return ThunkAPI.rejectWithValue(error.response.data);
+        return ThunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 

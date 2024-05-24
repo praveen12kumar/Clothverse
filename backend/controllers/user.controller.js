@@ -175,7 +175,12 @@ const changeUserPassword = asyncHandler(async(req, res)=>{
 const getCurrentUser = asyncHandler(async(req, res)=>{
 
     const user = await User.findById(req.user.id);
-
+    if(!user){
+        return res.status(404).json({
+            success:false,
+            message:"Login to access this resource"
+        })
+    }
     return res.status(200).json(
         new ApiResponse(200, user, "current user fetched successfully")
     )

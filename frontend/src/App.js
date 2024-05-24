@@ -20,6 +20,8 @@ import Cart from "./pages/product/Cart";
 import { getUserDetails } from "./features/user/userSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +38,8 @@ function App() {
 
 
 
+
+
   return (
     <>
     {!hideHeaderFooter && <Header/>}
@@ -44,7 +48,7 @@ function App() {
         <Route path="/product" element={<Product/>}/>   
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
-        <Route path="/account" element={<Account/>}/>
+        <Route path="/account" element={<ProtectedRoute><Account/></ProtectedRoute>}/>
         <Route path="/products" element={<Product/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/about" element={<About/>}/>

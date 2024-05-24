@@ -10,7 +10,8 @@ import { logoutUser } from '../../features/user/userSlice'
 const Account = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {isLoadingUser, user, userSuccess, userError} = useSelector(state=> state.user);
+    const {isLoadingUser, user, userSuccess, userError, isAuthenticated} = useSelector(state=> state.user);
+   
 
     const handleLogout = ()=>{
         dispatch(logoutUser()).then(()=>{
@@ -33,6 +34,11 @@ const Account = () => {
         }
     },[userError, userSuccess, dispatch])
 
+    useEffect(()=>{
+        if(isAuthenticated === false){
+            navigate("/login")
+        }
+    },[isAuthenticated, navigate])
 
   
     return (
