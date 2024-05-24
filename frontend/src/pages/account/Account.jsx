@@ -11,7 +11,8 @@ const Account = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {isLoadingUser, user, userSuccess, userError, isAuthenticated} = useSelector(state=> state.user);
-   
+
+    console.log("user", user);
 
     const handleLogout = ()=>{
         dispatch(logoutUser()).then(()=>{
@@ -55,33 +56,37 @@ const Account = () => {
                 </div>
                 <div className="w-full md:w-80 px-10 md:px-4 mx-auto">
                     <Link to="/edit-profile">
-                    <button className='w-full bg-slate-500 p-2 font-poppins text-white p-regular-16 uppercase tracking-wider rounded-xl hover:border hover:bg-slate-700 hover:text-slate-200 transition-all cursor-pointer ease-in duration-300 '>Edit Profile</button>
+                    <button className='w-full bg-slate-700 p-2 font-poppins text-white p-regular-16 uppercase tracking-wider rounded-xl hover:border hover:bg-cyan-700 hover:text-slate-200 transition-all cursor-pointer ease-in duration-300 '>Edit Profile</button>
                     </Link>
                 </div>
                 <div className="w-full md:w-80 px-10 md:px-4 mx-auto">
-                    <button onClick={handleLogout} className='w-full bg-slate-700 p-2 font-poppins text-white p-regular-16 uppercase tracking-wider rounded-xl hover:border hover:border-slate-600 hover:bg-inherit hover:text-slate-600 cursor-pointer transition-all ease-in duration-300 '>Logout</button>
+                    <button onClick={handleLogout} className='w-full bg-slate-700 p-2 font-poppins text-white p-regular-16 uppercase tracking-wider rounded-xl hover:border hover:bg-cyan-700  hover:text-slate-100 cursor-pointer transition-all ease-in duration-300 '>Logout</button>
                 </div>
             </div>
-            <div className="flex flex-col items-start px-10 md:mt-3 gap-8">
+            <div className="flex flex-col items-start px-10 gap-5">
                 <div className="flex flex-col">
-                    <p className='text-lg p-medium-18 font-roboto text-slate-600'>Full Name</p>
-                    <p className="text-md p-regular-16 font-poppins">{user?.name}</p>
+                    <p className='text-sm font-medium font-roboto text-slate-600'>Full Name</p>
+                    <p className="text-sm  font-poppins">{user?.name}</p>
 
                 </div>
                 <div className="flex flex-col ">
-                    <p className="text-lg p-medium-18 font-roboto text-slate-600">Email</p>
-                    <p className="text-md p-regular-16 font-poppins">{user?.email}</p>
+                    <p className="text-sm font-medium font-roboto text-slate-600">Email</p>
+                    <p className="text-sm  font-poppins">{user?.email}</p>
                 </div>
                 <div className="flex flex-col ">
-                    <p className='text-lg p-medium-18 font-roboto text-slate-600'>Role</p>
-                    <p className={`text-md p-medium-16 font-poppins ${user?.role === "admin" ? "text-cyan-600" : "text-slate-600"}` }>{user?.role}</p>
+                    <p className='text-sm font-medium font-roboto text-slate-600'>Role</p>
+                    <p className={`text-sm font-poppins ${user?.role === "admin" ? "text-cyan-600" : "text-slate-600"}` }>{user?.role}</p>
                 </div>
-                <div className="w-full  md:w-80 flex flex-col gap-10">
+                <div className="flex flex-col ">
+                    <p className='text-sm font-medium font-roboto text-slate-600'>Joined On</p>
+                    <p className={"text-sm font-poppins"}>{user?.createdAt?.toString().substring(0,10)}</p>
+                </div>
+                <div className="w-full md:w-80 flex flex-col gap-10 mt-4">
                     <Link to='/order'>
-                    <button className='w-full text-md bg-slate-500 p-2 px-4 font-poppins text-white  tracking-wider rounded-xl hover:border hover:border-slate-600 hover:text-slate-700 transition-all ease-in duration-300 '>My Order</button>
+                    <button className='w-full text-md bg-slate-700 p-2 px-4 font-poppins text-white  tracking-wider rounded-xl hover:border hover:bg-cyan-700 hover:text-slate-100 transition-all ease-in duration-300 '>My Order</button>
                     </Link>
                     <Link to="/password/update">
-                        <button className='w-full text-md bg-slate-700 p-2 px-4 font-poppins text-white  uppercase tracking-wider rounded-xl hover:border hover:border-slate-600 hover:text-slate-700 transition-all ease-in duration-300'
+                        <button className='w-full text-md bg-slate-700 p-2 px-4 font-poppins text-white  uppercase tracking-wider rounded-xl  hover:bg-cyan-700 transition-all ease-in duration-300'
                         >Change Password</button>
                     </Link>
                 </div>
