@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../features/user/userSlice';
 import toast from 'react-hot-toast';
 import { clearUserError, clearUserSuccess } from '../../features/user/userSlice';
-
+import Loader from '../../components/Loader/Loader';
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {isAuthenticated, userError, userSuccess} = useSelector(state=> state.user);
+
+    const {isAuthenticated,isLoadingUser, userError, userSuccess} = useSelector(state=> state.user);
     const [user, setUser] = useState({
         email:"",
         password:"",
@@ -67,7 +68,9 @@ const Login = () => {
 
 
   return (
-    <div className='max-w-xs md:max-w-sm  mx-auto mt-24 h-auto shadow-lg bg-slate-100 border border-slate-500 p-10 rounded-lg'>
+    isLoadingUser ? <div className="w-screen h-screen"><Loader/></div>:
+    <>
+        <div className='max-w-xs md:max-w-sm  mx-auto mt-24 h-auto shadow-lg bg-slate-100 border border-slate-500 p-10 rounded-lg'>
         <h1 className='text-center text-3xl font-roboto font-medium'>Login</h1>
         <form className='flex flex-col mt-8' >
 
@@ -92,6 +95,7 @@ const Login = () => {
           <p>Didn't have Account <span onClick={()=>navigate("/register")} className='text-cyan-600'>Create Account</span></p>
         </div>
     </div>
+    </>
   )
 }
 

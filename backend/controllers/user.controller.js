@@ -5,6 +5,7 @@ import {ApiResponse} from "../utils/ApiResponse.js";
 import {sendEmail} from "../utils/sendEmail.js";
 import crypto from "crypto";
 import User from "../models/user.models.js";
+import {v2 as cloudinary} from 'cloudinary';
 
 const registerUser = asyncHandler(async(req, res)=>{
     //get user details from frontend
@@ -33,10 +34,11 @@ const registerUser = asyncHandler(async(req, res)=>{
         throw new ApiError(409, "Email alreay exists")
     }
 
-    // console.log("path",req.file);
+    console.log("req.file", req.file);    
 
     const avatarLocalPath = req.file?.path;
-   
+    
+    console.log("avatarLocalPath", avatarLocalPath);
 
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar file is required")
@@ -281,13 +283,42 @@ const resetPassword = asyncHandler(async(req, res)=>{
 
 
 const updateProfile = asyncHandler(async(req, res)=>{
-    const newUserData  = {
-        name:req.body.name,
-        email:req.body.email,
+    
+    const {name, email, avatar} = req.body;
+    let updatedAvatar = {};
+    let updated = false;
+    
+    cloudinary.config({ 
+        cloud_name: process.env.NAME,
+        api_key: process.env.API_KEY,
+        api_secret: process.env.API_SECRET,
+      });  
+    
+    if(req.file?.path){
+        updated = true;
+        const avatarLocalPath = req.file?.path;
+        if(!avatarLocalPath){
+            throw new ApiError(400, "Avatar file is required")
+        }
+        await cloudinary.uploader.destroy(req.user.avatar.public_id);
+        updatedAvatar  = await uploadOnCloudinary(avatarLocalPath);
+        
+        if(!updatedAvatar){
+        throw new ApiError(400, "Avatar file not uploaded")
+        }
+        
     }
 
-    const user = User.findByIdAndUpdate(req.user.id, newUserData, {new:true});
+    const user = await User.findByIdAndUpdate(req.user._id,{
+        name, 
+        email,
+        avatar:{
+            public_id: updated ? updatedAvatar.public_id : req.user.avatar.public_id,
+            url: updated ? updatedAvatar.url : req.user.avatar.url
+        }
+    }, {new:true} );
 
+   
     res.status(200).json(
         new ApiResponse(200, user, "profile updated successfully")
     )

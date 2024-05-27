@@ -9,7 +9,7 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { registerUser } from '../../features/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {toast} from "react-hot-toast"
-import { clearUserError, clearUserSuccess } from '../../features/user/userSlice';
+import { clearUserError, clearUserSuccess, } from '../../features/user/userSlice';
 
 
 const Register = () => {
@@ -39,7 +39,7 @@ const Register = () => {
         formData.append('email', user.email);
         formData.append('password', user.password);
         formData.append('avatar', user.avatar); // This is the file
-    
+       
         // Dispatch the action with the FormData object
         dispatch(registerUser(formData));
     
@@ -50,6 +50,9 @@ const Register = () => {
             password: "",
             avatar: ""
         });
+       
+        navigate("/login");
+        
     };
     
     const showPassword = ()=>{

@@ -14,7 +14,7 @@ import ProductDetails from "./pages/product/ProductDetails";
 import Product from "./pages/product/Product";
 import Wishlist from "./pages/product/Wishlist";
 import Cart from "./pages/product/Cart";
-
+import UpdateAccount from "./pages/account/UpdateAccount";
 
 
 import { getUserDetails } from "./features/user/userSlice";
@@ -49,6 +49,7 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/account" element={<ProtectedRoute><Account/></ProtectedRoute>}/>
+        <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>
         <Route path="/products" element={<Product/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/about" element={<About/>}/>

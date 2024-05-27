@@ -10,8 +10,7 @@ const initialState = {
 }
 
 export const registerUser = createAsyncThunk("user/registerUser", async (user, ThunkAPI) => {
-    console.log(user);
-
+   
     try {
         // Since we're sending a FormData object, we don't need to manually set the Content-Type header.
         // The browser will automatically set it to multipart/form-data and include the correct boundary.
@@ -20,6 +19,7 @@ export const registerUser = createAsyncThunk("user/registerUser", async (user, T
         // Directly pass the FormData object to axios.post.
         // No need to spread the user object into a new object.
         const { data } = await axios.post("/api/v1/users/register", user, config);
+        console.log(data);
         return data;
 
     } catch (error) {
@@ -85,12 +85,29 @@ export const getUserDetails = createAsyncThunk("user/getUserDetails", async(data
     }
 });
 
+export const updateProfile = createAsyncThunk("user/updateProfile", async(formData, ThunkAPI)=>{
+    
+    try {
+        const {data} = await axios.put("/api/v1/users/update", formData);
+        // console.log(data);
+        return data.data;
+    } catch (error) {
+        return ThunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
 
 
 const userSlice = createSlice({
     name:"user",
     initialState,
     reducers:{
+        setLoading:(state)=>{
+        state.isLoadingUser = true;
+        },
+        setLoadingOff:(state)=>{
+            state.isLoadingUser = false
+        },
         clearUserError:(state)=>{
             state.userError = null;
         },
@@ -104,10 +121,8 @@ const userSlice = createSlice({
             state.isLoadingUser = true;
         })
         .addCase(registerUser.fulfilled, (state, action)=>{
-            state.isAuthenticated = true;
             state.isLoadingUser = false;
-            state.user = action.payload;
-            state.userSuccess = "Signed Up Successfully"
+            state.userSuccess = action.payload.message;
         })
         .addCase(registerUser.rejected, (state,action)=>{
             state.isLoadingUser = false;
@@ -175,9 +190,23 @@ const userSlice = createSlice({
             state.userError = action.payload;
         })
 
+        // update profile
+        .addCase(updateProfile.pending, (state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(updateProfile.fulfilled, (state, action)=>{
+            state.isLoadingUser = false;
+            state.isAuthenticated = true;
+            state.user = action.payload;
+            state.userSuccess = "Profile Updated Successfully";
+        })
+        .addCase(updateProfile.rejected, (state, action)=>{
+            state.pending = false;
+            state.userError = action.payload;
+        })
     }
 })
 
 
 export default userSlice.reducer;
-export const {clearUserError, clearUserSuccess} = userSlice.actions;
+export const {clearUserError, clearUserSuccess, setLoading, setLoadingOff} = userSlice.actions;

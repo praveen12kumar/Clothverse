@@ -35,8 +35,10 @@ router.route("/change-password").post(isAuthenticatedUser, changeUserPassword);
 router.route('/me').get(isAuthenticatedUser, getCurrentUser);
 
 router.route("/forgot-password").post(forgotPassword);
-
-router.route("/update").post(isAuthenticatedUser, updateProfile);
+// router.route("/update").put(upload.single("avatar"), (req, res)=>{
+//         console.log("Path", req.file);
+//     })
+router.route("/update").put(isAuthenticatedUser,upload.single("avatar"),updateProfile);
 
 router.route('/verify-email/:token').put(verifyEmail);
 
