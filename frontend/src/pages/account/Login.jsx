@@ -84,10 +84,12 @@ const Login = () => {
             <input className='w-full outline-none font-poppins px-2 py-1 bg-inherit'placeholder='Password' required type={pass ? "text" : "password"} value={user.password} onChange={(e)=> setUser({...user, password:e.target.value})} />
             <span className='cursor-pointer' onClick={showPassword}>{user.password && !pass ? <FaEye/> : <FaEyeSlash/>}</span>
         </div>
-
+        <div className='text-right cursor-pointer' onClick={()=>navigate("/forgot/password")}>
+            <p className='text-xs font-poppins text-slate-500'>Forgot Password</p>
+        </div>
         </form>
-        <div className="flex items-center justify-center">
-        <button onClick={handleSubmit} className='bg-slate-500 px-8 py-1 mt-4 text-white rounded-2xl p-medium-18 font-poppins tracking-wider uppercase hover:bg-inherit hover:text-slate-700 hover:border border-slate-700 transition-all ease-in duration-300 hover:scale-105'>
+        <div className="flex items-center justify-center mt-5">
+        <button onClick={handleSubmit} className='bg-slate-500 px-8 py-1 text-white rounded-2xl p-medium-18 font-poppins tracking-wider uppercase hover:bg-inherit hover:text-slate-700 hover:border border-slate-700 transition-all ease-in duration-300 hover:scale-105'>
             {buttonDisabled ? "Fill Details": "Login"}
         </button>
         </div>

@@ -15,7 +15,7 @@ import Product from "./pages/product/Product";
 import Wishlist from "./pages/product/Wishlist";
 import Cart from "./pages/product/Cart";
 import UpdateAccount from "./pages/account/UpdateAccount";
-
+import ForgotPassword from "./pages/account/ForgotPassword";
 
 import { getUserDetails } from "./features/user/userSlice";
 import { useEffect } from "react";
@@ -30,16 +30,13 @@ function App() {
   const hideHeaderFooter = hideHeaderAndFooterPaths.includes(location.pathname);
 
 
-
-
   useEffect(()=>{
     dispatch(getUserDetails())
   },[dispatch]);
 
 
 
-
-
+  
   return (
     <>
     {!hideHeaderFooter && <Header/>}
@@ -49,14 +46,16 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/account" element={<ProtectedRoute><Account/></ProtectedRoute>}/>
-        <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>
         <Route path="/products" element={<Product/>}/>
-        <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/about" element={<About/>}/>
         <Route path="/contact" element={<ContactUs/>}/>
         <Route path="/help" element={<HelpFAQ/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path="/cart" element={<Cart/>}/>
+        <Route path="/forgot/password" element={<ForgotPassword/>}/>
+        <Route path="/password/update" element={<UpdatePassword/>}/>
+        <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>
+       
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="*" element={<NotFound/>}/>
     </Routes>

@@ -30,11 +30,11 @@ router.route("/login").post(loginUser);
 
 router.route("/logout").post(isAuthenticatedUser, logout);
 
-router.route("/change-password").post(isAuthenticatedUser, changeUserPassword);
+router.route("/password/change").post(isAuthenticatedUser, changeUserPassword);
 
 router.route('/me').get(isAuthenticatedUser, getCurrentUser);
 
-router.route("/forgot-password").post(forgotPassword);
+router.route("/password/forgot").post(forgotPassword);
 // router.route("/update").put(upload.single("avatar"), (req, res)=>{
 //         console.log("Path", req.file);
 //     })
@@ -42,7 +42,7 @@ router.route("/update").put(isAuthenticatedUser,upload.single("avatar"),updatePr
 
 router.route('/verify-email/:token').put(verifyEmail);
 
-router.route("/reset-password/:token").put(resetPassword);
+router.route("/password/reset/:token").put(resetPassword);
 
 router.route("/admin/all").get(isAuthenticatedUser, authorizeRoles("admin"), getAllUser);
 
