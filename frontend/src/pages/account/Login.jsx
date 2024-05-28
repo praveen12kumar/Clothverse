@@ -84,7 +84,7 @@ const Login = () => {
             <input className='w-full outline-none font-poppins px-2 py-1 bg-inherit'placeholder='Password' required type={pass ? "text" : "password"} value={user.password} onChange={(e)=> setUser({...user, password:e.target.value})} />
             <span className='cursor-pointer' onClick={showPassword}>{user.password && !pass ? <FaEye/> : <FaEyeSlash/>}</span>
         </div>
-        <div className='text-right cursor-pointer' onClick={()=>navigate("/forgot/password")}>
+        <div className='text-right cursor-pointer' onClick={()=>navigate("/password/forgot")}>
             <p className='text-xs font-poppins text-slate-500'>Forgot Password</p>
         </div>
         </form>

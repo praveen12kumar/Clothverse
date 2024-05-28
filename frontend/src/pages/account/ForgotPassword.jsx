@@ -5,6 +5,7 @@ import { clearUserError, clearUserSuccess } from '../../features/user/userSlice'
 import toast from 'react-hot-toast';
 import Loader from '../../components/Loader/Loader';
 import { forgotPassword } from '../../features/user/userSlice';
+import MetaData from '../../utils/MetaData';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
@@ -33,6 +34,8 @@ const ForgotPassword = () => {
 
   return (
    isLoadingUser ? <div className='w-screen h-screen flex items-center justify-center'><Loader/></div>:
+   <>
+   <MetaData title={"Forgot Password"}/>
    <div className='h-screen w-screen'>
    <div className="max-w-80 h-[400px] mx-auto bg-white p-6 mt-28 shadow-lg rounded-lg">
    <h1 className='text-3xl font-medium font-poppins text-center text-slate-600 underline underline-offset-4 '>Forgot Password</h1>
@@ -49,6 +52,7 @@ const ForgotPassword = () => {
    </form>
    </div>
 </div>
+</>
   )
 }
 

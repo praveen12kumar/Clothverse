@@ -16,6 +16,8 @@ import Wishlist from "./pages/product/Wishlist";
 import Cart from "./pages/product/Cart";
 import UpdateAccount from "./pages/account/UpdateAccount";
 import ForgotPassword from "./pages/account/ForgotPassword";
+import ResetPassword from "./pages/account/ResetPassword";
+
 
 import { getUserDetails } from "./features/user/userSlice";
 import { useEffect } from "react";
@@ -26,9 +28,9 @@ import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const hideHeaderAndFooterPaths = ['/login', '/register'];
+  const hideHeaderAndFooterPaths = ['/login', '/register',];
   const hideHeaderFooter = hideHeaderAndFooterPaths.includes(location.pathname);
-
+  console.log(hideHeaderFooter);
 
   useEffect(()=>{
     dispatch(getUserDetails())
@@ -36,7 +38,7 @@ function App() {
 
 
 
-  
+
   return (
     <>
     {!hideHeaderFooter && <Header/>}
@@ -52,11 +54,12 @@ function App() {
         <Route path="/help" element={<HelpFAQ/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path="/cart" element={<Cart/>}/>
-        <Route path="/forgot/password" element={<ForgotPassword/>}/>
+        <Route path="/password/forgot" element={<ForgotPassword/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>
        
         <Route path="/product/:id" element={<ProductDetails/>}/>
+        <Route path="/password/reset/:token" element={<ResetPassword/>}/>
         <Route path="*" element={<NotFound/>}/>
     </Routes>
     {!hideHeaderFooter && <Footer/>}

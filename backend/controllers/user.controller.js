@@ -224,7 +224,7 @@ const forgotPassword = asyncHandler(async(req, res)=>{
 
     await user.save({validateBeforeSave:false});
 
-    const forgotPasswordUrl = `${req.protocol}://${req.get("host")}/api/v1/users/reset-password/${forgotToken}`;
+    const forgotPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${forgotToken}`;
 
     const fMessage = `Your password for forgot token is:- \n\n ${forgotPasswordUrl} \n\n If you have not requested this email then, Please ignore it.`;
 
@@ -251,7 +251,7 @@ const forgotPassword = asyncHandler(async(req, res)=>{
 
 const resetPassword = asyncHandler(async(req, res)=>{
     const{password, confirmPassword} = req.body;
-
+     
     if(password !== confirmPassword){
         throw new ApiError(400,"Password does not match");
     }

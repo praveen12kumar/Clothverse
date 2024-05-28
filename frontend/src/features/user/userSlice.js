@@ -112,6 +112,19 @@ export const forgotPassword = createAsyncThunk("user/forgotPassword", async(emai
 })
 
 
+// reset Password
+export const resetPassword = createAsyncThunk("user/resetPassword", async({token, password, confirmPassword, }, ThunkAPI)=>{
+    try{
+        const {data} = await axios.put(`/api/v1/users/password/reset/${token}`,{password, confirmPassword});
+        console.log(data);
+        return data;
+    }
+    catch(error){
+        return ThunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
+
 
 const userSlice = createSlice({
     name:"user",
@@ -231,7 +244,21 @@ const userSlice = createSlice({
             state.isLoadingUser = false;
             state.userError = action.payload;
         })
-        
+        // reset password
+        .addCase(resetPassword.pending, (state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(resetPassword.fulfilled, (state, action)=>{
+            state.isLoadingUser = false;
+            state.isAuthenticated = false;
+            state.user = action.payload.data.user;
+            state.userSuccess = action.payload.message;
+        })
+        .addCase(resetPassword.rejected, (state, action)=>{
+            state.isLoadingUser = false;
+            state.userError = action.payload;
+        })
+
     }
 })
 
