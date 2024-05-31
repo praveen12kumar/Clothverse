@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    address:null,
+    address:localStorage.getItem("address") ? JSON.parse(localStorage.getItem("address")) : null,
     isLoadingAddress:false,
     addressError:null,
     addressSuccess:false,

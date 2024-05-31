@@ -17,7 +17,7 @@ import Cart from "./pages/product/Cart";
 import UpdateAccount from "./pages/account/UpdateAccount";
 import ForgotPassword from "./pages/account/ForgotPassword";
 import ResetPassword from "./pages/account/ResetPassword";
-
+import ConfirmOrder from "./pages/product/ConfirmOrder";
 
 import { getUserDetails } from "./features/user/userSlice";
 import { useEffect } from "react";
@@ -59,6 +59,7 @@ function App() {
         <Route path="/password/forgot" element={<ForgotPassword/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>
+        <Route path="/order/confirm" element={<ProtectedRoute><ConfirmOrder/></ProtectedRoute>}/>
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="/password/reset/:token" element={<ResetPassword/>}/>
         <Route path="*" element={<NotFound/>}/>
