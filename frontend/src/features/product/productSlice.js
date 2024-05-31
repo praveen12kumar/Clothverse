@@ -48,8 +48,8 @@ export const getProductDetails = createAsyncThunk("products/getProductDetails", 
             }
         }
 
-        const {data} = await axios.get("/api/v1/products/"+id, config);
-        // console.log(data); 
+        const {data} = await axios.get(`/api/v1/products/${id}`, config);
+        console.log(data); 
         return data.data;
 
     } catch (error) {
@@ -98,6 +98,7 @@ const productSlice = createSlice({
         })
         .addCase(getProductDetails.fulfilled, (state, action)=>{
             state.isLoadingProduct = false;
+            console.log(action.payload);
             state.product = action.payload;
         })
 

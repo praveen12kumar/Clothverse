@@ -76,7 +76,9 @@ const Cart = () => {
                     </div>
                     </div>
                     <div className="w-full mt-10">
-                    <button className='w-full text-xs sm:text-sm tablet:text-base p-3 md:py-3 md:px-9 transition-all duration-300  rounded-full bg-black text-white hover:bg-cyan-700'>Place Order</button>
+                    <button className='w-full text-xs sm:text-sm tablet:text-base p-3 md:py-3 md:px-9 transition-all duration-300  rounded-full bg-black text-white hover:bg-cyan-700'
+                        onClick={()=>navigate("/shipping")}
+                    >Place Order</button>
                     </div>
                 </div>
                 

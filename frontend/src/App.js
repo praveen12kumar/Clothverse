@@ -23,6 +23,7 @@ import { getUserDetails } from "./features/user/userSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+import Shipping from "./pages/product/Shipping";
 
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
   const location = useLocation();
   const hideHeaderAndFooterPaths = ['/login', '/register',];
   const hideHeaderFooter = hideHeaderAndFooterPaths.includes(location.pathname);
-  console.log(hideHeaderFooter);
+  
 
   useEffect(()=>{
     dispatch(getUserDetails())
@@ -53,11 +54,11 @@ function App() {
         <Route path="/contact" element={<ContactUs/>}/>
         <Route path="/help" element={<HelpFAQ/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
-        <Route path="/cart" element={<Cart/>}/>
+        <Route path="/cart" element={<ProtectedRoute><Cart/></ProtectedRoute>}/>
+        <Route path="/shipping" element={<ProtectedRoute><Shipping/></ProtectedRoute>}/>
         <Route path="/password/forgot" element={<ForgotPassword/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>
-       
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="/password/reset/:token" element={<ResetPassword/>}/>
         <Route path="*" element={<NotFound/>}/>
