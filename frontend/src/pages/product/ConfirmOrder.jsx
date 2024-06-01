@@ -1,18 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import MetaData from "../../utils/MetaData";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
+import axios from "axios";
+
+
 
 const ConfirmOrder = () => {
   const navigate = useNavigate();
-  const { address } = useSelector((state) => state.address);
+
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const { address, isLoadingAddress } = useSelector((state) => state.address);
   const { user } = useSelector((state) => state.user);
-  const { cartItems, totalCartCost } = useSelector((state) => state.cart);
+  const { cartItems, totalCartCost, isLoadingCart } = useSelector((state) => state.cart);
   const shippingCharge = totalCartCost > 2000 ? 0 : 200;
   const totalTax = (totalCartCost * 0.18).toFixed(2);
   const shippingInfo = `${address?.home}, ${address?.city}, ${address?.state}, ${address?.country}`;
   const finalAmount = Number(totalCartCost) + Number(totalTax) + Number(shippingCharge);
+
+
+  const handlePayment = async()=>{
+      try {
+        const config = {headers:{"Content-Type": "application/json"}}
+            const  { data: { key } } = await axios.get("/api/v1/payment/getkey");
+            const {data :{order}} = await axios.post("/api/v1/payment/create",{amount:totalCartCost+(totalCartCost>2000?0:100)},config);
+
+
+
+
+
+            
+      } catch (error) {
+        
+      }
+  }
+
+
   return (
+    isLoadingAddress || isLoadingCart ? <div className="w-full h-screen flex items-center justify-center">
+      <Loader/>
+    </div>:
     <>
       <MetaData title="Confirm Order" />
       <div className="md:wrapper w-screen h-auto flex lex-col bg-white pb-20">
@@ -113,10 +141,8 @@ const ConfirmOrder = () => {
                 <p className="text-slate-600">₹{finalAmount}</p>
               </div>
               <div className="w-full mt-5">
-                <button className="w-full p-3 bg-orange-600 text-white rounded-lg cursor-pointer hover:bg-cyan-700 transition-colors duration-300 ease-in"
-                    onClick={()=> navigate("/process/payment")}
-                >Place Order</button>
-              </div>
+                    <button className="w-full mt-5 text-sm tablet:text-base p-2 md:py-3 md:px-9 transition-all duration-300  rounded-full bg-slate-600 text-white hover:bg-Purple uppercase" type='submit' onClick={()=>{setIsLoadingButton(true);handlePayment()}}>{isLoadingButton?<img className="mx-auto w-7 h-7" src="/Images/icons/buttonLoaderImage..gif" alt=""/>:<>Proceed to Payment</>}</button>
+                </div>
             </div>
           </div>
         </div>

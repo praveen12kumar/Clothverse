@@ -14,9 +14,7 @@ const newOrder = asyncHandler(async(req,res)=>{
         orderItems,
         paymentInfo,
         itemPrice,
-        taxPrice,
         shippingPrice,
-        totalPrice,
         paidAt: Date.now(),
         user:req.user._id,
     });
