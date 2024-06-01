@@ -24,7 +24,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import Shipping from "./pages/product/Shipping";
-
+import Payment from "./pages/product/Payment";
 
 function App() {
   const dispatch = useDispatch();
@@ -54,6 +54,7 @@ function App() {
         <Route path="/contact" element={<ContactUs/>}/>
         <Route path="/help" element={<HelpFAQ/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
+        <Route path="/payment" element={<ProtectedRoute><Payment/></ProtectedRoute>}/>
         <Route path="/cart" element={<ProtectedRoute><Cart/></ProtectedRoute>}/>
         <Route path="/shipping" element={<ProtectedRoute><Shipping/></ProtectedRoute>}/>
         <Route path="/password/forgot" element={<ForgotPassword/>}/>

@@ -5,22 +5,29 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import Product from "../models/product.models.js";
 
 const newOrder = asyncHandler(async(req,res)=>{
-    const {shippingInfo, orderItems, user, paymentInfo, paidAt,
-        itemPrice, taxPrice, shippingPrice, totalPrice,
+    const {shippingInfo, orderItems, 
+        itemsPrice, shippingPrice,totalPrice
     } = req.body;
+   
 
     const order = await Order.create({
         shippingInfo,
         orderItems,
-        paymentInfo,
-        itemPrice,
+        itemsPrice,
         shippingPrice,
+        totalPrice,
         paidAt: Date.now(),
         user:req.user._id,
     });
 
+    
+
     res.status(200).json(
-        new ApiResponse(200, order, "Order created Successfully")
+        {
+            success:true,
+            order,
+            message:"Order created successfully",
+        }
     )
 });
 
@@ -54,7 +61,7 @@ const getAllOrders = asyncHandler(async(req, res)=>{
     let totalAmount = 0;
 
     orders.forEach((order)=>{
-        totalAmount += order.totalPrice
+        totalAmount += order.shippingPrice
     });
 
     res.status(200).json(

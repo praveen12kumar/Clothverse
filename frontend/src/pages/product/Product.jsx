@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MetaData from "../../utils/MetaData";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllProducts, clearErrors } from "../../features/product/productSlice";
+import { getAllProducts,} from "../../features/product/productSlice";
 import { getAllCategories } from "../../features/product/productSlice";
 import Loader from "../../components/Loader/Loader";
 import ProductCard from "../../components/product/ProductCard";

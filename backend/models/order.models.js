@@ -60,24 +60,23 @@ const orderSchema = new Schema({
         required:true,
     },
     paymentInfo:{
-        id:{
+        paymentId:{
             type:String,
-            required:true,
+           
         },
         status:{
             type:String,
-            required:true,
+          
         },
+        orderId:{
+            type:String
+        }
     },
     paidAt:{
         type:String,
         required:true,
     },
-    itemPrice:{
-        type:Number,
-        default:0
-    },
-    taxPrice:{
+    itemsPrice:{
         type:Number,
         default:0
     },

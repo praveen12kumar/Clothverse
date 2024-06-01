@@ -1,38 +1,93 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../../utils/MetaData";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import axios from "axios";
-
+import toast from "react-hot-toast";
+import { getCartItems } from "../../features/cart/cartSlice";
+import Razorpay from "razorpay";
 
 
 const ConfirmOrder = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const { address, isLoadingAddress } = useSelector((state) => state.address);
+ 
   const { user } = useSelector((state) => state.user);
   const { cartItems, totalCartCost, isLoadingCart } = useSelector((state) => state.cart);
-  const shippingCharge = totalCartCost > 2000 ? 0 : 200;
+  const shippingCharge = totalCartCost > 2000 ? 0 : 100;
   const totalTax = (totalCartCost * 0.18).toFixed(2);
   const shippingInfo = `${address?.home}, ${address?.city}, ${address?.state}, ${address?.country}`;
   const finalAmount = Number(totalCartCost) + Number(totalTax) + Number(shippingCharge);
 
+  console.log("cartItems", cartItems);
 
   const handlePayment = async()=>{
       try {
         const config = {headers:{"Content-Type": "application/json"}}
             const  { data: { key } } = await axios.get("/api/v1/payment/getkey");
-            const {data :{order}} = await axios.post("/api/v1/payment/create",{amount:totalCartCost+(totalCartCost>2000?0:100)},config);
+            const {data:{order}} = await axios.post("/api/v1/payment/create",{amount:totalCartCost+(totalCartCost>2000?0:100)},config);
 
+           const {data:{order:userOrder}} = await axios.post("/api/v1/order/create",{
+            orderItems:cartItems?.map((item)=>({
+              name:item?.name,
+              price:item?.price,
+              image:item?.image,
+              quantity:item?.quantity,
+              product:item?._id
+            })),
+            shippingInfo:{
+              address:address?.home,
+              city:address?.city,
+              state:address?.state,
+              country:address?.country,
+              pincode:address?.pincode,
+              phoneNo:address?.phone,
+            },
+            itemsPrice:totalCartCost,
+            shippingPrice:totalCartCost > 2000 ? 0 : 100,
+            totalPrice:totalCartCost + (totalCartCost>2000?0:100),
+           })
+
+          const options = {
+          key,
+          amount: order?.amount,
+          currency: "INR",
+          name: "Ecommerce",
+          description: "Test Transaction",
+          //image: "https://example.com/logo.png",
+          order_id: order?.id,
+          handler: async function (response) {
+            try {
+              await axios.post("/api/v1/payment/verify",{orderId:userOrder[0]._id});
+              await axios.delete("/api/v1/cart/all");
+              dispatch(getCartItems()).then(()=>{
+                navigate("/payment");
+                setIsLoadingButton(false);
+              })
+              
+            } catch (error) {
+              await axios.delete(`/api/v1/order/${userOrder[0]._id}`);
+              toast.error("Order not placed. You will get refunded in 7 days if more than 7 days. Please try again");
+              setIsLoadingButton(false);
+            }
+          },
+          theme:{
+            color: "#FFFFFF",
+          }
+        };
+
+        const razor = new window.Razorpay(options);
+        razor.open();
 
 
 
 
             
       } catch (error) {
-        
+        console.log("error", error);
       }
   }
 
