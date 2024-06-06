@@ -11,8 +11,6 @@ import { clearErrors, clearMessage } from '../../features/cart/cartSlice';
 const CartProductCard = ({data}) => {
   const dispatch = useDispatch();
   const {cartError, cartMessage} = useSelector(state => state.cart);
-
-  console.log("data",data)
   
   const handleQuantity = (increase)=>{
     const newQuantity = data?.quantity + increase;

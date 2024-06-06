@@ -18,13 +18,17 @@ import UpdateAccount from "./pages/account/UpdateAccount";
 import ForgotPassword from "./pages/account/ForgotPassword";
 import ResetPassword from "./pages/account/ResetPassword";
 import ConfirmOrder from "./pages/product/ConfirmOrder";
+import Shipping from "./pages/product/Shipping";
+import Payment from "./pages/product/Payment";
+import Order from "./pages/order/Order";
+import PaymentSuccess from "./pages/product/PaymentSuccess";
 
 import { getUserDetails } from "./features/user/userSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
-import Shipping from "./pages/product/Shipping";
-import Payment from "./pages/product/Payment";
+
+
 
 function App() {
   const dispatch = useDispatch();
@@ -57,10 +61,12 @@ function App() {
         <Route path="/payment" element={<ProtectedRoute><Payment/></ProtectedRoute>}/>
         <Route path="/cart" element={<ProtectedRoute><Cart/></ProtectedRoute>}/>
         <Route path="/shipping" element={<ProtectedRoute><Shipping/></ProtectedRoute>}/>
+        <Route path="/order"  element={<ProtectedRoute><Order/></ProtectedRoute>}/>
         <Route path="/password/forgot" element={<ForgotPassword/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>
         <Route path="/order/confirm" element={<ProtectedRoute><ConfirmOrder/></ProtectedRoute>}/>
+        <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess/></ProtectedRoute>}/>
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="/password/reset/:token" element={<ResetPassword/>}/>
         <Route path="*" element={<NotFound/>}/>

@@ -6,7 +6,7 @@ import Loader from "../../components/Loader/Loader";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getCartItems } from "../../features/cart/cartSlice";
-import Razorpay from "razorpay";
+import { deleteAllCart } from "../../features/cart/cartSlice";
 
 
 const ConfirmOrder = () => {
@@ -28,9 +28,9 @@ const ConfirmOrder = () => {
       try {
         const config = {headers:{"Content-Type": "application/json"}}
             const  { data: { key } } = await axios.get("/api/v1/payment/getkey");
-            const {data:{order}} = await axios.post("/api/v1/payment/create",{amount:totalCartCost+(totalCartCost>2000?0:100)},config);
-
-           const {data:{order:userOrder}} = await axios.post("/api/v1/order/create",{
+            const {data:{order}} = await axios.post("/api/v1/payment/create",{amount:finalAmount},config);
+            
+            const {data:{order:userOrder}} = await axios.post("/api/v1/order/create",{
             orderItems:cartItems?.map((item)=>({
               name:item?.name,
               price:item?.price,
@@ -51,29 +51,56 @@ const ConfirmOrder = () => {
             totalPrice:totalCartCost + (totalCartCost>2000?0:100),
            })
 
+           
+
           const options = {
           key,
           amount: order?.amount,
           currency: "INR",
-          name: "Ecommerce",
+          name: "E-Shop",
           description: "Test Transaction",
-          //image: "https://example.com/logo.png",
+          image: "https://avatars.githubusercontent.com/u/69430454?s=400&u=b433fa6632c969668143efd853a6ed71c38b08d3&v=4",
           order_id: order?.id,
-          handler: async function (response) {
-            try {
-              await axios.post("/api/v1/payment/verify",{orderId:userOrder[0]._id});
-              await axios.delete("/api/v1/cart/all");
-              dispatch(getCartItems()).then(()=>{
-                navigate("/payment");
-                setIsLoadingButton(false);
-              })
+          //callback_url: `http://localhost:3000/api/v1/payment/verify/${userOrder?._id}`,
+
+            handler: async function (response) {
               
-            } catch (error) {
-              await axios.delete(`/api/v1/order/${userOrder[0]._id}`);
-              toast.error("Order not placed. You will get refunded in 7 days if more than 7 days. Please try again");
-              setIsLoadingButton(false);
-            }
-          },
+              const verify = await axios.post(`/api/v1/payment/verify/${userOrder._id}`, {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              });
+              
+              try {
+                if(verify){
+                   dispatch(deleteAllCart());
+                   setIsLoadingButton(false)
+                }
+                navigate("/payment/success");
+              }
+              catch(error){
+                console.log("error", error);
+              }
+            },
+
+          // handler: async function (response) {
+          //   try {
+          //    console.log("verify bi krlo");
+          //    const verify =   await axios.post("/api/v1/payment/verify",{orderId:userOrder?._id});
+          //     console.log("verify", verify);
+          //     const response = await axios.delete("/api/v1/cart/all");
+          //     console.log("response", response);
+          //     dispatch(getCartItems()).then(()=>{
+          //       navigate("/payment");
+          //       setIsLoadingButton(false);
+          //     })
+              
+          //   } catch (error) {
+          //     await axios.delete(`/api/v1/order/${userOrder?._id}`);
+          //     toast.error("Order not placed. You will get refunded in 7 days if more than 7 days. Please try again");
+          //     setIsLoadingButton(false);
+          //   }
+          // },
           theme:{
             color: "#FFFFFF",
           }
@@ -81,11 +108,7 @@ const ConfirmOrder = () => {
 
         const razor = new window.Razorpay(options);
         razor.open();
-
-
-
-
-            
+             
       } catch (error) {
         console.log("error", error);
       }

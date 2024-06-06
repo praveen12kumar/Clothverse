@@ -53,6 +53,17 @@ export const deleteCartItem = createAsyncThunk("cart/deleteCartItem", async(cart
     }
 })
 
+export const deleteAllCart = createAsyncThunk("cart/deleteAllCart", async(data, ThunkAPI)=>{
+    try{
+        const {data} = await axios.delete("/api/v1/cart/all");
+        console.log("cart data", data);
+        return data; 
+    }
+    catch(error){
+        return ThunkAPI.rejectWithValue(error.response.data);
+    }
+})
+
 export const updateCartItem = createAsyncThunk("cart/updateCartItem", async(cartData, ThunkAPI)=>{
     try {
         const config = {
@@ -136,6 +147,20 @@ const cartSlice = createSlice({
             state.cartItems.push(action.payload);
         })
         .addCase(updateCartItem.rejected, (state, action)=>{
+            state.isLoadingCart = false;
+            state.cartError = action.payload.message;
+        })
+        // delete all cart items
+        .addCase(deleteAllCart.pending, (state)=>{
+            state.isLoadingCart = true;
+        })
+        .addCase(deleteAllCart.fulfilled, (state, action)=>{
+            state.isLoadingCart = false;
+            state.cartItems = [];
+            state.cartCount = 0;
+            state.totalCartCost = 0;
+        })
+        .addCase(deleteAllCart.rejected, (state, action)=>{
             state.isLoadingCart = false;
             state.cartError = action.payload.message;
         })

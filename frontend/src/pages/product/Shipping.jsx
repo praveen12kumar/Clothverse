@@ -66,7 +66,6 @@ const Shipping = () => {
     }
     // check the stock of the product
     cartItems.forEach((item)=>{
-      console.log(item)
       if(item?.product?.stock < item.quantity){
         toast.error("Insufficient Stock");
         setIsLoadingButton(false);
