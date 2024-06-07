@@ -82,12 +82,6 @@ const OrderDetails = () => {
                             </h2>
                         </div>
                         <div className="p-1 sm:px-4 flex justify-between flex-wrap">
-                            <h1 className="w-fit font-medium">Color :</h1>
-                            <h2 className="w-fit capitalize">
-                            {item.color}
-                            </h2>
-                        </div>
-                        <div className="p-1 sm:px-4 flex justify-between flex-wrap">
                             <h1 className="w-fit font-medium">Total :</h1>
                             <h2 className="w-fit capitalize">
                             ₹{item.price*item.quantity}

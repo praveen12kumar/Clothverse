@@ -25,6 +25,7 @@ import PaymentSuccess from "./pages/product/PaymentSuccess";
 import OrderDetails from "./pages/order/OrderDetails";
 
 import { getUserDetails } from "./features/user/userSlice";
+import { getCartItems } from "./features/cart/cartSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
@@ -40,6 +41,7 @@ function App() {
 
   useEffect(()=>{
     dispatch(getUserDetails())
+    dispatch(getCartItems())
   },[dispatch]);
 
 

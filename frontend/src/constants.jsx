@@ -8,10 +8,6 @@ export const headerLinks = [
       route: '/products',
     },
     {
-      label: 'Blog',
-      route: '/blog',
-    },
-    {
         label:'About',
         route:'/about'
     },
