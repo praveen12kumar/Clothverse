@@ -25,6 +25,16 @@ export const getOrderDetails = createAsyncThunk("orders/getOrderDetails", async 
     try {
         const {data} = await axios.get(`/api/v1/order/${id}`);
         console.log(data);
+        return data.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data.message);
+    }
+})
+
+export const deleteOrder = createAsyncThunk("orders/deleteOrder", async (id, {rejectWithValue})=>{
+    try {
+        const {data} = await axios.delete(`/api/v1/order/${id}`);
+        return data;
     } catch (error) {
         return rejectWithValue(error.response.data.message);
     }
@@ -63,6 +73,18 @@ const orderSlice = createSlice({
             state.order = action.payload;
         })
         .addCase(getOrderDetails.rejected, (state, action)=>{
+            state.isLoadingOrder = false;
+            state.orderError = action.payload;
+        })
+        .addCase(deleteOrder.pending, (state)=>{
+            state.isLoadingOrder = true;
+        })
+        .addCase(deleteOrder.fulfilled, (state, action)=>{
+            state.isLoadingOrder = false;
+            state.orders = state.orders.filter(order=>order._id !== action.payload._id);
+            state.totalOrderCount = state.orders.length;
+        })
+        .addCase(deleteOrder.rejected, (state, action)=>{
             state.isLoadingOrder = false;
             state.orderError = action.payload;
         })

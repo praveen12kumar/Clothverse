@@ -33,9 +33,9 @@ const newOrder = asyncHandler(async(req,res)=>{
 
 
 
-const getSingleUser = asyncHandler(async(req, res)=>{
-    const order = await Order.findById(req.params.id).populate("user","name email");
-    console.log(order);
+const getOrderDetails = asyncHandler(async(req, res)=>{
+    const order = await Order.findOne({_id:req.params.id, user:req.user._id});
+    
     if(!order){
         throw new ApiError(404, "Order not found");
     }
@@ -48,10 +48,20 @@ const getSingleUser = asyncHandler(async(req, res)=>{
 
 // get logged in user Order
 const myOrders = asyncHandler(async(req, res)=>{
-    const orders = await Order.find({user:req.user._id});
+    const orderPerPage = 10;
+    let orders = await Order.find({user:req.user._id,}).sort("createdAt");
+    
+    const totalOrders = orders.length;
+    orders = await Order.find({user:req.user._id, "paymentInfo.status":"done"}).sort({"createdAt":-1}).skip(orderPerPage*(req.query.page-1)).limit(orderPerPage);
+
 
     res.status(200).json(
-        new ApiResponse(200, orders, "All user orders")
+       {
+        success:true,
+        orders,
+        totalOrders,
+        orderPerPage,
+       }
     )
 });
 
@@ -128,7 +138,7 @@ const updateOrder = asyncHandler(async (req, res, next) => {
 
 export {
     newOrder,
-    getSingleUser,
+    getOrderDetails,
     myOrders,
     getAllOrders,
     updateOrder,

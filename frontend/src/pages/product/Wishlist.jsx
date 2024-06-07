@@ -38,7 +38,7 @@ const Wishlist = () => {
                     <div className="w-full border-solid border-grey3 border-[1px] flex flex-col items-center h-max p-2 md:p-5">
                         <TbFaceIdError className='text-[150px] md:text-[250px]'/>
                         <span className="text-2xl font-bold">No items in Your Wishlist</span>
-                        <button className="w-max mt-5 text-xs sm:text-sm tablet:text-base p-3 md:py-3 md:px-9 transition-all duration-300  rounded-full bg-bg-black text-white hover:bg-Purple uppercase" onClick={()=>navigate("/products?s=&price=[0]&color=&category=null&page=1&sortBy=null")}>Continue Shopping</button>
+                        <button className="w-max mt-5 text-xs sm:text-sm md:text-base p-3 md:py-3 md:px-9 transition-all duration-300  rounded-full bg-black text-white hover:bg-cyan-700 uppercase" onClick={()=>navigate("/products?s=&price=[0]&color=&category=null&page=1&sortBy=null")}>Continue Shopping</button>
                     </div>
                 </div>}
             </div>

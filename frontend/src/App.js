@@ -22,6 +22,7 @@ import Shipping from "./pages/product/Shipping";
 import Payment from "./pages/product/Payment";
 import Order from "./pages/order/Order";
 import PaymentSuccess from "./pages/product/PaymentSuccess";
+import OrderDetails from "./pages/order/OrderDetails";
 
 import { getUserDetails } from "./features/user/userSlice";
 import { useEffect } from "react";
@@ -68,6 +69,7 @@ function App() {
         <Route path="/order/confirm" element={<ProtectedRoute><ConfirmOrder/></ProtectedRoute>}/>
         <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess/></ProtectedRoute>}/>
         <Route path="/product/:id" element={<ProductDetails/>}/>
+        <Route path="/order/:id" element={<ProtectedRoute><OrderDetails/></ProtectedRoute>}/>
         <Route path="/password/reset/:token" element={<ResetPassword/>}/>
         <Route path="*" element={<NotFound/>}/>
     </Routes>

@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../../utils/MetaData";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { getCartItems } from "../../features/cart/cartSlice";
 import { deleteAllCart } from "../../features/cart/cartSlice";
-
+import { deleteOrder } from "../../features/order/orderSlice";
 
 const ConfirmOrder = () => {
   const navigate = useNavigate();
@@ -17,12 +16,13 @@ const ConfirmOrder = () => {
  
   const { user } = useSelector((state) => state.user);
   const { cartItems, totalCartCost, isLoadingCart } = useSelector((state) => state.cart);
+  const {orderError} = useSelector((state)=>state.order);
+
   const shippingCharge = totalCartCost > 2000 ? 0 : 100;
   const totalTax = (totalCartCost * 0.18).toFixed(2);
   const shippingInfo = `${address?.home}, ${address?.city}, ${address?.state}, ${address?.country}`;
   const finalAmount = Number(totalCartCost) + Number(totalTax) + Number(shippingCharge);
 
-  console.log("cartItems", cartItems);
 
   const handlePayment = async()=>{
       try {
@@ -79,28 +79,10 @@ const ConfirmOrder = () => {
                 navigate("/payment/success");
               }
               catch(error){
-                console.log("error", error);
+                dispatch(deleteOrder(userOrder._id));
+                setIsLoadingButton(false);
               }
-            },
-
-          // handler: async function (response) {
-          //   try {
-          //    console.log("verify bi krlo");
-          //    const verify =   await axios.post("/api/v1/payment/verify",{orderId:userOrder?._id});
-          //     console.log("verify", verify);
-          //     const response = await axios.delete("/api/v1/cart/all");
-          //     console.log("response", response);
-          //     dispatch(getCartItems()).then(()=>{
-          //       navigate("/payment");
-          //       setIsLoadingButton(false);
-          //     })
-              
-          //   } catch (error) {
-          //     await axios.delete(`/api/v1/order/${userOrder?._id}`);
-          //     toast.error("Order not placed. You will get refunded in 7 days if more than 7 days. Please try again");
-          //     setIsLoadingButton(false);
-          //   }
-          // },
+            },  
           theme:{
             color: "#FFFFFF",
           }
@@ -114,6 +96,16 @@ const ConfirmOrder = () => {
       }
   }
 
+
+  useEffect(()=>{
+    if(orderError){
+      toast.error(orderError);
+    }
+  },[orderError])
+
+  useEffect(()=>{
+    window.scrollTo({top:0,behavior:"smooth"});
+  },[])
 
   return (
     isLoadingAddress || isLoadingCart ? <div className="w-full h-screen flex items-center justify-center">
