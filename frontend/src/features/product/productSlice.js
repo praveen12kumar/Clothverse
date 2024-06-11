@@ -74,22 +74,35 @@ export const getProductDetails = createAsyncThunk("products/getProductDetails", 
 })
 
 
-export const getAllCategories = createAsyncThunk("products/getAllCategories", async()=>{
+export const getAllCategories = createAsyncThunk("products/getAllCategories", async(data, ThunkApi)=>{
     try {
         const {data} = await axios.get("/api/v1/products/categories");
         return data.data;
     } catch (error) {
         console.log(error);
+        return ThunkApi.rejectWithValue(error.response.data)
     }
 })
 
 
-export const getAdminProducts = createAsyncThunk("products/getAdminProducts", async()=>{
+export const getAdminProducts = createAsyncThunk("products/getAdminProducts", async(data, ThunkApi)=>{
     try {
         const {data} = await axios.get("/api/v1/admin/products/all");
         return data.data;
     } catch (error) {
         console.log(error);
+        return ThunkApi.rejectWithValue(error.response.data)
+    }
+})
+
+export const deleteProduct = createAsyncThunk("products/deleteProduct", async(id, ThunkApi)=>{
+    try {
+        console.log("id", id);
+        const {data} = await axios.delete(`/api/v1/admin/product/${id}`); 
+        console.log("data", data);  
+        return data.data;
+    } catch (error) {
+        return ThunkApi.rejectWithValue(error.response.data)
     }
 })
 
@@ -128,7 +141,7 @@ const productSlice = createSlice({
         })
         .addCase(adminCreateProduct.rejected, (state, action)=>{
             state.isLoadingProduct = false;
-            state.error = action.payload;
+            state.error = action.payload.message;
         })
 
         // get product details
@@ -168,6 +181,19 @@ const productSlice = createSlice({
         .addCase(getAdminProducts.rejected, (state, action)=>{
             state.isLoadingProduct = false;
             state.error = action.payload
+        })
+
+        // delete Product
+        .addCase(deleteProduct.pending, (state)=>{
+            state.isLoadingProduct = true;
+        })
+        .addCase(deleteProduct.fulfilled, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.products = state.products.filter((product)=> product._id !== action.payload._id)
+        })
+        .addCase(deleteProduct.rejected, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.error = action.payload;
         })
 
     }

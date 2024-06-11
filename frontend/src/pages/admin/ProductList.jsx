@@ -4,10 +4,9 @@ import MetaData from '../../utils/MetaData';
 import { useSelector, useDispatch } from 'react-redux';
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
-import { getAdminProducts, clearErrors } from '../../features/product/productSlice';
+import { getAdminProducts, clearErrors, deleteProduct } from '../../features/product/productSlice';
 import toast from 'react-hot-toast';
 import DashboardSidebar from '../../components/sidebar/DashboardSidebar';
-
 
 
 const ProductList = () => {
@@ -40,7 +39,14 @@ const ProductList = () => {
     const startIndex = (currentPage-1)*productsPerPage;
     const endIndex = startIndex + productsPerPage;
     const itemsToDisplay = products.slice(startIndex, endIndex);
-  
+    
+    const deleteProductHandler = (id)=>{
+        console.log("delete prdocut");
+        dispatch(deleteProduct(id)).then(()=>{
+            toast.success('Product deleted successfully')
+        })
+        dispatch(getAdminProducts());
+    }
     
     useEffect(()=>{
         if(error){
@@ -87,7 +93,7 @@ const ProductList = () => {
                                     <p className='text-sm font-medium font-roboto'>Actions</p>
                                     <div className="flex gap-2">
                                         <span className='text-lg text-green-600 cursor-pointer'><MdEdit/></span>
-                                        <span className='text-lg text-red-600 cursor-pointer'><MdDelete/></span>
+                                        <span className='text-lg text-red-600 cursor-pointer' onClick={()=>deleteProductHandler(item?._id)} ><MdDelete/></span>
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +120,7 @@ const ProductList = () => {
                             <p className='w-24 text-[12px] text-center font-roboto'>₹{item?.price}</p>
                             <div className="flex items-center">
                                 <Link to={`/admin/product/${item?._id}`}><span className='text-lg text-green-600 cursor-pointer'><MdEdit/></span></Link>
-                                <span className='text-lg text-red-600 cursor-pointer ml-5'><MdDelete/></span>
+                                <span className='text-lg text-red-600 cursor-pointer ml-5' onClick={()=>deleteProductHandler(item?._id)} ><MdDelete/></span>
                             </div>
                         </div>
                     ))
