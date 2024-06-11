@@ -61,20 +61,6 @@ const ProductDetail = ({ data }) => {
     setLiked(!liked);
   };
 
-
-  // useEffect(()=>{
-  //   if(cartError){
-  //     toast.error(cartError);
-  //     dispatch(clearErrors());
-  //   }
-  //   if(cartMessage){
-  //     toast.success(cartMessage);
-  //     dispatch(clearMessage());
-  //   }
-  // },[dispatch, cartError, cartMessage])
-
-
-
   useEffect(() => {
     dispatch(setLoadingWishlist());
     dispatch(getWishlistItem());
@@ -150,14 +136,14 @@ const ProductDetail = ({ data }) => {
                  {
                   inCart ?  <button
                   type="button"
-                  className="w-full md:w-[70%]  mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700"
+                  className="w-full md:w-[90%]  mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700"
                   onClick={()=>navigate("/cart")}
                 >
                   Go to Cart
                 </button>:
                  <button
                  type="button"
-                 className="w-full md:w-[70%]  mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700"
+                 className="w-full md:w-[90%]  mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700"
                  onClick={handleAddToCart}
                >
                  Add to Cart
@@ -176,11 +162,11 @@ const ProductDetail = ({ data }) => {
                 className={`w-full flex justify-center mx-auto `}
               >
                 {liked ? (
-                  <button className="w-full md:w-[70%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700">
+                  <button className="w-full md:w-[90%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-slate-700 text-white bg-cyan-700">
                     Remove from Wishlist
                   </button>
                 ) : (
-                  <button className="w-full md:w-[70%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-cyan-700 text-white bg-slate-700">
+                  <button className="w-full md:w-[90%] mx-auto text-sm md:text-base py-3 px-10 md:px-9 rounded-full  transition-all duration-300 hover:bg-cyan-700 text-white bg-slate-700">
                     Add to Wishlist
                   </button>
                 )}

@@ -40,6 +40,22 @@ export const getAllProducts = createAsyncThunk("products/getAllProducts", async(
 })
 
 
+export const adminCreateProduct = createAsyncThunk("products/adminCreateProduct", async(formData, ThunkApi)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-Type":"multipart/form-data"
+            }
+        }
+        const {data} = await axios.post("/api/v1/admin/product/new", formData, config);
+        console.log("data", data);
+        return data.data;
+    }catch(error){
+        return ThunkApi.rejectWithValue(error.response.data)
+    }
+})
+
+
 export const getProductDetails = createAsyncThunk("products/getProductDetails", async(id, ThunkApi)=>{
     try {
         const config = {
@@ -61,6 +77,16 @@ export const getProductDetails = createAsyncThunk("products/getProductDetails", 
 export const getAllCategories = createAsyncThunk("products/getAllCategories", async()=>{
     try {
         const {data} = await axios.get("/api/v1/products/categories");
+        return data.data;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+
+export const getAdminProducts = createAsyncThunk("products/getAdminProducts", async()=>{
+    try {
+        const {data} = await axios.get("/api/v1/admin/products/all");
         return data.data;
     } catch (error) {
         console.log(error);
@@ -92,6 +118,19 @@ const productSlice = createSlice({
             state.error = action.payload;
         })
 
+        // create product
+        .addCase(adminCreateProduct.pending, (state)=>{
+            state.isLoadingProduct = true;
+        })
+        .addCase(adminCreateProduct.fulfilled, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.products = [...state.products, action.payload];
+        })
+        .addCase(adminCreateProduct.rejected, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.error = action.payload;
+        })
+
         // get product details
         .addCase(getProductDetails.pending, (state)=>{
             state.isLoadingProduct = true;
@@ -115,6 +154,18 @@ const productSlice = createSlice({
             state.categories = action.payload;
         })
         .addCase(getAllCategories.rejected, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.error = action.payload
+        })
+
+        .addCase(getAdminProducts.pending, (state)=>{
+            state.isLoadingProduct = true;
+        })
+        .addCase(getAdminProducts.fulfilled, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.products = action.payload;
+        })
+        .addCase(getAdminProducts.rejected, (state, action)=>{
             state.isLoadingProduct = false;
             state.error = action.payload
         })

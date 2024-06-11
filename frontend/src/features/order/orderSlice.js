@@ -40,6 +40,17 @@ export const deleteOrder = createAsyncThunk("orders/deleteOrder", async (id, {re
     }
 })
 
+export const getAdminOrders = createAsyncThunk("orders/getAdminOrders", async (page, {rejectWithValue})=>{
+    try {
+       
+        const {data} = await axios.get("/api/v1/admin/orders");
+        console.log(data);
+        return data.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data.message);
+    }
+})
+
 
 const orderSlice = createSlice({
     name:"orders",
@@ -85,6 +96,18 @@ const orderSlice = createSlice({
             state.totalOrderCount = state.orders.length;
         })
         .addCase(deleteOrder.rejected, (state, action)=>{
+            state.isLoadingOrder = false;
+            state.orderError = action.payload;
+        })
+
+        .addCase(getAdminOrders.pending, (state)=>{
+            state.isLoadingOrder = true;
+        })
+        .addCase(getAdminOrders.fulfilled, (state, action)=>{
+            state.isLoadingOrder = false;
+            state.orders = action.payload;
+        })
+        .addCase(getAdminOrders.rejected, (state, action)=>{
             state.isLoadingOrder = false;
             state.orderError = action.payload;
         })

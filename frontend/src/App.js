@@ -23,6 +23,10 @@ import Payment from "./pages/product/Payment";
 import Order from "./pages/order/Order";
 import PaymentSuccess from "./pages/product/PaymentSuccess";
 import OrderDetails from "./pages/order/OrderDetails";
+import Dashboard from "./pages/admin/Dashboard";
+import ProductList from "./pages/admin/ProductList";
+import NewProduct from "./pages/admin/NewProduct";
+
 
 import { getUserDetails } from "./features/user/userSlice";
 import { getCartItems } from "./features/cart/cartSlice";
@@ -65,6 +69,9 @@ function App() {
         <Route path="/cart" element={<ProtectedRoute><Cart/></ProtectedRoute>}/>
         <Route path="/shipping" element={<ProtectedRoute><Shipping/></ProtectedRoute>}/>
         <Route path="/order"  element={<ProtectedRoute><Order/></ProtectedRoute>}/>
+        <Route path="/admin/dashboard" element={<ProtectedRoute isAdmin={true}  ><Dashboard/></ProtectedRoute>}/>
+        <Route path="/admin/products" element={<ProtectedRoute isAdmin={true}  ><ProductList/></ProtectedRoute>}/>
+        <Route path="/admin/product" element={<ProtectedRoute isAdmin={true}  ><NewProduct/></ProtectedRoute>}/>
         <Route path="/password/forgot" element={<ForgotPassword/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>

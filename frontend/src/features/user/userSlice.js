@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
     isLoadingUser:true,
     user:{},
+    allUsers:[],
     userError:null,
     userSuccess:null,
     isAuthenticated:false,
@@ -104,7 +105,7 @@ export const forgotPassword = createAsyncThunk("user/forgotPassword", async(emai
             }
         }        
         const {data} = await axios.post("/api/v1/users/password/forgot", email, config);
-        console.log(data)
+        //console.log(data)
         return data.message;        
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response.data.message);
@@ -116,10 +117,21 @@ export const forgotPassword = createAsyncThunk("user/forgotPassword", async(emai
 export const resetPassword = createAsyncThunk("user/resetPassword", async({token, password, confirmPassword, }, ThunkAPI)=>{
     try{
         const {data} = await axios.put(`/api/v1/users/password/reset/${token}`,{password, confirmPassword});
-        console.log(data);
+        //console.log(data);
         return data;
     }
     catch(error){
+        return ThunkAPI.rejectWithValue(error.response.data.message);
+    }
+});
+
+
+export const getAllUsers = createAsyncThunk("user/getAllUsers", async(data, ThunkAPI)=>{
+    try {
+        const {data} = await axios.get("/api/v1/users/admin/all");
+        //console.log(data);
+        return data.data;
+    } catch (error) {
         return ThunkAPI.rejectWithValue(error.response.data.message);
     }
 })
@@ -255,6 +267,18 @@ const userSlice = createSlice({
             state.userSuccess = action.payload.message;
         })
         .addCase(resetPassword.rejected, (state, action)=>{
+            state.isLoadingUser = false;
+            state.userError = action.payload;
+        })
+
+        .addCase(getAllUsers.pending, (state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(getAllUsers.fulfilled, (state, action)=>{
+            state.isLoadingUser = false;
+            state.allUsers = action.payload;
+        })
+        .addCase(getAllUsers.rejected, (state, action)=>{
             state.isLoadingUser = false;
             state.userError = action.payload;
         })
