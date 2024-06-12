@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-
+import {v2 as cloudinary} from 'cloudinary';
 
 const createProduct = asyncHandler(async(req, res)=>{
     const {name, description,originalPrice,price, discount, category, color, stock} = req.body;
@@ -16,6 +16,8 @@ const createProduct = asyncHandler(async(req, res)=>{
     //Images uploaded to cloudinary
 
     let uploadImageUrls = [];
+    //console.log(req.files);
+
     for(let i = 0; i < req.files.length; i++){
         const imageUrl = await uploadOnCloudinary(req.files[i].path);
 
@@ -24,9 +26,6 @@ const createProduct = asyncHandler(async(req, res)=>{
             url:imageUrl.secure_url,
         })
     };
-
-
-
 
     const product = await Product.create({
         name, 
@@ -102,29 +101,81 @@ const getAllProducts = asyncHandler(async(req, res) => {
 });
 
 
+const getAdminProducts = asyncHandler(async(req, res)=>{
+    // const {page} =Number( req.query.page) || 1;
+    // const limit = Number(process.env.PRODUCT_PER_PAGE) || 8;
+    // const skip = (page - 1) * limit;
+
+    const products = await Product.find()
+    res.status(200).json(
+        new ApiResponse(200, products, "All Products")
+    )
+})
+
+
 const updateProduct = asyncHandler(async(req, res)=>{
+    
     let product = await Product.findById(req.params.id);
+    
+    cloudinary.config({ 
+        cloud_name: process.env.NAME,
+        api_key: process.env.API_KEY,
+        api_secret: process.env.API_SECRET,
+      });  
+
     if(!product){
         throw new ApiError(404, "product not found")
     }
+    // if images are already there 
+
+    if(product.images.length > 0){
+        for(let i = 0; i < product.images.length; i++){
+            await cloudinary.uploader.destroy(product.images[i].public_id);
+        }   
+    
+    let uploadImageUrls = [];
+    //console.log(req.files);
+
+    for(let i = 0; i < req.files.length; i++){
+        const imageUrl = await uploadOnCloudinary(req.files[i].path);
+
+        uploadImageUrls.push({
+            public_id:imageUrl.public_id,
+            url:imageUrl.secure_url,
+        })
+    };
+    req.body.images = uploadImageUrls;
+}
 
     product  = await Product.findByIdAndUpdate(req.params.id, req.body, {new:true});
-
+    //console.log("final product", product);
     res.status(200).json(
         new ApiResponse(200, product, "product updated successfully")
     )
 })
 
+
 const deleteProduct = asyncHandler(async(req, res)=>{
     const product = await Product.findById(req.params.id);
+    cloudinary.config({ 
+        cloud_name: process.env.NAME,
+        api_key: process.env.API_KEY,
+        api_secret: process.env.API_SECRET,
+      });  
+
     if(!product){
         throw new ApiError(404, "product not found")
     }
 
-    await Product.findByIdAndDelete(req.params.id);
+    // delete images from cloudinary
+    for(let i = 0; i < product.images.length; i++){
+        await cloudinary.uploader.destroy(product.images[i].public_id);
+    }
+
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
 
     res.status(200).json(
-        new ApiResponse(200, "product deleted successfully")
+        new ApiResponse(200, deletedProduct, "product deleted successfully")
     )
 })
 
@@ -239,6 +290,7 @@ const deleteReview = asyncHandler(async(req, res)=>{
 })
 
 
+
 export {
     createProduct, 
     getAllProducts,
@@ -250,4 +302,5 @@ export {
     createProductReview,
     getProductReviews,
     deleteReview,
+    getAdminProducts
 };

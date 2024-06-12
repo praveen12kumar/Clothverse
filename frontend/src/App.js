@@ -26,6 +26,9 @@ import OrderDetails from "./pages/order/OrderDetails";
 import Dashboard from "./pages/admin/Dashboard";
 import ProductList from "./pages/admin/ProductList";
 import NewProduct from "./pages/admin/NewProduct";
+import OrderList from "./pages/admin/OrderList";
+import UpdateProduct from "./pages/admin/UpdateProduct";
+
 
 
 import { getUserDetails } from "./features/user/userSlice";
@@ -72,6 +75,7 @@ function App() {
         <Route path="/admin/dashboard" element={<ProtectedRoute isAdmin={true}  ><Dashboard/></ProtectedRoute>}/>
         <Route path="/admin/products" element={<ProtectedRoute isAdmin={true}  ><ProductList/></ProtectedRoute>}/>
         <Route path="/admin/product" element={<ProtectedRoute isAdmin={true}  ><NewProduct/></ProtectedRoute>}/>
+        <Route path="/admin/orders" element={<ProtectedRoute isAdmin={true}  ><OrderList/></ProtectedRoute>}/>
         <Route path="/password/forgot" element={<ForgotPassword/>}/>
         <Route path="/password/update" element={<UpdatePassword/>}/>
         <Route path="/account/update" element={<ProtectedRoute><UpdateAccount/></ProtectedRoute>}/>
@@ -80,6 +84,8 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="/order/:id" element={<ProtectedRoute><OrderDetails/></ProtectedRoute>}/>
         <Route path="/password/reset/:token" element={<ResetPassword/>}/>
+        <Route path="/admin/product/:id" element={<ProtectedRoute isAdmin={true}><UpdateProduct/></ProtectedRoute>}/>
+        
         <Route path="*" element={<NotFound/>}/>
     </Routes>
     {!hideHeaderFooter && <Footer/>}

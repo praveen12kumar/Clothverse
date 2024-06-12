@@ -65,7 +65,7 @@ export const getProductDetails = createAsyncThunk("products/getProductDetails", 
         }
 
         const {data} = await axios.get(`/api/v1/products/${id}`, config);
-        console.log(data); 
+        //console.log(data); 
         return data.data;
 
     } catch (error) {
@@ -91,20 +91,39 @@ export const getAdminProducts = createAsyncThunk("products/getAdminProducts", as
         return data.data;
     } catch (error) {
         console.log(error);
-        return ThunkApi.rejectWithValue(error.response.data)
+        return ThunkApi.rejectWithValue(error.response.data.message)
     }
 })
 
 export const deleteProduct = createAsyncThunk("products/deleteProduct", async(id, ThunkApi)=>{
     try {
-        console.log("id", id);
+       
         const {data} = await axios.delete(`/api/v1/admin/product/${id}`); 
-        console.log("data", data);  
+        //console.log("data", data);  
         return data.data;
     } catch (error) {
-        return ThunkApi.rejectWithValue(error.response.data)
+        return ThunkApi.rejectWithValue(error.response.data.message)
     }
-})
+});
+
+export const updateProduct = createAsyncThunk("products/updateProduct", async ({id,formData}, ThunkApi) => {
+    console.log(id);
+    try {
+        // Iterate over FormData entries
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        };
+        const {data} = await axios.put(`/api/v1/admin/product/${id}`, formData, config);
+        console.log("data", data);
+        return data.data;
+    } catch (error) {
+        console.error('Error updating product:', error);
+        return ThunkApi.rejectWithValue(error.response.data.message);
+    }
+});
+
 
 
 const productSlice = createSlice({
@@ -150,7 +169,6 @@ const productSlice = createSlice({
         })
         .addCase(getProductDetails.fulfilled, (state, action)=>{
             state.isLoadingProduct = false;
-            console.log(action.payload);
             state.product = action.payload;
         })
 
@@ -192,6 +210,19 @@ const productSlice = createSlice({
             state.products = state.products.filter((product)=> product._id !== action.payload._id)
         })
         .addCase(deleteProduct.rejected, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.error = action.payload;
+        })
+
+        // update product
+        .addCase(updateProduct.pending, (state)=>{
+            state.isLoadingProduct = true;
+        })
+        .addCase(updateProduct.fulfilled, (state, action)=>{
+            state.isLoadingProduct = false;
+            state.products = state.products.map((product)=> product._id === action.payload._id ? action.payload : product)
+        })
+        .addCase(updateProduct.rejected, (state, action)=>{
             state.isLoadingProduct = false;
             state.error = action.payload;
         })

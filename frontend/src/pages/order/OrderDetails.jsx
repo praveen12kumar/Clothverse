@@ -118,15 +118,15 @@ const OrderDetails = () => {
                             <h1 className="text-base md:text-lg mb-2">Shipping:</h1>
                             <div className="grid grid-col-1 md:grid-cols-2 gap-2 md:gap-4">
                                     <div className="font-medium">Phone Number</div>
-                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order.shippingInfo?.phoneNo}</span></div>
+                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order?.shippingInfo?.phoneNo}</span></div>
                                     <div className="font-medium">House No./Building Name</div>
-                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order.shippingInfo?.address}</span></div>
+                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order?.shippingInfo?.address}</span></div>
                                     <div className="font-medium">Road name/Area/Colony</div>
-                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order.shippingInfo?.city}</span></div>
+                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order?.shippingInfo?.city}</span></div>
                                     <div className="font-medium">State</div>
-                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order.shippingInfo?.state}</span></div>
+                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order?.shippingInfo?.state}</span></div>
                                     <div className="font-medium">PinCode</div>
-                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order.shippingInfo?.pincode}</span></div>
+                                    <div className="flex"> <span className="mr-2 hidden md:inline">:</span><span className="">{order?.shippingInfo?.pincode}</span></div>
                                 
                             </div>
                         </div>

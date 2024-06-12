@@ -7,14 +7,14 @@ import { MdEdit } from "react-icons/md";
 import { getAdminProducts, clearErrors, deleteProduct } from '../../features/product/productSlice';
 import toast from 'react-hot-toast';
 import DashboardSidebar from '../../components/sidebar/DashboardSidebar';
-
+import Loader from '../../components/Loader/Loader';
 
 const ProductList = () => {
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(8);
     const [totalPage, setTotalPage] = useState(0);
-    const {error, products} = useSelector(state=> state.products);
+    const {error, products, isLoadingProduct} = useSelector(state=> state.products);
     
     const handlePageChange = (e)=>{
         setCurrentPage(e)
@@ -44,8 +44,8 @@ const ProductList = () => {
         console.log("delete prdocut");
         dispatch(deleteProduct(id)).then(()=>{
             toast.success('Product deleted successfully')
-        })
-        dispatch(getAdminProducts());
+            dispatch(getAdminProducts());
+        })   
     }
     
     useEffect(()=>{
@@ -60,6 +60,7 @@ const ProductList = () => {
 
     
   return (
+    isLoadingProduct ? <div className="h-screen w-screen flex justify-center items-center"><Loader/></div> :
     <>
     <MetaData title={'Admin - All Products'} />
     <div className="w-screen min-h-screen flex-shrink-0">
@@ -104,7 +105,7 @@ const ProductList = () => {
             <div className="hidden md:block">
                 {/* // desktop view */}
                <div className="flex items-center justify-between text-base font-medium font-roboto bg-orange-600 p-4 text-white">
-                    <p>Product ID</p>
+                    <p className='w-40 text-center'>Product ID</p>
                     <p className='max-w-[450px] w-[400px]  text-center'>Product Name</p>
                     <p className='w-24 text-center'>Stock</p>
                     <p className='w-24 text-center'>Price</p>
@@ -113,7 +114,7 @@ const ProductList = () => {
                <div className="">
                 {
                     itemsToDisplay && itemsToDisplay?.map((item)=>(
-                        <div className="my-5 font-poppins flex items-center gap-6 border border-slate-400 p-3 hover:bg-gray-400 hover:text-white transition-colors duration-300 ease-in rounded-md">
+                        <div className="my-5 font-poppins flex items-center gap-10 border border-slate-400 p-3 hover:bg-gray-400 hover:text-white transition-colors duration-300 ease-in rounded-md">
                             <p className='text-[12px]'>{item?._id}</p>
                             <p className='max-w-[450px] w-[400px]  text-[12px] font-poppins  truncate overflow-hidden'>{item?.name}</p>
                             <p className='w-24 text-[12px] text-center'>{item?.stock}</p> 

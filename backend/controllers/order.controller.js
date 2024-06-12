@@ -68,14 +68,9 @@ const myOrders = asyncHandler(async(req, res)=>{
 //\get all Orders --Admin
 const getAllOrders = asyncHandler(async(req, res)=>{
     const orders = await Order.find();
-    let totalAmount = 0;
-
-    orders.forEach((order)=>{
-        totalAmount += order.shippingPrice
-    });
 
     res.status(200).json(
-        new ApiResponse(200, {orders,totalAmount}, "All Orders")
+        new ApiResponse(200, orders, "All Orders")
     )
 });
 

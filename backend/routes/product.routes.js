@@ -7,7 +7,7 @@ import {
     getProductDetails,
     getAllCategories,
     getLatestProducts,
-   
+    getAdminProducts
 
 
 } from "../controllers/product.controller.js";
@@ -25,8 +25,10 @@ router.route("/products/categories").get(getAllCategories);
 
 router.route("/products/latest").get(getLatestProducts);
 
+router.route("/admin/products/all").get(isAuthenticatedUser, authorizeRoles("admin"), getAdminProducts);
+
 router.route("/admin/product/:id")
-.put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct)
+.put(isAuthenticatedUser, authorizeRoles("admin"), upload.array('images',6), updateProduct)
 .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct)
 
 router.route("/products/:id").get(getProductDetails);

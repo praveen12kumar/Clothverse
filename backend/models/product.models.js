@@ -14,12 +14,12 @@ const productSchema = new Schema({
     originalPrice:{
         type:Number,
         required:[true, "Please Enter product Price"],
-        maxLength:[8, "Price can not exceed 8 characters"]
+        maxLength:[10, "Price can not exceed 10 characters"]
     },
     price:{
         type:Number,
         required:[true, "Please Enter product Price"],
-        maxLength:[8, "Price can not exceed 8 characters"]
+        maxLength:[10, "Price can not exceed 10 characters"]
     },
     discount:{
         type:Number,

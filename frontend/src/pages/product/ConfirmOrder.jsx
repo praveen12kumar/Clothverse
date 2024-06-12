@@ -16,7 +16,7 @@ const ConfirmOrder = () => {
  
   const { user } = useSelector((state) => state.user);
   const { cartItems, totalCartCost, isLoadingCart } = useSelector((state) => state.cart);
-  const {orderError} = useSelector((state)=>state.order);
+  const {orderError} = useSelector((state)=>state?.orders);
 
   const shippingCharge = totalCartCost > 2000 ? 0 : 100;
   const totalTax = (totalCartCost * 0.18).toFixed(2);
