@@ -28,7 +28,7 @@ import ProductList from "./pages/admin/ProductList";
 import NewProduct from "./pages/admin/NewProduct";
 import OrderList from "./pages/admin/OrderList";
 import UpdateProduct from "./pages/admin/UpdateProduct";
-
+import ProcessOrder from "./pages/admin/ProcessOrder";
 
 
 import { getUserDetails } from "./features/user/userSlice";
@@ -84,6 +84,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="/order/:id" element={<ProtectedRoute><OrderDetails/></ProtectedRoute>}/>
         <Route path="/password/reset/:token" element={<ResetPassword/>}/>
+        <Route path="/admin/order/:id" element={<ProtectedRoute isAdmin={true}><ProcessOrder/></ProtectedRoute>}/>
         <Route path="/admin/product/:id" element={<ProtectedRoute isAdmin={true}><UpdateProduct/></ProtectedRoute>}/>
         
         <Route path="*" element={<NotFound/>}/>

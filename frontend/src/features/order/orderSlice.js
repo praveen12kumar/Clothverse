@@ -24,7 +24,7 @@ export const getMyOrders = createAsyncThunk("orders/getMyOrders", async (page, {
 export const getOrderDetails = createAsyncThunk("orders/getOrderDetails", async (id, {rejectWithValue})=>{
     try {
         const {data} = await axios.get(`/api/v1/order/${id}`);
-        console.log(data);
+        //console.log(data);  
         return data.data;
     } catch (error) {
         return rejectWithValue(error.response.data.message);
@@ -51,6 +51,20 @@ export const getAdminOrders = createAsyncThunk("orders/getAdminOrders", async (p
     }
 })
 
+
+export const updateOrder = createAsyncThunk("orders/updateOrder", async ({id, formData}, ThunkApi)=>{
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
+    try {
+        const {data} = await axios.put(`/api/v1/admin/order/${id}`, formData);
+        console.log(data);
+        return data.data;
+    } catch (error) {
+        console.log(error.response);
+        return ThunkApi.rejectWithValue(error.response.data.message);
+    }
+})
 
 const orderSlice = createSlice({
     name:"orders",
@@ -108,6 +122,18 @@ const orderSlice = createSlice({
             state.orders = action.payload;
         })
         .addCase(getAdminOrders.rejected, (state, action)=>{
+            state.isLoadingOrder = false;
+            state.orderError = action.payload;
+        })
+        .addCase(updateOrder.pending, (state)=>{
+            state.isLoadingOrder = true;
+        })
+        .addCase(updateOrder.fulfilled, (state, action)=>{
+            state.isLoadingOrder = false;
+            state.orders = state.orders.map(order=>order._id === action.payload._id ? action.payload : order); 
+            state.order = action.payload;
+        })
+        .addCase(updateOrder.rejected, (state, action)=>{
             state.isLoadingOrder = false;
             state.orderError = action.payload;
         })

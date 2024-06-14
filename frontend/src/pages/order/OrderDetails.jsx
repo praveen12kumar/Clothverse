@@ -19,7 +19,7 @@ const OrderDetails = () => {
   return (
     isLoadingOrder||!order?<div className="w-screen h-screen flex"><Loader/></div>:<>
     <MetaData title={'Order Details'}/>
-    <div className="flex justify-center font-roboto mt-20 mb-20 md:mt-28 text-[13px]">
+    <div className="flex justify-center font-roboto mb-20 mt-10 text-[13px]">
         <div className="max-w-6xl w-full grid md:grid-cols-1 lg:grid-cols-[1.8fr_1fr] gap-8 min-h-screen p-2 md:p-5">
             <div className="border-solid border-grey3 border-x-[1px] h-fit hidden tablet:block">
                 <table className="w-full text-xs">

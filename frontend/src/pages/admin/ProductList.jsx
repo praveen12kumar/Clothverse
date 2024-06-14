@@ -93,7 +93,7 @@ const ProductList = () => {
                                 <div className=" text-xs font-poppins flex flex-col items-center justify-between">
                                     <p className='text-sm font-medium font-roboto'>Actions</p>
                                     <div className="flex gap-2">
-                                        <span className='text-lg text-green-600 cursor-pointer'><MdEdit/></span>
+                                        <Link to={`/admin/product/${item?._id}`}><span className='text-lg text-green-600 cursor-pointer'><MdEdit/></span></Link>
                                         <span className='text-lg text-red-600 cursor-pointer' onClick={()=>deleteProductHandler(item?._id)} ><MdDelete/></span>
                                     </div>
                                 </div>

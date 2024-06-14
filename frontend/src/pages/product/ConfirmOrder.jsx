@@ -16,6 +16,7 @@ const ConfirmOrder = () => {
  
   const { user } = useSelector((state) => state.user);
   const { cartItems, totalCartCost, isLoadingCart } = useSelector((state) => state.cart);
+  console.log("cartItems",cartItems)
   const {orderError} = useSelector((state)=>state?.orders);
 
   const shippingCharge = totalCartCost > 2000 ? 0 : 100;
@@ -36,7 +37,7 @@ const ConfirmOrder = () => {
               price:item?.price,
               image:item?.image,
               quantity:item?.quantity,
-              product:item?._id
+              product:item?.product?._id,
             })),
             shippingInfo:{
               address:address?.home,

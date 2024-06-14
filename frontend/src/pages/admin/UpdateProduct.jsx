@@ -88,14 +88,14 @@ useEffect(() => {
   // Set local state when product details are fetched
   useEffect(() => {
     if (product && product._id === id) {
-      setName(product.name);
-      setOriginalPrice(product.price);
-      setDescription(product.description);
-      setCategory(product.category);
-      setStock(product.stock);
-      setDiscount(product.discount);
-      setOldImages(product.images);
-      setColor(product.color);
+      setName(product?.name);
+      setOriginalPrice(product?.price);
+      setDescription(product?.description);
+      setCategory(product?.category);
+      setStock(product?.stock);
+      setDiscount(product?.discount);
+      setOldImages(product?.images);
+      setColor(product?.color);
     }
   }, [product, id]); // Depend on product only
   

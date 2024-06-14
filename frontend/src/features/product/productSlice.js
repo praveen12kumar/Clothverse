@@ -69,7 +69,7 @@ export const getProductDetails = createAsyncThunk("products/getProductDetails", 
         return data.data;
 
     } catch (error) {
-        return ThunkApi.rejectWithValue(error.response.data)
+        return ThunkApi.rejectWithValue(error.response.data.message)
     }
 })
 
@@ -80,7 +80,7 @@ export const getAllCategories = createAsyncThunk("products/getAllCategories", as
         return data.data;
     } catch (error) {
         console.log(error);
-        return ThunkApi.rejectWithValue(error.response.data)
+        return ThunkApi.rejectWithValue(error.response.data.message)
     }
 })
 

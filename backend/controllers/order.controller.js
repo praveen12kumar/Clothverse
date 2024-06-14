@@ -79,6 +79,10 @@ const getAllOrders = asyncHandler(async(req, res)=>{
 async function updateStock(id, quantity) {
     const product = await Product.findById(id);
     
+    if(product.stock < quantity){
+      return ApiError(400, "Invalid quantity");
+    }
+
     product.stock -= quantity;
   
     await product.save({ validateBeforeSave: false });
@@ -86,35 +90,36 @@ async function updateStock(id, quantity) {
 
 // update Order Status -- Admin
 const updateOrder = asyncHandler(async (req, res, next) => {
-    const order = await Order.findById(req.params.id);
-  
-    if (!order) {
-      throw new ApiError(404, "order not found")
-    };
-  
-    if (order.orderStatus === "Delivered") {
-      throw new ApiError(400, "You have already delivered this order")
-    };
-  
-    if (req.body.status === "Shipped") {
-      order.orderItems.forEach(async (o) => {
-        await updateStock(o.product, o.quantity);
-      });
-    }
-    order.orderStatus = req.body.status;
-  
-    if (req.body.status === "Delivered") {
-      order.deliveredAt = Date.now();
-    }
-  
-    await order.save({ validateBeforeSave: false });
-    res.status(200).json(
-        new ApiResponse(200,{}, "success")
-    );
-  });
-  
 
-  
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  };
+
+  if (order.orderStatus === "Delivered") {
+    throw new ApiError(400, "You have already delivered this order");
+  };
+
+  if (req.body.status === "Shipped") {
+    // Use Promise.all to wait for all stock updates to complete
+    await Promise.all(order?.orderItems?.map(async (o) => {
+      await updateStock(o.product, o.quantity);
+    }));
+  }
+
+  order.orderStatus = req.body.status;
+
+  if (req.body.status === "Delivered") {
+    order.deliveredAt = Date.now();
+  }
+
+  await order.save({ validateBeforeSave: false });
+
+  res.status(200).json(new ApiResponse(200, {}, "Success"));
+});
+
+
   // delete Order -- Admin
   const deleteOrder = asyncHandler(async (req, res, next) => {
     const order = await Order.findById(req.params.id);

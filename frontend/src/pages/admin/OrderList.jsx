@@ -96,7 +96,7 @@ const OrderList = () => {
                                 <div className=" text-xs font-poppins flex flex-col items-center justify-between">
                                     <p className='text-sm font-medium font-roboto'>Actions</p>
                                     <div className="flex gap-2">
-                                        <span className='text-lg text-green-600 cursor-pointer'><MdEdit/></span>
+                                    <Link to={`/admin/order/${item?._id}`}><span className='text-lg text-green-600 cursor-pointer'><MdEdit/></span></Link> 
                                         <span className='text-lg text-red-600 cursor-pointer' onClick={()=>deleteOrderHandler(item?._id)} ><MdDelete/></span>
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@ const OrderList = () => {
                             <p className=' text-[12px] text-center'>{item?.orderItems?.length}</p> 
                             <p className=' text-[12px] text-center font-roboto'>₹{item?.totalPrice}</p>
                             <div className="flex items-center">
-                                <Link to={`/admin/product/${item?._id}`}><span className='text-lg text-green-600 cursor-pointer'><MdEdit/></span></Link>
+                                <Link to={`/admin/order/${item?._id}`}><span className='text-lg text-green-600 cursor-pointer'><MdEdit/></span></Link>
                                 <span className='text-lg text-red-600 cursor-pointer ml-5' onClick={()=>deleteOrderHandler(item?._id)} ><MdDelete/></span>
                             </div>
                         </div>

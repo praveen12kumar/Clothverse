@@ -32,7 +32,7 @@ const DashboardSidebar = () => {
     };
   }, []);
   return (
-    <div className="w-full md:w-[30%] md:h-auto md:text-lg flex flex-wrap md:flex-col py-5 md:pt-28 gap-4 md:gap-16  text-slate-50 font-medium font-poppins items-center justify-center md:justify-start bg-cyan-700 ">
+    <div className="w-full md:w-[30%] md:min-h-screen md:text-lg flex flex-wrap md:flex-col py-5 md:pt-28 gap-4 md:gap-16  text-slate-50 font-medium font-poppins items-center justify-center md:justify-start bg-cyan-700 ">
       <div className="">
           <Link className="flex items-center gap-1 hover:text-cyan-100 transition-colors duration-300 ease-in" to="/admin/dashboard">
             <span>
