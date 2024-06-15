@@ -15,7 +15,8 @@ const ProductList = () => {
     const [productsPerPage, setProductsPerPage] = useState(8);
     const [totalPage, setTotalPage] = useState(0);
     const {error, products, isLoadingProduct} = useSelector(state=> state.products);
-    
+    console.log("products", products);
+
     const handlePageChange = (e)=>{
         setCurrentPage(e)
     }
@@ -56,6 +57,7 @@ const ProductList = () => {
 
         dispatch(getAdminProducts())
         setTotalPage(Math.ceil(products.length/productsPerPage))
+        //console.log("totalPage", totalPage);
     },[dispatch, error,productsPerPage])
 
     

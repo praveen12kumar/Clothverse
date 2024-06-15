@@ -47,7 +47,7 @@ router.route("/password/reset/:token").put(resetPassword);
 router.route("/admin/all").get(isAuthenticatedUser, authorizeRoles("admin"), getAllUser);
 
 router.route("/admin/user/:id").get(isAuthenticatedUser, authorizeRoles("admin"), getSingleUser)
-.get(isAuthenticatedUser, authorizeRoles("admin"), updateUserRole)
+.put(isAuthenticatedUser, authorizeRoles("admin"), upload.none(), updateUserRole)
 .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteUser)
 
 

@@ -134,6 +134,40 @@ export const getAllUsers = createAsyncThunk("user/getAllUsers", async(data, Thun
     } catch (error) {
         return ThunkAPI.rejectWithValue(error.response.data.message);
     }
+});
+
+export const deleteUser = createAsyncThunk("user/deleteUser", async(id, ThunkAPI)=>{
+    try {
+        const {data} = await axios.delete(`/api/v1/users/admin/user/${id}`);
+        console.log(data);
+        return data.data;
+    } catch (error) {
+        return ThunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
+export const updateUserRole = createAsyncThunk("user/updateUserRole", async({id, formData}, ThunkAPI)=>{
+    console.log(id);
+    formData.forEach((ele) => console.log(ele))
+    try {
+        const {data} = await axios.put(`/api/v1/users/admin/user/${id}`, formData);
+        console.log("data", data);
+        return data.data
+    } catch (error) {
+        return ThunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
+
+
+export const getSingleUser = createAsyncThunk("user/getSingleUser", async(id, ThunkAPI)=>{
+    try {
+        const {data} = await axios.get(`/api/v1/users/admin/user/${id}`);
+        console.log(data);
+        return data.data;
+    } catch (error) {
+        return ThunkAPI.rejectWithValue(error.response.data.message);
+    }
 })
 
 
@@ -279,6 +313,44 @@ const userSlice = createSlice({
             state.allUsers = action.payload;
         })
         .addCase(getAllUsers.rejected, (state, action)=>{
+            state.isLoadingUser = false;
+            state.userError = action.payload;
+        })
+
+        .addCase(deleteUser.pending, (state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(deleteUser.fulfilled, (state, action)=>{
+            state.isLoadingUser = false;
+            state.allUsers = state.allUsers.filter((user)=> user._id !== action.payload.id);
+        })
+        .addCase(deleteUser.rejected, (state, action)=>{
+            state.isLoadingUser = false;
+            state.userError = action.payload;
+        })
+
+        .addCase(updateUserRole.pending, (state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(updateUserRole.fulfilled, (state, action)=>{
+            state.isLoadingUser = false;
+            state.allUsers = state.allUsers.map((user)=> user._id === action.payload._id ? action.payload : user);
+            state.user = action.payload;
+            state.userSuccess = true;
+        })
+        .addCase(updateUserRole.rejected, (state, action)=>{
+            state.isLoadingUser = false;
+            state.userError = action.payload;
+        })
+
+        .addCase(getSingleUser.pending, (state)=>{
+            state.isLoadingUser = true;
+        })
+        .addCase(getSingleUser.fulfilled, (state, action)=>{
+            state.isLoadingUser = false;
+            state.user = action.payload;
+        })
+        .addCase(getSingleUser.rejected, (state, action)=>{
             state.isLoadingUser = false;
             state.userError = action.payload;
         })

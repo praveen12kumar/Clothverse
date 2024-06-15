@@ -24,4 +24,4 @@ router.route("/admin/order/:id").put(isAuthenticatedUser, authorizeRoles("admin"
 
 router.route("/order/:id").delete(isAuthenticatedUser, deleteOrder);
 
-export default router;
+export default router; 

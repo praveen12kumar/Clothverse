@@ -34,11 +34,11 @@ const registerUser = asyncHandler(async(req, res)=>{
         throw new ApiError(409, "Email alreay exists")
     }
 
-    console.log("req.file", req.file);    
+    //console.log("req.file", req.file);    
 
     const avatarLocalPath = req.file?.path;
     
-    console.log("avatarLocalPath", avatarLocalPath);
+    //console.log("avatarLocalPath", avatarLocalPath);
 
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar file is required")
@@ -342,7 +342,6 @@ const getSingleUser = asyncHandler(async(req, res)=>{
     if(!user){
         throw new ApiError(404, `User does not exist with Id:${req.params.id}`);
     }
-
     res.status(200).json(
         new ApiResponse(200, user, "User details")
     );
@@ -356,9 +355,12 @@ const updateUserRole = asyncHandler(async(req, res)=>{
         email:req.body.email,
         role:req.body.role,
     }
-
     const user = await User.findByIdAndUpdate(req.params.id, newUserData, {new:true});
-
+    
+    if(!user){
+        throw new ApiError(404, `User does not exist with Id:${req.params.id}`);
+    }
+   
     res.status(200).json(
         new ApiResponse(200, user, "Role updated successfully")
     )
@@ -372,10 +374,10 @@ const deleteUser = asyncHandler(async(req, res)=>{
         throw new ApiError(404, `User does not found`)
     }
 
-    await User.findByIdAndDelete(req.params.id);
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
 
     res.status(200).json(
-        new ApiResponse(200, {}, "User deleted successfully")
+        new ApiResponse(200, deletedUser, "User deleted successfully")
     )
 });
 
