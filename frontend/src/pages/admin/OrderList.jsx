@@ -43,7 +43,6 @@ const OrderList = () => {
 
 
     const deleteOrderHandler = (id)=>{
-        console.log("delete prdocut");
         dispatch(deleteOrder(id)).then(()=>{
             toast.success('Order deleted successfully')
             dispatch(getAdminOrders());
@@ -57,7 +56,8 @@ const OrderList = () => {
             dispatch(clearOrdersError())
         }
         dispatch(getAdminOrders())
-        setTotalPage(Math.ceil(orders.length/productsPerPage))
+        setTotalPage(Math.ceil(orders.length/productsPerPage));
+        window.scrollTo({top:0,behavior:"smooth"});
     },[dispatch, orderError, productsPerPage])
 
 

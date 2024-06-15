@@ -37,6 +37,7 @@ const Account = () => {
         if(isAuthenticated === false){
             navigate("/login")
         }
+        window.scrollTo({top:0,behavior:"smooth"})
     },[isAuthenticated, navigate])
 
   

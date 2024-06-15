@@ -17,7 +17,7 @@ import { addCartItem, clearMessage,clearErrors } from "../../features/cart/cartS
 
 
 const ProductDetail = ({ data }) => {
- 
+ console.log("data", data);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoadingWishlist, wishlistItems } = useSelector(
@@ -25,18 +25,24 @@ const ProductDetail = ({ data }) => {
   );
 
   const {isLoadingCart, cartItems, cartMessage, cartError} = useSelector(state => state.cart)
+  const {isAuthenticated} = useSelector(state=> state.user)
+  console.log("cart", cartItems);
   
   const [quantity, setQuantity] = useState(1);
   const [liked, setLiked] = useState(false);
   
   const inCart = cartItems?.some((item)=> item?.product.toString() === data?._id.toString());
+  console.log("incart", inCart);
 
   const handleAddToCart = () => {
     if(quantity < 1){
       toast.error("Quantity cannot be less than 1");
         return;
+    } 
+    if(!isAuthenticated){
+      navigate("/login");
     }
-
+    else{
     dispatch(addCartItem({
       name: data?.name,
       quantity,
@@ -45,10 +51,8 @@ const ProductDetail = ({ data }) => {
       originalPrice:data?.originalPrice,
       discount:data?.discount,
       productId:data?._id
-    })).then(()=>{
-    toast.success("Item added to cart")
-    dispatch(clearMessage())
-    }) 
+    }))
+    }
   };
 
   const handleLiked = () => {

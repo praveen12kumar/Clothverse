@@ -81,6 +81,7 @@ const Register = () => {
             toast.success(userSuccess)
             dispatch(clearUserSuccess())
         }
+        window.scrollTo({top:0,behavior:"smooth"});
     },[userError, userSuccess, isAuthenticated, navigate, dispatch])
 
 

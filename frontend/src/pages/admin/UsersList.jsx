@@ -57,7 +57,8 @@ const UsersList = () => {
             dispatch(clearUserError())
         }
         dispatch(getAllUsers())
-        setTotalPage(Math.ceil(allUsers.length/productsPerPage))
+        setTotalPage(Math.ceil(allUsers.length/productsPerPage));
+        window.scrollTo({top:0,behavior:"smooth"});
     },[dispatch, userError, productsPerPage])
 
 

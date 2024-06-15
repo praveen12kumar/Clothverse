@@ -7,6 +7,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const createCartItem = asyncHandler(async(req, res)=>{
     const {name, quantity, image,originalPrice, price, discount, productId,} = req.body;
+    
     const cartItem = await Cart.findOne({product:productId, user:req.user._id});
     
     if(cartItem){

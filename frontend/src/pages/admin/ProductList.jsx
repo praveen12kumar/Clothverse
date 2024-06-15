@@ -58,6 +58,7 @@ const ProductList = () => {
         dispatch(getAdminProducts())
         setTotalPage(Math.ceil(products.length/productsPerPage))
         //console.log("totalPage", totalPage);
+        window.scrollTo({top:0,behavior:"smooth"});
     },[dispatch, error,productsPerPage])
 
     

@@ -41,7 +41,8 @@ const Dashboard = () => {
     dispatch(getAllUsers());
     dispatch(getAdminProducts());
     dispatch(getAdminOrders());
-  }, []);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [dispatch]);
 
   let outOfStock = 0;
   products &&

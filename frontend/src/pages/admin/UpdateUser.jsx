@@ -35,7 +35,7 @@ const UpdateUser = () => {
             setEmail(user?.email);
             setRole(user?.role);
         }
-        
+        window.scrollTo({top:0,behavior:"smooth"});
     },[dispatch, id])
 
     useEffect(()=>{

@@ -10,9 +10,9 @@ const ProtectedRoute = ({isAdmin, children }) => {
     return <Navigate to="/login" state={{ from: location }} />;
   }
 
-  // if(isAdmin === true && isAuthenticated === true){
-  //   return <Navigate to="/admin/dashboard" state={{ from: location }} />;
-  // }
+  if(isAdmin === true && isAuthenticated === true){
+    return <Navigate to="/admin/dashboard" state={{ from: location }} />;
+  }
 
   return children;
 };

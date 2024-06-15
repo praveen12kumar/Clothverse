@@ -83,6 +83,7 @@ const UpdateProduct = () => {
 useEffect(() => {
     dispatch(getProductDetails(id));
     dispatch(getAllCategories());
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [dispatch, id]);
   
   // Set local state when product details are fetched
