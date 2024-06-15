@@ -5,6 +5,7 @@ import path from "path";
 
 const app  = express();
 
+const __dirname = path.resolve();
 
 app.use(cors({
     origin:process.env.CORS_ORIGIN,
@@ -32,10 +33,10 @@ app.use("/api/v1", reviewRouter);
 app.use("/api/v1/payment", paymentRouter);
 
 
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.use(express.static(path.join(__dirname, "/frontend/build")));
 
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+    res.sendFile(path.join(__dirname, "frontend","build","index.html"));
 });
 
 export default app;
