@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MetaData from "../../utils/MetaData";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllProducts,} from "../../features/product/productSlice";
+import { getAllProducts, clearErrors} from "../../features/product/productSlice";
 import { getAllCategories } from "../../features/product/productSlice";
 import Loader from "../../components/Loader/Loader";
 import ProductCard from "../../components/product/ProductCard";
@@ -10,6 +10,7 @@ import ReactPaginate from "react-paginate";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import clsx from 'clsx';
 import "./product.css"; // Create and import a CSS file for pagination styling if needed
+import toast from "react-hot-toast";
 
 const Dropdown = ({ label, active, index, setActive, children }) => (
   <div className="w-56 md:w-40 h-10 text-slate-400 hover:text-slate-100 transition-colors ease-in duration-1000 
@@ -90,13 +91,18 @@ const Product = () => {
 
   useEffect(() => {
     dispatch(getAllProducts({ page: currentPage,category:selectedCategories  }));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [dispatch, currentPage, selectedCategories]);
 
   
 
   useEffect(() => {
+    if(error){
+      toast.error(error)
+      dispatch(clearErrors())
+    }
     dispatch(getAllCategories());
-  }, [dispatch]);
+  }, [dispatch, error]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1); // `react-paginate` uses zero-based indexing

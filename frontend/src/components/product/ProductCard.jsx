@@ -42,7 +42,7 @@ const ProductCard = ({ data }) => {
       toast.success(wishlistMessage);
     }
     dispatch(clearWishlistSuccess());
-  },[liked]);
+  },[liked, dispatch]);
 
   useEffect(()=>{
     let isLiked = false;
@@ -60,12 +60,12 @@ const ProductCard = ({ data }) => {
   return (
     <>
     <div 
-      className="w-44 h-[300px] md:w-48 md:h-[350px] lg:w-56 bg-white shadow-xl flex flex-col gap-2 rounded-md hover:-translate-y-3 transition-all duration-300 ease-in"
+      className="w-[150px] h-[280px] md:w-48 md:h-[350px] lg:w-56 bg-white shadow-xl flex flex-col gap-2 rounded-md hover:-translate-y-3 transition-all duration-300 ease-in"
       onMouseEnter={() => setQuickShow(true)} // Show Quick View on hover
       onMouseLeave={() => setQuickShow(false)} // Hide Quick View on hover out
     >
       <div className="flex flex-row items-start object-cover p-2 relative">
-        <img className="w-[150px] h-[150px] md:h-[170px] lg:h-[200px] object-contain hover:scale-105 transition-all duration-300 ease-in" src={data?.images[0]?.url} alt="product" />
+        <img className="w-[120px] h-[120px] md:w-[150px] md:h-[170px] lg:h-[200px] object-contain hover:scale-105 transition-all duration-300 ease-in" src={data?.images[0]?.url} alt="product" />
         <div className="absolute top-3 right-3 cursor-pointer text-xl md:text-2xl flex items-center"
             onClick={handleLiked}
           >
@@ -89,14 +89,14 @@ const ProductCard = ({ data }) => {
           </div>
           <p className="text-xs md:text-sm">({data?.numberOfReviews})</p>
         </div>
-        <div className="flex justify-between items-center text-sm font-roboto text-text-black gap-2">
+        <div className="flex justify-between flex-wrap md:flex-nowrap items-center text-sm font-roboto text-text-black gap-1">
           <span className="font-semibold whitespace-nowrap">
             ₹{data?.price}
           </span>
           <span className="line-through whitespace-nowrap">
             ₹{data?.originalPrice}
           </span>
-          <span className="text-xs text-green-600 whitespace-nowrap">
+          <span className="text-[10px] text-green-600 whitespace-nowrap">
             ({data?.discount}% off)
           </span>
         </div>

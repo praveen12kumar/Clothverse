@@ -20,11 +20,11 @@ export const addCartItem = createAsyncThunk("cart/addCartItem", async(cartData, 
             }
         };
         const {data} = await axios.post("/api/v1/cart", cartData, config);
-        //console.log("cart data", data);
-        return data.data;
+        console.log("cart data", data);
+        return data;
     } catch (error) {
         //console.log(error);
-        return ThunkAPI.rejectWithValue(error.response.data);
+        return ThunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 
@@ -100,13 +100,13 @@ const cartSlice = createSlice({
         })
         .addCase(addCartItem.fulfilled, (state, action) => {
             state.isLoadingCart = false;
-            state.cartItems.push(action.payload);
-            state.cartMessage = "Item added to cart";
+            state.cartItems.push(action.payload.data);
+            state.cartMessage = action.payload.message;
             state.cartCount = state.cartItems.length;
         })
         .addCase(addCartItem.rejected, (state, action)=>{
             state.isLoadingCart = false;
-            state.cartError = action.payload.message;
+            state.cartError = action.payload;
         })
 
         .addCase(getCartItems.pending,(state)=>{

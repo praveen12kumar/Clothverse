@@ -30,7 +30,7 @@ const createCartItem = asyncHandler(async(req, res)=>{
     })
 
     res.status(200).json(
-        new ApiResponse(200, cart, "Cartitem added successfully")
+        new ApiResponse(200, cart, "item added successfully")
     )
 
 });

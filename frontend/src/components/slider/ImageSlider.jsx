@@ -30,9 +30,9 @@ const ImageSlider = ({productImages}) => {
         productImages?.map((image)=>(
             <SwiperSlide key={image?.url}>
                 {({isActive})=>(
-                    <div className="relative w-full h-full shadow-lg">
+                    <div className="relative w-full h-full shadow-lg flex justify-center">
                         <img  src={image?.url} alt="product slides" 
-                        className='object-contain object-center  min-w-[400px] max-h-[500px]'
+                        className='object-contain object-center  min-w-[200px] max-h-[500px]'
                         />
                     </div>
                 )}

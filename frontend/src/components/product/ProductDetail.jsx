@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import MetaData from "../../utils/MetaData";
 import toast from "react-hot-toast";
-import { addCartItem, clearMessage } from "../../features/cart/cartSlice";
+import { addCartItem, clearMessage,clearErrors } from "../../features/cart/cartSlice";
 
 
 
@@ -46,7 +46,7 @@ const ProductDetail = ({ data }) => {
       discount:data?.discount,
       productId:data?._id
     })).then(()=>{
-    toast.success(cartMessage)
+    toast.success("Item added to cart")
     dispatch(clearMessage())
     }) 
   };
@@ -66,6 +66,20 @@ const ProductDetail = ({ data }) => {
     dispatch(getWishlistItem());
   }, [dispatch]);
 
+
+  useEffect(()=>{
+    if(cartMessage){
+      toast.success(cartMessage)
+      dispatch(clearMessage())
+    }
+    if(cartError){
+      toast.error(cartError)
+      dispatch(clearErrors())
+    }
+  },[dispatch, cartError, cartMessage])
+
+
+
   useEffect(() => {
     let isLiked = false;
     wishlistItems.some((item) =>{
@@ -81,7 +95,6 @@ const ProductDetail = ({ data }) => {
   }, [wishlistItems, data?._id]);
 
 
-
   return (
     <>
       <MetaData title={`${data?.name}`}/>
@@ -91,12 +104,12 @@ const ProductDetail = ({ data }) => {
         </div>
       ) : (
       
-        <div className="flex flex-col lg:flex-row justify-center items-center bg-white  p-2  lg:p-7 gap-5 md:gap-10 h-full">
-          <div className="w-full  lg:w-[40%] p-8 md:p-6 lg:p-4">
+        <div className="flex flex-col lg:flex-row justify-center items-center bg-white  lg:p-7 gap-5 md:gap-10 h-full">
+          <div className="w-full  lg:w-[40%] p-4 md:p-6 lg:p-4">
             <ImageSlider
               productImages={data?.images}
               key={data?._id}
-              className="w-full h-full"
+              className="object-contain object-center"
             />
           </div>
           <div className="flex flex-col items-start gap-2 p-5 lg:p-10">
