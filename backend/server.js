@@ -3,6 +3,7 @@ import {config} from "dotenv";
 import connectDB from "./db/index.js";
 import Razorpay from "razorpay";
 
+
 config({
     path:".env"
 })

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import path from "path";
 
 const app  = express();
 
@@ -31,5 +31,11 @@ app.use("/api/v1", orderRouter);
 app.use("/api/v1", reviewRouter);
 app.use("/api/v1/payment", paymentRouter);
 
+
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+});
 
 export default app;
