@@ -91,7 +91,7 @@ const Product = () => {
 
   useEffect(() => {
     dispatch(getAllProducts({ page: currentPage,category:selectedCategories  }));
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
   }, [dispatch, currentPage, selectedCategories]);
 
   

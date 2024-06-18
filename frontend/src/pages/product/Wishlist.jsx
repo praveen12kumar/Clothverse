@@ -18,7 +18,7 @@ const Wishlist = () => {
             toast.success(wishlistMessage)
         }
         dispatch(clearWishlistSuccess());
-        window.scrollTo({top: 0, behavior: 'smooth'});
+       
     },[wishlistMessage, isLoadingWishlist, dispatch]);
      
 

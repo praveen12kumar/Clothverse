@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react'
+import React, { useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
 import { FaMinus } from 'react-icons/fa';
 import { FaPlus } from 'react-icons/fa';
@@ -9,22 +9,34 @@ import { clearErrors, clearMessage } from '../../features/cart/cartSlice';
 
 
 const CartProductCard = ({data}) => {
+
   const dispatch = useDispatch();
   const {cartError, cartMessage} = useSelector(state => state.cart);
-  
-  const handleQuantity = (increase)=>{
-    const newQuantity = data?.quantity + increase;
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
 
-    if(newQuantity < 1){
+ 
+  const handleQuantity = async (increase) => {
+    const newQuantity = data?.quantity + increase;
+  
+    if (newQuantity < 1) {
       toast.error("Quantity cannot be less than 1");
       return;
     }
-    dispatch(updateCartItem({
-      newQuantity,
-      cartItemId:data?._id
-    }));
-    dispatch(getCartItems());
-  }
+  
+    try {
+      await dispatch(updateCartItem({
+        newQuantity,
+        cartItemId: data?._id
+      }));
+      dispatch(getCartItems()); // Reload cart items after the update is completed
+    } catch (error) {
+      console.error(error); // Handle or log the error
+      toast.error("Failed to update quantity.");
+    } finally {
+      setIsLoadingButton(false);
+    }
+  };
+  
 
   const handleRemoveFromCart = ()=>{
     dispatch(deleteCartItem(data?._id))
@@ -80,18 +92,18 @@ const CartProductCard = ({data}) => {
               <button
                 className="p-1 md:p-3 flex-1 flex justify-center items-center hover:bg-cyan-700 hover:text-white transition-colors duration-500"
                 type="button"
-                onClick={(e) => handleQuantity(-1)}
+                onClick={(e) => {handleQuantity(-1); setIsLoadingButton(true)}}
                 aria-label="decrQuantity"
               >
                 <FaMinus />
               </button>
               <div className="p-1 md:p-3 flex-1 flex justify-center items-center bg-slate-200">
-                {data?.quantity}
+              {isLoadingButton?<img className="mx-auto w-7 h-7" src="/Images/icons/buttonLoaderImage..gif" alt=""/>:<>{data?.quantity}</>}
               </div>
               <button
                 className="p-1 md:p-3 flex-1 flex justify-center items-center hover:bg-cyan-700 hover:text-white transition-colors duration-500"
                 type="button"
-                onClick={(e) => handleQuantity(1)}
+                onClick={(e) => {handleQuantity(1); setIsLoadingButton(true)}}
                 aria-label="incQuantity"
               >
                 <FaPlus />

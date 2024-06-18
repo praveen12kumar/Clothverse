@@ -67,9 +67,6 @@ const UpdateProduct = () => {
         images.forEach((image)=>{
             formData.append('images', image);
         })
-
-        
-
         dispatch(updateProduct({id,formData})).then(()=>(
             toast.success("Product updated successfully")
         ))
@@ -83,7 +80,7 @@ const UpdateProduct = () => {
 useEffect(() => {
     dispatch(getProductDetails(id));
     dispatch(getAllCategories());
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({top:0,behavior:"smooth"});
   }, [dispatch, id]);
   
   // Set local state when product details are fetched

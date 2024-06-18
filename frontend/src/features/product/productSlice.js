@@ -35,7 +35,7 @@ export const getAllProducts = createAsyncThunk("products/getAllProducts", async(
         return data;
 
     } catch (error) {
-        return ThunkApi.rejectWithValue(error.response.data)
+        return ThunkApi.rejectWithValue(error.response.data.message)
     }
 })
 
@@ -51,7 +51,7 @@ export const adminCreateProduct = createAsyncThunk("products/adminCreateProduct"
         console.log("data", data);
         return data.data;
     }catch(error){
-        return ThunkApi.rejectWithValue(error.response.data)
+        return ThunkApi.rejectWithValue(error.response.data.message)
     }
 })
 
@@ -160,7 +160,7 @@ const productSlice = createSlice({
         })
         .addCase(adminCreateProduct.rejected, (state, action)=>{
             state.isLoadingProduct = false;
-            state.error = action.payload.message;
+            state.error = action.payload;
         })
 
         // get product details
@@ -174,7 +174,7 @@ const productSlice = createSlice({
 
         .addCase(getProductDetails.rejected,(state, action)=>{
             state.isLoadingProduct = false;
-            state.error = action.payload
+            state.error = action.payload;
         })
 
         .addCase(getAllCategories.pending, (state)=>{
@@ -186,7 +186,7 @@ const productSlice = createSlice({
         })
         .addCase(getAllCategories.rejected, (state, action)=>{
             state.isLoadingProduct = false;
-            state.error = action.payload
+            state.error = action.payload;
         })
 
         .addCase(getAdminProducts.pending, (state)=>{
@@ -198,7 +198,7 @@ const productSlice = createSlice({
         })
         .addCase(getAdminProducts.rejected, (state, action)=>{
             state.isLoadingProduct = false;
-            state.error = action.payload
+            state.error = action.payload;
         })
 
         // delete Product

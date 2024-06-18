@@ -17,7 +17,7 @@ const Cart = () => {
     
     useEffect(()=>{
         dispatch(getCartItems())
-        window.scrollTo({top: 0, behavior: 'smooth'});
+       
     },[dispatch])
 
 
@@ -30,15 +30,15 @@ const Cart = () => {
             toast.success(cartMessage)
             dispatch(clearMessage())
         }
-        if(clearErrors){
+        if(cartError){
             toast.error(cartError)
             dispatch(clearErrors())
         }
-    },[dispatch, cartError, cartMessage])
+    },[cartError, cartMessage])
 
 
   return (
-    isLoadingCart ? <Loader/>:<>
+    <>
     <MetaData title={"Cart"}/>
     <div className="wrapper w-full flex flex-col md:flex-row justify-center md:justify-between items-center">
             <div className="font-poppins my-10 text-[13px] min-h-[80vh] md:min-h-screen max-w-7xl mx-auto p-2 md:p-5 flex flex-col justify-start grow">

@@ -12,8 +12,8 @@ import { getAllUsers, deleteUser, clearUserError } from '../../features/user/use
 
 const UsersList = () => {
     const dispatch = useDispatch();
-    const {allUsers, isLoadingUser, userError, userSuccess} = useSelector(state=> state.user);
-    console.log("orders", allUsers);
+    const {allUsers, isLoadingUser, userError, } = useSelector(state=> state.user);
+  
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(8);
     const [totalPage, setTotalPage] = useState(0);
@@ -58,7 +58,7 @@ const UsersList = () => {
         }
         dispatch(getAllUsers())
         setTotalPage(Math.ceil(allUsers.length/productsPerPage));
-        window.scrollTo({top:0,behavior:"smooth"});
+       
     },[dispatch, userError, productsPerPage])
 
 

@@ -42,7 +42,7 @@ const ProductList = () => {
     const itemsToDisplay = products.slice(startIndex, endIndex);
     
     const deleteProductHandler = (id)=>{
-        console.log("delete prdocut");
+        
         dispatch(deleteProduct(id)).then(()=>{
             toast.success('Product deleted successfully')
             dispatch(getAdminProducts());
@@ -59,6 +59,7 @@ const ProductList = () => {
         setTotalPage(Math.ceil(products.length/productsPerPage))
         //console.log("totalPage", totalPage);
         window.scrollTo({top:0,behavior:"smooth"});
+      
     },[dispatch, error,productsPerPage])
 
     

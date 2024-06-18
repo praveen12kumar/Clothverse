@@ -25,7 +25,7 @@ export const registerUser = createAsyncThunk("user/registerUser", async (user, T
 
     } catch (error) {
         console.log(error);
-        return ThunkAPI.rejectWithValue(error.response.data);
+        return ThunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 
@@ -52,7 +52,7 @@ export const logoutUser = createAsyncThunk("user/logoutUser", async(data, ThunkA
     try {
         await axios.post("/api/v1/users/logout");
     } catch (error) {
-        return ThunkAPI.rejectWithValue(error.response.data);
+        return ThunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 
@@ -196,12 +196,12 @@ const userSlice = createSlice({
         })
         .addCase(registerUser.fulfilled, (state, action)=>{
             state.isLoadingUser = false;
-            state.userSuccess = action.payload.message;
+            state.userSuccess = action.payload;
         })
         .addCase(registerUser.rejected, (state,action)=>{
             state.isLoadingUser = false;
             state.isAuthenticated = false;
-            state.userError = action.payload
+            state.userError = action.payload;
         })
 
         // Login User

@@ -44,7 +44,7 @@ export const getAdminOrders = createAsyncThunk("orders/getAdminOrders", async (p
     try {
        
         const {data} = await axios.get("/api/v1/admin/orders");
-        console.log(data);
+        // console.log(data);
         return data.data;
     } catch (error) {
         return rejectWithValue(error.response.data.message);

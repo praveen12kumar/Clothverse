@@ -77,7 +77,7 @@ const NewProduct = () => {
 
     useEffect(()=>{
         dispatch(getAllCategories());
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({top:0, behavior:"smooth"});
     },[dispatch])
 
     useEffect(()=>{

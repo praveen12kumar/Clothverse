@@ -42,7 +42,7 @@ const Order = () => {
     useEffect(()=>{
         dispatch(getMyOrders());
         setTotalPage(Math.ceil(totalOrderCount/ordersPerPage));
-        window.scrollTo({top:0,behavior:"smooth"});
+       
     },[dispatch, totalOrderCount, ordersPerPage]);
 
    

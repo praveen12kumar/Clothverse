@@ -20,12 +20,12 @@ const UpdateUser = () => {
     const navigate = useNavigate();
 
     const {user, userError, isLoadingUser} =  useSelector(state=> state.user)
-    
+    console.log("user", user);
     const [role, setRole] = useState("");
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [isLoadingButton, setIsLoadingButton] = useState(false);
-
+    
     useEffect(()=>{
         if(user && user._id !== id){
             dispatch(getSingleUser(id));
@@ -35,7 +35,7 @@ const UpdateUser = () => {
             setEmail(user?.email);
             setRole(user?.role);
         }
-        window.scrollTo({top:0,behavior:"smooth"});
+        
     },[dispatch, id])
 
     useEffect(()=>{

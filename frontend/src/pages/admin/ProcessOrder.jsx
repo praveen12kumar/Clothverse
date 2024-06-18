@@ -8,10 +8,11 @@ import toast from 'react-hot-toast';
 import DashboardSidebar from '../../components/sidebar/DashboardSidebar';
 import { MdAccountTree } from "react-icons/md";
 import { updateOrder } from '../../features/order/orderSlice'
-
+import { useNavigate } from 'react-router-dom'
 
 const ProcessOrder = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {id} =  useParams();
     
     const [status, setStatus] = useState("");
@@ -20,7 +21,7 @@ const ProcessOrder = () => {
 
     const {order, isLoadingOrder, orderError} = useSelector(state=> state.orders);
     const {user} = useSelector(state => state.user);
-    console.log("order", order);
+   
 
     const updateOrderSubmitHandler = (e)=>{
         e.preventDefault();
@@ -34,6 +35,7 @@ const ProcessOrder = () => {
             dispatch(getOrderDetails(id));
         })
         setIsLoadingButton(false);
+        navigate("/admin/orders");
     }
 
     useEffect(()=>{
@@ -45,6 +47,7 @@ const ProcessOrder = () => {
 
     useEffect(()=>{
         dispatch(getOrderDetails(id));
+        window.scrollTo({top:0,behavior:"smooth"});
     },[dispatch, id])
 
 

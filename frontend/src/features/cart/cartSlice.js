@@ -110,7 +110,7 @@ const cartSlice = createSlice({
         })
 
         .addCase(getCartItems.pending,(state)=>{
-            state.isLoadingCart = true;
+            //state.isLoadingCart = true;
         })
         .addCase(getCartItems.fulfilled,(state, action)=>{
             state.isLoadingCart = false;
@@ -138,7 +138,7 @@ const cartSlice = createSlice({
         })
 
         .addCase(updateCartItem.pending, (state)=>{
-            state.isLoadingCart = true;
+            // state.isLoadingCart = true;
         })
         .addCase(updateCartItem.fulfilled, (state, action)=>{
             state.isLoadingCart = false;
