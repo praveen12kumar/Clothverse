@@ -10,6 +10,7 @@ import { FaPhone } from "react-icons/fa6";
 import { BsGlobeCentralSouthAsia } from "react-icons/bs";
 import { MdTransferWithinAStation } from "react-icons/md";
 import { clearAddressSuccess, setAddress } from '../../features/address/addressSlice';
+import Loader from '../../components/Loader/Loader';
 
 const allStates = ['Andaman & Nicobar','Andhra Pradesh','Arunachal Pradesh', 'Assam','Bihar', 'Chandigarh' ,  'Chattisgarh', 'Dadra & Nagar Haveli'  , 'Daman & Diu'  , 'Delhi'  ,'Goa' , 'Gujarat' , 'Haryana' , 'Himachal Pradesh',  'Jammu & Kashmir', 'Jharkhand' , 'Karnataka' , 'Kerala' , 'Lakshadweep' ,'Madhya Pradesh' , 'Maharashtra', 'Manipur' , 'Meghalaya'  ,'Mizoram', 'Nagaland', 'Odisha ', 'Pondicherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana' , 'Tripura' , 'Uttar Pradesh', 'Uttarakhand', 'West Bengal']
 
@@ -18,8 +19,8 @@ const Shipping = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const {cartItems} = useSelector(state=>state.cart);
-    const {address, addressSuccess, addressError} = useSelector(state=>state.address);
+    const {cartItems, isLoadingCart} = useSelector(state=>state.cart);
+    const {address, addressSuccess, addressError, isLoadingAddress} = useSelector(state=>state.address);
     
 
 
@@ -101,6 +102,9 @@ const Shipping = () => {
 
 
   return (
+
+    isLoadingAddress || isLoadingCart ? <div className="w-screen h-screen flex items-center justify-center"><Loader/></div>:
+
     <>
     <MetaData title="Shipping"/>
     <div className="w-screen h-screen">

@@ -37,7 +37,7 @@ const Product = () => {
   const dispatch = useDispatch();
   
   const [active, setActive] = useState(null);
-  const [price, setPrice] = useState(5000);
+  const [price, setPrice] = useState(50000);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [rating, setRating] = useState(null);
   const [priceOrder, setPriceOrder] = useState('');

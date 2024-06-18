@@ -56,7 +56,7 @@ const ProductDetails = () => {
     useEffect(()=>{
         dispatch(getProductDetails(id))
         dispatch(getProductReviews(id));
-       
+        window.scrollTo({top:0,behavior:"smooth"});
     },[dispatch, id])
     
     // useEffect(()=>{
