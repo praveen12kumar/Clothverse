@@ -159,7 +159,7 @@ const Shipping = () => {
                 </select>
               </div>
             
-              <button className="w-[80%] mx-auto text-lg font-poppins font-medium bg-cyan-700 text-white text-center py-2 rounded-md  cursor-pointer transition-colors ease-in duration-300 mt-5 hover:bg-slate-700 ">{isLoadingButton?<img className="mx-auto w-7 h-7" alt='checkout' src="/Images/icons/buttonLoaderImage..gif"/>:<>Proceed to Checkout</>}</button>
+              <button className="w-full md:w-[80%] mx-auto text-sm md:text-base font-poppins font-medium bg-cyan-700 text-white text-center py-2 rounded-md  cursor-pointer transition-colors ease-in duration-300 mt-5 hover:bg-slate-700 ">{isLoadingButton?<img className="mx-auto w-7 h-7" alt='checkout' src="/Images/icons/buttonLoaderImage..gif"/>:<>Proceed to Checkout</>}</button>
 
         </form>
       </div>
