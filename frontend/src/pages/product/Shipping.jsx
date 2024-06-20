@@ -20,9 +20,8 @@ const Shipping = () => {
     const navigate = useNavigate();
 
     const {cartItems, isLoadingCart} = useSelector(state=>state.cart);
-    const {address, addressSuccess, addressError, isLoadingAddress} = useSelector(state=>state.address);
+    const {address,  addressError, isLoadingAddress} = useSelector(state=>state.address);
     
-
 
     const [home, setHome] = useState("");
     const [country, setCountry] = useState("India");
@@ -74,7 +73,9 @@ const Shipping = () => {
       }
     })
     // dispatch the address
-    dispatch(setAddress({home, country, state, city, pincode, phone:parseInt(phone,10)}))
+    dispatch(setAddress({home, country, state, city, pincode, phone:parseInt(phone,10)})).then(()=>{
+      navigate("/order/confirm");
+    })
     setIsLoadingButton(false);
   }
 
@@ -89,16 +90,11 @@ const Shipping = () => {
   },[address])
 
   useEffect(()=>{
-    if(addressSuccess){
-      dispatch(clearAddressSuccess())
-      navigate("/order/confirm");
-      return;
-    }
     if(addressError){
       toast.error(addressError);
       dispatch(clearAddressSuccess())
     }
-  },[addressSuccess, addressError, dispatch, navigate])
+  },[addressError, dispatch])
 
 
   return (
