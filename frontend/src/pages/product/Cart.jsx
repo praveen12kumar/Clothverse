@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import MetaData from '../../utils/MetaData';
-import Loader from '../../components/Loader/Loader';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { getCartItems } from '../../features/cart/cartSlice';
@@ -12,7 +11,7 @@ import { clearMessage, clearErrors } from '../../features/cart/cartSlice';
 const Cart = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { isLoadingCart, cartItems, cartMessage,cartError, cartCount, totalCartCost } = useSelector((state) => state.cart);
+    const { cartItems, cartMessage,cartError, cartCount, totalCartCost } = useSelector((state) => state.cart);
     
     
     useEffect(()=>{

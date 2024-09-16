@@ -80,7 +80,7 @@ const ResetPassword = () => {
           </div>
           <button className='w-full text-md bg-slate-700 p-2 px-4 font-poppins font-medium text-white  uppercase tracking-wider rounded-xl hover:bg-cyan-600 hover:border-slate-600 hover:text-slate-200  transition-all ease-in duration-300'
             onClick={handleChangePassword}
-          >Update</button>
+          >Reset</button>
         </div>
       </div>
     </div>

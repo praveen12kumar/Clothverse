@@ -11,7 +11,7 @@ import { clearErrors, clearMessage } from '../../features/cart/cartSlice';
 const CartProductCard = ({data}) => {
 
   const dispatch = useDispatch();
-  const {cartError, cartMessage} = useSelector(state => state.cart);
+  const {cartError, cartMessage,} = useSelector(state => state.cart);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
 
  
@@ -30,8 +30,9 @@ const CartProductCard = ({data}) => {
       }));
       dispatch(getCartItems()); // Reload cart items after the update is completed
     } catch (error) {
-      console.error(error); // Handle or log the error
+      // console.error(error); // Handle or log the error
       toast.error("Failed to update quantity.");
+      
     } finally {
       setIsLoadingButton(false);
     }
